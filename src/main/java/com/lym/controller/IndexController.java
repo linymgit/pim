@@ -1,5 +1,6 @@
 package com.lym.controller;
 
+import com.lym.anno.Auth;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -8,10 +9,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @auth linyimin
  * @Desc
  **/
+@Auth
 @Controller
 public class IndexController {
+
+    @Auth(flag = 1)
     @RequestMapping("/index")
     public  String index(){
         return "index";
+    }
+
+    @RequestMapping("/login")
+    public  String login(){
+        return "auth";
     }
 }
