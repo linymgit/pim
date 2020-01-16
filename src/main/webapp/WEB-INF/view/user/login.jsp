@@ -23,37 +23,63 @@
     <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
     <![endif]-->
+    <style>
+        #web_bg{
+            position:fixed;
+            top: 0;
+            left: 0;
+            width:100%;
+            height:100%;
+            min-width: 1000px;
+            z-index:-10;
+            zoom: 1;
+            background-color: #fff;
+            background-repeat: no-repeat;
+            background-size: cover;
+            -webkit-background-size: cover;
+            -o-background-size: cover;
+            background-position: center 0;
+        }
+        .poi{
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 <div class="container-fluid">
-    <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
-    <div class="form-group has-success has-feedback">
-        <label class="control-label" for="inputSuccess2">Input with success</label>
-        <input type="text" class="form-control" id="inputSuccess2" aria-describedby="inputSuccess2Status">
-        <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
-        <span id="inputSuccess2Status" class="sr-only">(success)</span>
-    </div>
-    <div class="form-group has-warning has-feedback">
-        <label class="control-label" for="inputWarning2">Input with warning</label>
-        <input type="text" class="form-control" id="inputWarning2" aria-describedby="inputWarning2Status">
-        <span class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true"></span>
-        <span id="inputWarning2Status" class="sr-only">(warning)</span>
-    </div>
-    <div class="form-group has-error has-feedback">
-        <label class="control-label" for="inputError2">Input with error</label>
-        <input type="text" class="form-control" id="inputError2" aria-describedby="inputError2Status">
-        <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-        <span id="inputError2Status" class="sr-only">(error)</span>
-    </div>
-    <div class="form-group has-success has-feedback">
-        <label class="control-label" for="inputGroupSuccess1">Input group with success</label>
-        <div class="input-group">
-            <span class="input-group-addon">@</span>
-            <input type="text" class="form-control" id="inputGroupSuccess1" aria-describedby="inputGroupSuccess1Status">
+    <div class="row">
+        <div class="col-xs-8 col-sm-6 col-md-4 col-md-offset-1" style="padding-top: 2rem">
+            logo xxx系统
         </div>
-        <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
-        <span id="inputGroupSuccess1Status" class="sr-only">(success)</span>
     </div>
+    <div id="web_bg" style="background-image: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1579197132065&di=d77563a2e327982a1bfe06147ca71a52&imgtype=0&src=http%3A%2F%2Fimg.pptjia.com%2Fimage%2F20190223%2F69a70f4ad56095d768033c59d2def273.jpeg');"></div>
+    <div class="row" style="margin-top: 20vh">
+        <div class="col-md-4"></div>
+        <div class="col-md-3 col-md-offset-3">
+            <div style="padding: 3rem;background-color: whitesmoke;border-radius: 1rem">
+                <h4>密码登录</h4>
+                <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
+                    <div class="form-group has-success has-feedback">
+                    <label class="control-label">用户名</label>
+                    <input type="text" class="form-control" id="inputSuccess2" aria-describedby="inputSuccess2Status">
+                    <%--                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>--%>
+                    <%--                <span id="inputSuccess2Status" class="sr-only">(success)</span>--%>
+                </div>
+                <div class="form-group has-warning has-feedback">
+                    <label class="control-label" for="inputWarning2">密码</label>
+                    <input type="text" class="form-control" id="inputWarning2" aria-describedby="inputWarning2Status">
+                    <%--                <span class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true"></span>--%>
+                    <%--                <span id="inputWarning2Status" class="sr-only">(warning)</span>--%>
+                </div>
+                <p> <button type="button" class="btn btn-primary" style="width: 100%">登录</button></p>
+                <p><span class="poi">邮箱登录</span>&ensp;<span class="poi">手机登录</span></p>
+                <p class="poi" style="text-align: right">免费注册</p>
+
+            </div>
+        </div>
+    </div>
+
+
 </div>
 
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
