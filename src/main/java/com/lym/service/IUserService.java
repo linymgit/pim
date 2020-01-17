@@ -1,7 +1,5 @@
 package com.lym.service;
 
-import com.lym.entity.User;
-
 import java.util.List;
 
 /**
