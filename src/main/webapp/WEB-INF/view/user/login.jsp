@@ -58,7 +58,7 @@
     <div class="row" style="margin-top: 20vh">
         <div class="col-md-4"></div>
         <div class="col-md-3 col-md-offset-3">
-            <div style="padding: 3rem;background-color: whitesmoke;border-radius: 1rem">
+            <div style="padding: 3rem;background-color:#F9F9F9;border-radius: 1rem">
                 <h4>密码登录</h4>
                 <div class="form-group has-success has-feedback">
                     <label class="control-label">用户名</label>

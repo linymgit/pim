@@ -3,7 +3,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
     <context:component-scan base-package="com.lym">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
@@ -13,8 +14,8 @@
     <bean id="propertySourcesPlaceholderConfigurer" class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
         <property name="locations">
             <list>
-                <value>classpath:db.properties</value>
                 <value>classpath:application.properties</value>
+                <value>classpath:db.properties</value>
             </list>
         </property>
     </bean>
@@ -55,7 +56,7 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="mapperLocations">
             <list>
-                <value>classpath*:/mybatis/*.xml</value>
+                <value>classpath:/mybatis/*.xml</value>
             </list>
         </property>
         <property name="typeAliasesPackage" value="com.lym.entity"/>
@@ -85,5 +86,17 @@
 <!--        <aop:pointcut id="pc" expression="execution(* com.lym.service.*.*(..))"/>-->
 <!--        <aop:advisor advice-ref="txAdvice" pointcut-ref="pc"/>-->
 <!--    </aop:config>-->
+
+    <!--启用缓存 -->
+    <cache:annotation-driven/>
+
+    <!-- 声明缓存管理器 -->
+    <bean id="cacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:ehcache.xml"/>
+    </bean>
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="cacheManagerFactory"/>
+    </bean>
+
 
 </beans>
