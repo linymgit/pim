@@ -14,7 +14,7 @@ import java.util.Random;
  * @QQ: 1317113287
  * @desc: 验证码
  **/
-public class Captcha {
+public class CaptchaUtil {
 
     public static String str = "abcdefghijklmnopqrstuvwxyz";
 

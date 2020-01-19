@@ -7,10 +7,10 @@
     <groupId>com.lym</groupId>
     <artifactId>pim</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>gen</module>
-    </modules>
-    <packaging>pom</packaging>
+<!--    <modules>-->
+<!--        <module>gen</module>-->
+<!--    </modules>-->
+    <packaging>war</packaging>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -29,6 +29,13 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>5.2.2.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>5.2.2.RELEASE</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
@@ -97,7 +104,12 @@
             <artifactId>ehcache</artifactId>
             <version>2.10.6</version>
         </dependency>
-
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
 
         <!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.aspectj/aspectjweaver &ndash;&gt;-->
 <!--        <dependency>-->
@@ -113,5 +125,22 @@
 <!--            <version>1.9.5</version>-->
 <!--        </dependency>-->
 
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
     </dependencies>
+
+    <build>
+        <finalName>pim</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
 </project>

@@ -1,6 +1,6 @@
 package com.lym.controller;
 
-import com.lym.utils.Captcha;
+import com.lym.utils.CaptchaUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +18,11 @@ public class CaptchaController {
 
     @GetMapping("/arithm")
     public void getArithmCaptcha(HttpServletResponse response) {
-        Captcha.getArithmeticCode(response);
+        CaptchaUtil.getArithmeticCode(response);
     }
 
     @GetMapping("/char")
     public void getCharCaptcha(HttpServletResponse response) {
-        Captcha.getCharCode(response);
+        CaptchaUtil.getCharCode(response);
     }
 }

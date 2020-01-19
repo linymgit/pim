@@ -1,5 +1,7 @@
 package com.lym.service;
 
+import com.lym.entity.User;
+
 import java.util.List;
 
 /**
@@ -7,6 +9,6 @@ import java.util.List;
  * @auth linyimin
  * @Desc
  **/
-public interface IUserService {
+public interface UserService {
     List<User> list();
 }

@@ -1,10 +1,15 @@
 package com.lym.controller.user;
 
+import com.lym.entity.User;
+import com.lym.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Date 2020/1/15
@@ -15,8 +20,13 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/user")
 public class UserController {
 
+    @Resource
+    private UserService userService;
+
     @GetMapping("/login")
     public ModelAndView login(ModelAndView mv){
+        List<User> list = userService.list();
+        System.out.println(list);
         mv.setViewName("/user/login");
         return mv;
     }

@@ -5,7 +5,7 @@ package com.lym.utils;
  * @auth linyimin
  * @Desc 雪花算法
  **/
-public class SnowFlake {
+public class SnowFlakeUtil {
     /**
      * 起始的时间戳:这个时间戳自己随意获取，比如自己代码的时间戳
      */
@@ -60,7 +60,7 @@ public class SnowFlake {
     private static long sequence = 0L; //序列号
     private static long lastStmp = -1L;//上一次时间戳
 
-    private SnowFlake() {
+    private SnowFlakeUtil() {
     }
 
     /**
