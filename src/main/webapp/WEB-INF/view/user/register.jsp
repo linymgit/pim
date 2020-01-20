@@ -70,29 +70,40 @@
         $("#aaaa").append(formElement)
     });
 
-    function CheckObject(type, tips) //声明对象
-    {
-        this.Type = type;
-        this.Tips = tips;
-    }
-
     let formObject = [
         {
             "label": "用户名",
             "name": "userName",
             "icon": "glyphicon-user",
             "check": [
-                new CheckObject("nonnull", "用户名不能为空")
+                {
+                    "type": "nonnull",
+                    "tips": "用户名不能为空"
+                }
             ]
         },
         {
             "label": "真实姓名",
-            "icon": "",
+            "icon": "glyphicon-credit-card",
             "name": "realName",
+            "check": [
+                {
+                    "type": "nonnull",
+                    "tips": "真实姓名不能为空"
+                }
+            ]
         },
         {
             "label": "密码",
             "name": "passworld",
+            "icon": "glyphicon-eye-close",
+            "check": [
+                {
+                    "type": "nonnull",
+                    "tips": "密码不能为空"
+                }
+            ],
+            "inputType":"password"
         }
     ]
 
@@ -110,13 +121,14 @@
                 formText += '<div class="input-group">';
                 formText += '<span class="input-group-addon"><span class="glyphicon ' + object.icon + ' "></span></span>';
             }
-            formText += '<input type="text" name="' + object.name + '" class="form-control" id="form-id' + i + '"';
+            let iT = "text";
+            if (strNonNull(object.inputType)) {
+                iT = object.inputType;
+            }
+            formText += '<input type="'+ iT +'" name="' + object.name + '" class="form-control" id="form-id' + i + '"';
 
             if (object.check !== undefined && object.check != null) {
-                let s = object.check[0]
-                let arr = []
-                arr[0] = s
-                formText += 'onblur="doCheck(\'' + i + '\',' + arr + ')"';
+                formText += 'onblur="doCheck(' + i + ')"';
             }
             formText += '>';
             formText += '<span class="glyphicon form-control-feedback" id="span-ok' + i + '"></span>'
@@ -124,7 +136,7 @@
             if (n) {
                 formText += '</div>';
             }
-            formText += '<span id="span-tips' + i + '"></span>'
+            formText += '<span style="color: #a94442" id="span-tips' + i + '"></span>'
             formText += '</div></div>';
 
             i++;
@@ -134,38 +146,47 @@
         return formText;
     }
 
-    function strIsNull(object) {
-        return object == null || object === "";
+    function strIsNull(str) {
+        return str == null || str === "";
     }
 
-    function strNonNull(object) {
-        return !strIsNull(object)
+    function strNonNull(str) {
+        return !strIsNull(str)
     }
 
-    function doCheck(n, arr) {
+    function doCheck(n) {
         let $1 = $('#form-id' + n);
         let $2 = $('#form-has' + n);
         let $3 = $('#span-ok' + n);
+        let $4 = $('#span-tips' + n);
         let val = $1.val();
-        for (let i = 0; i < arr.length; i++) {
-            if (arr[i].type === 'nonnull') {
+
+        let check = formObject[n - 1].check;
+        let tips = '';
+        let ok = true;
+
+        for (let c of check) {
+            if (c.type === 'nonnull') {
                 if (strIsNull(val)) {
-                    $2.removeClass("has-success")
-                    $2.addClass("has-error")
-                    $3.remove("glyphicon-ok")
-                    $3.addClass("glyphicon-remove")
-                    $1.html("<span>hello</span>")
-                    let $4 = $('#span-tips' + n);
-                    $4.text(arr[i].tips)
-                } else {
-                    $2.removeClass("has-error")
-                    $2.addClass("has-success")
-                    $3.removeClass("glyphicon-remove")
-                    $3.addClass("glyphicon-ok")
+                    tips += c.tips;
+                    ok = false;
                 }
             }
         }
 
+        if (ok) {
+            $2.removeClass("has-error");
+            $2.addClass("has-success");
+            $3.removeClass("glyphicon-remove");
+            $3.addClass("glyphicon-ok");
+            $4.text(tips);
+        } else {
+            $2.removeClass("has-success");
+            $2.addClass("has-error");
+            $3.remove("glyphicon-ok");
+            $3.addClass("glyphicon-remove");
+            $4.text(tips)
+        }
 
     }
 

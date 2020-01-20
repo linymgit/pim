@@ -63,7 +63,7 @@
                 <div class="form-group has-success has-feedback">
                     <label class="control-label">用户名</label>
                     <input type="text" class="form-control" id="inputSuccess2" aria-describedby="inputSuccess2Status">
-                    <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-credit-card form-control-feedback" aria-hidden="true"></span>
                 </div>
                 <div class="form-group has-warning has-feedback">
                     <label class="control-label" for="inputWarning2">密码</label>
