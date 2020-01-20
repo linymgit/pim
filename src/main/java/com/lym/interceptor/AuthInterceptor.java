@@ -23,21 +23,21 @@ public class AuthInterceptor implements HandlerInterceptor {
     private JwtUtil jwtUtil;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         HandlerMethod myhandler = (HandlerMethod) handler;
         Auth authAnnotation = myhandler.getMethodAnnotation(Auth.class);
         // 1.优先执行方法的权限检验
         if (Objects.nonNull(authAnnotation)) {
             //todo
             System.out.println(jwtUtil);
-            System.out.println(authAnnotation.flag()+"");
+            System.out.println(authAnnotation.flag() + "");
             return false;
         }
         // 2.方法没有限制用类的，类的没有说明不能做权限校验
         authAnnotation = AnnotationUtils.findAnnotation(myhandler.getBeanType(), Auth.class);
         if (Objects.nonNull(authAnnotation)) {
             //todo
-            System.out.println(authAnnotation.flag()+"");
+            System.out.println(authAnnotation.flag() + "");
             return false;
         }
         return true;

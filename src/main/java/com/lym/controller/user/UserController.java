@@ -27,19 +27,19 @@ public class UserController {
     public ModelAndView login(ModelAndView mv){
         List<User> list = userService.list();
         System.out.println(list);
-        mv.setViewName("/user/login");
+        mv.setViewName("user/login");
         return mv;
     }
 
     @PostMapping("/login")
     public ModelAndView loginHandler(ModelAndView mv){
-        mv.setViewName("/user/index");
+        mv.setViewName("user/index");
         return mv;
     }
 
     @GetMapping("/register")
     public ModelAndView register(ModelAndView mv){
-        mv.setViewName("/user/register");
+        mv.setViewName("user/register");
         return mv;
     }
 }

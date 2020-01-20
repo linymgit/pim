@@ -27,14 +27,12 @@ public class UserServiceImpl implements UserService {
     @Cacheable(value = "HelloWorldCache")
     @Override
     public List<User> list() {
-//        Cache helloWorldCache = ehCacheCacheManager.getCache("HelloWorldCache");
-//        Cache.ValueWrapper test = helloWorldCache.get("test");
-//        if (Objects.nonNull(test)) {
-//            System.out.println(test.get());
-//        } else {
-//            helloWorldCache.put("test", "hello world");
-//        }
         System.out.println("hello world ....");
         return userMapper.selectByExample(null);
+    }
+
+    @Override
+    public int register(User user) {
+        return userMapper.insert(user);
     }
 }

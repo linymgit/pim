@@ -63,6 +63,7 @@
                 <div class="form-group has-success has-feedback">
                     <label class="control-label">用户名</label>
                     <input type="text" class="form-control" id="inputSuccess2" aria-describedby="inputSuccess2Status">
+                    <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
                 </div>
                 <div class="form-group has-warning has-feedback">
                     <label class="control-label" for="inputWarning2">密码</label>
@@ -72,8 +73,7 @@
                     <button type="button" class="btn btn-primary" style="width: 100%">登录</button>
                 </p>
                 <p><span class="poi">邮箱登录</span>&ensp;<span class="poi">手机登录</span></p>
-                <p class="poi" style="text-align: right">免费注册</p>
-
+                <a class="poi" href="/user/register" style="float:right;">免费注册</a>
             </div>
         </div>
     </div>

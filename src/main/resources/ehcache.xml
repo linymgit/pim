@@ -3,7 +3,7 @@
          xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
 
     <!-- 磁盘缓存位置 -->
-    <diskStore path="user.home/ehcache"/>
+    <diskStore path="java.io.tmpdir/ehcache"/>
 
     <!-- 默认缓存 -->
     <defaultCache
@@ -18,11 +18,10 @@
 
     <!-- helloworld缓存 -->
     <cache name="HelloWorldCache"
-           eternal="true"
-           maxElementsInMemory="1"
-           timeToIdleSeconds="20"
-           timeToLiveSeconds="20"
-           overflowToDisk="true"
-           diskPersistent="true"
+           maxElementsInMemory="1000"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="60"
+           overflowToDisk="false"
+           diskPersistent="false"
            memoryStoreEvictionPolicy="LRU"/>
 </ehcache>
