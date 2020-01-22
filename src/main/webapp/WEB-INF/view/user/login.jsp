@@ -59,11 +59,11 @@
         <div class="col-md-4"></div>
         <div class="col-md-3 col-md-offset-3">
             <div style="padding: 3rem;background-color:#F9F9F9;border-radius: 1rem">
-                <h4>密码登录</h4>
+                <h4 id="title">密码登录</h4>
                 <div class="form-group has-success has-feedback">
                     <label class="control-label">用户名</label>
                     <input type="text" class="form-control" id="inputSuccess2" aria-describedby="inputSuccess2Status">
-                    <span class="glyphicon glyphicon-credit-card form-control-feedback" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-share-alt form-control-feedback" aria-hidden="true"></span>
                 </div>
                 <div class="form-group has-warning has-feedback">
                     <label class="control-label" for="inputWarning2">密码</label>
@@ -72,8 +72,11 @@
                 <p>
                     <button type="button" class="btn btn-primary" style="width: 100%">登录</button>
                 </p>
-                <p><span class="poi">邮箱登录</span>&ensp;<span class="poi">手机登录</span></p>
-                <a class="poi" href="/user/register" style="float:right;">免费注册</a>
+                <p>
+                    <span class="poi">邮箱登录</span>&ensp;
+                    <span class="poi">手机登录</span>
+                </p>
+                <a href="${pageContext.request.contextPath}/user/register" style="float:right;">免费注册</a>
             </div>
         </div>
     </div>
@@ -85,5 +88,10 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+<script>
+    $(function () {
+
+    });
+</script>
 </body>
 </html>

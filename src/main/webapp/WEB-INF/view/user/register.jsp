@@ -54,8 +54,9 @@
     </div>
     <div id="web_bg"
          style="background-image: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1579197132065&di=d77563a2e327982a1bfe06147ca71a52&imgtype=0&src=http%3A%2F%2Fimg.pptjia.com%2Fimage%2F20190223%2F69a70f4ad56095d768033c59d2def273.jpeg');"></div>
-    <div class="row" style="margin-top: 15vh">
-        <div class="col-xs-12 col-sm-12 col-md-4 col-md-offset-4" id="aaaa">
+    <h4 style="text-align: center;padding-bottom: 5vh">注册会员</h4>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-md-offset-4" id="form-wrap">
         </div>
     </div>
 </div>
@@ -63,17 +64,16 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+<script src="../../static/js/yimi-form.js"></script>
 <script>
     $(function () {
-        let formText = buildForm();
-        let formElement = $(formText)
-        $("#aaaa").append(formElement)
+        renderForm($("#form-wrap"), ff)
     });
 
-    let formObject = [
+    let f = [
         {
             "label": "用户名",
-            "name": "userName",
+            "name": "name",
             "icon": "glyphicon-user",
             "check": [
                 {
@@ -83,9 +83,33 @@
             ]
         },
         {
+            "label": "密码",
+            "name": "password",
+            "icon": "glyphicon-eye-close",
+            "check": [
+                {
+                    "type": "nonnull",
+                    "tips": "密码不能为空"
+                }
+            ],
+            "inputType": "password"
+        },
+        {
+            "label": "确认密码",
+            "name": "repeatPassword",
+            "icon": "glyphicon-eye-close",
+            "check": [
+                {
+                    "type": "nonnull",
+                    "tips": "密码不能为空"
+                }
+            ],
+            "inputType": "password"
+        },
+        {
             "label": "真实姓名",
             "icon": "glyphicon-credit-card",
-            "name": "realName",
+            "name": "relname",
             "check": [
                 {
                     "type": "nonnull",
@@ -94,100 +118,95 @@
             ]
         },
         {
-            "label": "密码",
-            "name": "passworld",
-            "icon": "glyphicon-eye-close",
+            "label": "性别",
+            "inputType": "radio",
+            "name": "sex",
+            "ops": [
+                {
+                    "name": "男",
+                    "value": 1,
+                },
+                {
+                    "name": "女",
+                    "value": 0,
+                }
+            ]
+        },
+        {
+            "label": "手机号码",
+            "icon": "glyphicon-earphone",
+            "name": "phone",
+            "check": [
+                {
+                    "type": "phone",
+                    "tips": "手机号码格式不正确"
+                }
+            ]
+        },
+        {
+            "label": "邮箱",
+            "icon": "glyphicon-share-alt",
+            "name": "email",
+            "check": [
+                {
+                    "type": "email",
+                    "tips": "邮箱格式不正确"
+                }
+            ]
+        },
+        {
+            "label": "地址",
+            "name": "address",
+            "icon": "glyphicon-home",
             "check": [
                 {
                     "type": "nonnull",
-                    "tips": "密码不能为空"
+                    "tips": "地址不能为空"
                 }
-            ],
-            "inputType":"password"
+            ]
+        },
+        {
+            "label": "工作",
+            "name": "job",
+            "icon": "glyphicon-tasks",
+            "check": [
+                {
+                    "type": "nonnull",
+                    "tips": "地址不能为空"
+                }
+            ]
+        },
+        {
+            "name": "提交",
+            "inputType": "button",
+            "class": "col-md-3 col-sm-12 col-xs-12 btn",
+            "style": "float:right;margin:0.2rem;",
+            "success": successCallBack,
+            "fail": failCallBack,
+            "formHandler": function () {
+                ff["url"] = "/user/register";
+                ff["method"] = "POST";
+            },
+        },
+        {
+            "name": "重置",
+            "inputType": "button",
+            "class": "col-md-3 col-sm-12 col-xs-12 btn",
+            "style": "float:right;margin:0.2rem;",
+            "formHandler": "reset"
         }
     ]
 
-    function buildForm() {
-        let formText = '<form class="form-horizontal">';
-        let i = 1;
-
-        for (let object of formObject) {
-
-            formText += '<div class="form-group has-feedback" id="form-has' + i + '">';
-            formText += '<label class="control-label col-sm-3" for=fEId' + i + '>' + object.label + '</label>';
-            formText += '<div class="col-sm-9">';
-            let n = strNonNull(object.icon);
-            if (n) {
-                formText += '<div class="input-group">';
-                formText += '<span class="input-group-addon"><span class="glyphicon ' + object.icon + ' "></span></span>';
-            }
-            let iT = "text";
-            if (strNonNull(object.inputType)) {
-                iT = object.inputType;
-            }
-            formText += '<input type="'+ iT +'" name="' + object.name + '" class="form-control" id="form-id' + i + '"';
-
-            if (object.check !== undefined && object.check != null) {
-                formText += 'onblur="doCheck(' + i + ')"';
-            }
-            formText += '>';
-            formText += '<span class="glyphicon form-control-feedback" id="span-ok' + i + '"></span>'
-
-            if (n) {
-                formText += '</div>';
-            }
-            formText += '<span style="color: #a94442" id="span-tips' + i + '"></span>'
-            formText += '</div></div>';
-
-            i++;
-        }
-
-        formText += "</form>";
-        return formText;
+    let ff = {
+        "fields": f,
     }
 
-    function strIsNull(str) {
-        return str == null || str === "";
+    function successCallBack(s) {
+        alert("ok " + s)
     }
 
-    function strNonNull(str) {
-        return !strIsNull(str)
-    }
-
-    function doCheck(n) {
-        let $1 = $('#form-id' + n);
-        let $2 = $('#form-has' + n);
-        let $3 = $('#span-ok' + n);
-        let $4 = $('#span-tips' + n);
-        let val = $1.val();
-
-        let check = formObject[n - 1].check;
-        let tips = '';
-        let ok = true;
-
-        for (let c of check) {
-            if (c.type === 'nonnull') {
-                if (strIsNull(val)) {
-                    tips += c.tips;
-                    ok = false;
-                }
-            }
-        }
-
-        if (ok) {
-            $2.removeClass("has-error");
-            $2.addClass("has-success");
-            $3.removeClass("glyphicon-remove");
-            $3.addClass("glyphicon-ok");
-            $4.text(tips);
-        } else {
-            $2.removeClass("has-success");
-            $2.addClass("has-error");
-            $3.remove("glyphicon-ok");
-            $3.addClass("glyphicon-remove");
-            $4.text(tips)
-        }
-
+    function failCallBack(s) {
+        alert("failed " + s)
     }
 
 </script>

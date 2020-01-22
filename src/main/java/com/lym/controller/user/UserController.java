@@ -1,11 +1,12 @@
 package com.lym.controller.user;
 
+import com.lym.anno.Auth;
+import com.lym.entity.Result;
 import com.lym.entity.User;
 import com.lym.service.UserService;
+import com.lym.utils.ResultUtil;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -31,15 +32,29 @@ public class UserController {
         return mv;
     }
 
+
     @PostMapping("/login")
-    public ModelAndView loginHandler(ModelAndView mv){
-        mv.setViewName("user/index");
-        return mv;
+    @ResponseBody
+    public Result loginHandler(@RequestBody User user){
+        int result = userService.register(user);
+        if (result>0) {
+            return ResultUtil.getSuccess();
+        }
+        return ResultUtil.getError();
     }
 
     @GetMapping("/register")
     public ModelAndView register(ModelAndView mv){
         mv.setViewName("user/register");
         return mv;
+    }
+
+    @PostMapping("/register")
+    public Result registerHandler(@RequestBody User user){
+        int result = userService.register(user);
+        if (result>0) {
+            return ResultUtil.getSuccess();
+        }
+        return ResultUtil.getError();
     }
 }

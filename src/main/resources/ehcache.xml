@@ -19,8 +19,8 @@
     <!-- helloworld缓存 -->
     <cache name="HelloWorldCache"
            maxElementsInMemory="1000"
-           timeToIdleSeconds="60"
-           timeToLiveSeconds="60"
+           timeToIdleSeconds="5"
+           timeToLiveSeconds="5"
            overflowToDisk="false"
            diskPersistent="false"
            memoryStoreEvictionPolicy="LRU"/>

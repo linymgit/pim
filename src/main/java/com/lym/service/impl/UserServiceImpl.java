@@ -4,6 +4,7 @@ import com.lym.entity.User;
 import com.lym.mapper.UserMapper;
 import com.lym.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
