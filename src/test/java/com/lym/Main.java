@@ -53,13 +53,13 @@ public class Main {
     }
 
     @Test
-    public void testGetCache(){
+    public void testGetCache() {
         Cache helloWorldCache = ehCacheCacheManager.getCache("HelloWorldCache");
         System.out.println(helloWorldCache.get("hello").get());
     }
 
     @Test
-    public void testInsertUser(){
+    public void testInsertUser() {
         User user = new User();
         user.setAddress("gdgz");
         user.setRelname("linyimin");
@@ -75,21 +75,21 @@ public class Main {
     }
 
     @Test
-    public void testMd5(){
+    public void testMd5() {
         System.out.println(DigestUtils.md5DigestAsHex("1234".getBytes()));
     }
 
     @Test
-    public void testCglib(){
-        Enhancer enhancer =new Enhancer();
+    public void testCglib() {
+        Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(EnhanceUtil.class);
         enhancer.setCallback(new TargetInterceptor());
-        EnhanceUtil enhanceUtil =(EnhanceUtil)enhancer.create();
+        EnhanceUtil enhanceUtil = (EnhanceUtil) enhancer.create();
         enhanceUtil.test("hello world");
     }
 
     @Test
-    public void testJson(){
+    public void testJson() {
         Captcha o = JSONObject.parseObject("{\n" +
                 "\t\"id\":1234,\n" +
                 "\t\"code\":\"hello\"\n" +
@@ -99,16 +99,12 @@ public class Main {
     }
 
     @Test
-    public void testMail(){
-        try {
-            mailUtil.sendEmail("18316471919@139.com", "test", "hello world");
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
+    public void testMail() {
+        mailUtil.sendEmail("18316471919@139.com", "test", "hello world");
     }
 
     @Test
-    public void testCache2(){
+    public void testCache2() {
         Cache helloWorldCache = cacheManager.getCache("HelloWorldCache");
         helloWorldCache.put("18316471919", "hello wrold 1234");
         Cache.ValueWrapper valueWrapper = helloWorldCache.get("18316471919");

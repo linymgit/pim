@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+
 
 // 导入要请求接口对应的request response类
 
@@ -42,7 +44,8 @@ public class TencentSendSmsUtil {
 
     private Credential cred;
 
-    public TencentSendSmsUtil() {
+    @PostConstruct
+    public void init() {
         cred = new Credential(tencentSecretId, tencentsecretKey);
     }
 
@@ -60,7 +63,7 @@ public class TencentSendSmsUtil {
             SmsClient client = new SmsClient(cred, "", clientProfile);
 
             SendSmsRequest sendSmsRequest = new SendSmsRequest();
-            sendSmsRequest.setPhoneNumberSet(new String[]{toPhoneNum});
+            sendSmsRequest.setPhoneNumberSet(new String[]{"+86"+toPhoneNum});
             sendSmsRequest.setTemplateID(tencentSmsTemplateId);
             sendSmsRequest.setSign(tencentSmsSign);
             //模板自定义参数

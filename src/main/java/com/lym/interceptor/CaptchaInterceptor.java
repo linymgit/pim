@@ -2,11 +2,17 @@ package com.lym.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lym.entity.Captcha;
+import com.lym.entity.Result;
+import com.lym.utils.CaptchaUtil;
 import com.lym.utils.JwtUtil;
+import com.lym.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
@@ -22,14 +28,22 @@ import java.util.Objects;
 public class CaptchaInterceptor implements HandlerInterceptor {
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private CaptchaUtil captchaUtil;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        try {
-            Captcha o = JSONObject.parseObject(request.getInputStream(), Captcha.class);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
+        String captchaId = request.getHeader("captchaId");
+        String captchaCode = request.getHeader("captchaCode");
+        Captcha captcha = new Captcha();
+        captcha.setCaptchaId(Long.parseLong(captchaId));
+        captcha.setCaptchaCode(captchaCode);
+        if (!captchaUtil.isOk(captcha)) {
+            response.setStatus(HttpStatus.OK.value());
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            Result r = ResultUtil.getInvalideCaptchaError();
+            String s = JSONObject.toJSONString(r);
+            response.getOutputStream().write(s.getBytes());
+            return false;
         }
         return true;
     }

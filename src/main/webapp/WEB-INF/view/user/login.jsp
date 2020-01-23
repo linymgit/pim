@@ -55,26 +55,73 @@
     </div>
     <div id="web_bg"
          style="background-image: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1579197132065&di=d77563a2e327982a1bfe06147ca71a52&imgtype=0&src=http%3A%2F%2Fimg.pptjia.com%2Fimage%2F20190223%2F69a70f4ad56095d768033c59d2def273.jpeg');"></div>
-    <div class="row" style="margin-top: 20vh">
+    <div class="row" style="margin-top: 6rem">
         <div class="col-md-4"></div>
         <div class="col-md-3 col-md-offset-3">
             <div style="padding: 3rem;background-color:#F9F9F9;border-radius: 1rem">
-                <h4 id="title">密码登录</h4>
-                <div class="form-group has-success has-feedback">
-                    <label class="control-label">用户名</label>
-                    <input type="text" class="form-control" id="inputSuccess2" aria-describedby="inputSuccess2Status">
-                        <span class="glyphicon glyphicon-share-alt form-control-feedback" aria-hidden="true"></span>
+                <div id="dia1">
+                    <h4>密码登录</h4>
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label">用户名</label>
+                        <input type="text" class="form-control" id="name">
+                    </div>
+                    <div class="form-group has-warning has-feedback">
+                        <label class="control-label">密码</label>
+                        <input type="text" class="form-control" id="password">
+                    </div>
+                    <div class="form-group has-warning has-feedback">
+                        <label class="control-label">验证码</label>
+                        <input type="hidden" id="captchaId" name="captchaId">
+                        <input type="text" class="form-control" id="captchaCode" name="captchaCode">
+                        <img id="captcha" style="position: absolute;top: 2.6rem;right: 2px;z-index: 1000"
+                             onclick="renderCaptcha()">
+                    </div>
+                    <p>
+                        <button type="button" class="btn btn-primary" style="width: 100%" onclick="pwLogin()">登录
+                        </button>
+                    </p>
                 </div>
-                <div class="form-group has-warning has-feedback">
-                    <label class="control-label" for="inputWarning2">密码</label>
-                    <input type="text" class="form-control" id="inputWarning2" aria-describedby="inputWarning2Status">
+                <div id="dia2" style="display: none">
+                    <h4>手机短信验证码登录</h4>
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label">手机号</label>
+                        <input type="text" class="form-control" id="phone" aria-describedby="inputSuccess2Status">
+                    </div>
+                    <div class="form-group has-warning has-feedback">
+                        <label class="control-label">短信验证码</label>
+                        <input type="text" class="form-control" id="smsCode">
+                    </div>
+                    <div class="form-group has-warning has-feedback">
+                        <button type="button" class="btn" style="width: 100%" id="smsBtn" onclick="sendPhoneCode()">
+                            发送手机验证码<span id="smsS" style="display: none">(<span id="smsSS"></span>s)</span></button>
+                    </div>
+                    <p>
+                        <button type="button" class="btn btn-primary" style="width: 100%">登录</button>
+                    </p>
+                </div>
+                <div id="dia3" style="display: none">
+                    <h4>邮箱验证码登录</h4>
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label">邮箱地址</label>
+                        <input type="text" class="form-control" id="email" aria-describedby="inputSuccess2Status">
+                    </div>
+                    <div class="form-group has-warning has-feedback">
+                        <label class="control-label">邮箱验证码</label>
+                        <input type="text" class="form-control" id="emailCode">
+                    </div>
+                    <div class="form-group has-warning has-feedback">
+                        <button type="button" class="btn" style="width: 100%" id="emailBtn" onclick="sendEmailCode()">
+                            点击发送邮箱验证码<span id="emailS" style="display: none">(<span id="emailSS"></span>s)</span>
+                        </button>
+                    </div>
+                    <p>
+                        <button type="button" class="btn btn-primary" style="width: 100%" onclick="emailLogin()">登录</button>
+                    </p>
                 </div>
                 <p>
-                    <button type="button" class="btn btn-primary" style="width: 100%">登录</button>
-                </p>
-                <p>
-                    <span class="poi">邮箱登录</span>&ensp;
-                    <span class="poi">手机登录</span>
+                    <span class="poi" id="tab1" onclick="changeTab(1)" style="display: none">密码登录</span>
+                    <span class="poi" id="tab2" onclick="changeTab(2)">手机登录</span>
+                    <span class="poi" id="tab3" onclick="changeTab(3)">邮箱登录</span>
                 </p>
                 <a href="${pageContext.request.contextPath}/user/register" style="float:right;">免费注册</a>
             </div>
@@ -88,10 +135,203 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+<script src="../../static/js/yimi-form.js"></script>
 <script>
     $(function () {
+        renderCaptcha();
 
+        changeTab(1);
     });
+
+    //视图
+    tabIds = [1, 2, 3]
+
+    function changeTab(id) {
+        for (let i in tabIds) {
+            if (tabIds[i] === id) {
+                $("#tab" + tabIds[i]).css("display", "none")
+                $("#dia" + tabIds[i]).css("display", "block")
+            } else {
+                $("#tab" + tabIds[i]).css("display", "inline-block")
+                $("#dia" + tabIds[i]).css("display", "none")
+            }
+        }
+    }
+
+    //发送手机短信验证码
+    function sendPhoneCode() {
+        let $3 = $("#smsBtn");
+        let $1 = $("#phone").val()
+        if ($1 === "") {
+            alert("手机号码不能为空")
+            return;
+        }
+        $3.attr("disabled", true);
+        $.ajax({
+            type: "POST",
+            contentType: "application/json;charset=UTF-8",
+            url: "/code/phone?phone=" + $1,
+            success: function (result) {
+                if (result.code >= 0) {
+                    let $1 = $("#smsS")
+                    let $2 = $("#smsSS");
+                    $2.text(120);
+                    $1.css("display", "inline-block");
+                    let t1 = window.setInterval(function () {
+                        if ($2.text() <= 0) {
+                            window.clearInterval(t1);
+                            $1.css("display", "none");
+                            $3.removeAttr("disabled")
+                            return;
+                        }
+                        $2.text($2.text() - 1)
+                    }, 1000);
+                } else {
+                    alert("发送失败，因为" + result.msg);
+                    $3.removeAttr("disabled");
+                }
+            },
+            //请求失败，包含具体的错误信息
+            error: function (e) {
+                console.log(e.status);
+                console.log(e.responseText);
+            }
+        });
+    }
+
+    //发送邮箱验证码
+    function sendEmailCode() {
+        let $1 = $("#email").val()
+        if ($1 === "") {
+            alert("邮箱地址不能为空")
+        }
+        $.ajax({
+            type: "POST",
+            contentType: "application/json;charset=UTF-8",
+            url: "/code/email?email=" + $1,
+            success: function (result) {
+                if (result.code >= 0) {
+                    let $1 = $("#emailS")
+                    let $2 = $("#emailSS");
+                    $2.text(120);
+                    let $3 = $("#emailBtn");
+                    $1.css("display", "inline-block");
+                    let first = true;
+                    let t1 = window.setInterval(function () {
+                        if ($2.text() <= 0) {
+                            window.clearInterval(t1);
+                            $1.css("display", "none");
+                            $3.removeAttr("disabled")
+                            return;
+                        }
+                        $2.text($2.text() - 1)
+                        if (first) {
+                            $3.attr("disabled", true);
+                        }
+                    }, 1000);
+                } else {
+                    alert("失败，因为" + result.msg)
+                }
+            },
+            //请求失败，包含具体的错误信息
+            error: function (e) {
+                console.log(e.status);
+                console.log(e.responseText);
+            }
+        });
+    }
+
+    function pwLogin() {
+        let $1 = $("#name").val();
+        let $2 = $("#password").val();
+        let $3 = $("#captchaCode").val();
+        if ($1 === "") {
+            alert("用户名不能为空！");
+            return;
+        }
+        if ($2 === "") {
+            alert("密码不能为空！");
+            return;
+        }
+        if ($3 === "") {
+            alert("验证码不能为空！");
+            return;
+        }
+        $.ajax({
+            //请求方式
+            type: "POST",
+            //请求的媒体类型
+            contentType: "application/json;charset=UTF-8",
+            //请求地址
+            url: "/user/pw/login",
+            //数据，json字符串
+            data: JSON.stringify({
+                name: $1,
+                password: $2,
+            }),
+            //请求成功
+            headers: {
+                'captchaId': $("#captchaId").val(),
+                'captchaCode': $3,
+            },
+            success: function (result) {
+                if (result.code >= 0) {
+                    //登录成功
+                    alert("ok")
+                    localStorage.setItem('x-token', result.data);
+                    window.location.href = "/index"
+                } else {
+                    alert("no")
+                }
+            },
+            //请求失败，包含具体的错误信息
+            error: function (e) {
+                console.log(e.status);
+                console.log(e.responseText);
+            }
+        });
+    }
+
+    function emailLogin() {
+        let $1 = $("#email").val();
+        let $2 = $("#emailCode").val();
+        if ($1 === "") {
+            alert("邮箱地址不能为空！");
+            return;
+        }
+        if ($2 === "") {
+            alert("邮箱验证码不能为空！");
+            return;
+        }
+        $.ajax({
+            //请求方式
+            type: "POST",
+            //请求的媒体类型
+            contentType: "application/json;charset=UTF-8",
+            //请求地址
+            url: "/user/email/login",
+            //数据，json字符串
+            data: JSON.stringify({
+                to: $1,
+                code: $2,
+            }),
+            success: function (result) {
+                if (result.code >= 0) {
+                    //登录成功
+                    alert("ok")
+                    localStorage.setItem('x-token', result.data);
+                    window.location.href = "/index"
+                } else {
+                    alert(result.msg)
+                }
+            },
+            //请求失败，包含具体的错误信息
+            error: function (e) {
+                console.log(e.status);
+                console.log(e.responseText);
+            }
+        });
+    }
 </script>
 </body>
 </html>

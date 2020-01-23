@@ -54,6 +54,9 @@
     </div>
     <div id="web_bg"
          style="background-image: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1579197132065&di=d77563a2e327982a1bfe06147ca71a52&imgtype=0&src=http%3A%2F%2Fimg.pptjia.com%2Fimage%2F20190223%2F69a70f4ad56095d768033c59d2def273.jpeg');"></div>
+    <div class="alert alert-success alert-dismissable" role="alert" style="text-align: center; display: none" id="do-result">
+        <button class="close" type="button" data-dismiss="alert" onclick="closeAlert()">&times;</button>
+    </div>
     <h4 style="text-align: center;padding-bottom: 5vh">注册会员</h4>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-4 col-md-offset-4" id="form-wrap">
@@ -68,6 +71,7 @@
 <script>
     $(function () {
         renderForm($("#form-wrap"), ff)
+        renderCaptcha()
     });
 
     let f = [
@@ -85,18 +89,6 @@
         {
             "label": "密码",
             "name": "password",
-            "icon": "glyphicon-eye-close",
-            "check": [
-                {
-                    "type": "nonnull",
-                    "tips": "密码不能为空"
-                }
-            ],
-            "inputType": "password"
-        },
-        {
-            "label": "确认密码",
-            "name": "repeatPassword",
             "icon": "glyphicon-eye-close",
             "check": [
                 {
@@ -158,21 +150,32 @@
             "label": "地址",
             "name": "address",
             "icon": "glyphicon-home",
-            "check": [
-                {
-                    "type": "nonnull",
-                    "tips": "地址不能为空"
-                }
-            ]
+            // "check": [
+            //     {
+            //         "type": "nonnull",
+            //         "tips": "地址不能为空"
+            //     }
+            // ]
         },
         {
             "label": "工作",
             "name": "job",
             "icon": "glyphicon-tasks",
+            // "check": [
+            //     {
+            //         "type": "nonnull",
+            //         "tips": "工作不能为空"
+            //     }
+            // ]
+        },
+        {
+            "label": "验证码",
+            "inputType": "captcha",
+            "icon": "glyphicon-picture",
             "check": [
                 {
                     "type": "nonnull",
-                    "tips": "地址不能为空"
+                    "tips": "验证码必填"
                 }
             ]
         },
@@ -184,7 +187,7 @@
             "success": successCallBack,
             "fail": failCallBack,
             "formHandler": function () {
-                ff["url"] = "/user/register";
+                ff["url"] = "/user/do/register";
                 ff["method"] = "POST";
             },
         },
@@ -202,11 +205,23 @@
     }
 
     function successCallBack(s) {
-        alert("ok " + s)
+        let $1 = $("#do-result")
+        $1.append("注册成功！已为你跳转到登录页");
+        $1.css("display", "block");
+        setTimeout(function (){
+            window.location.href = "/user/login"
+        }, 1500);
     }
 
     function failCallBack(s) {
-        alert("failed " + s)
+        let $1 = $("#do-result")
+        $1.attr("class", "alert alert-danger alert-dismissable")
+        $1.append("注册失败！因为"+s.msg);
+        $1.css("display", "block");
+    }
+
+    function closeAlert() {
+        window.location.reload();
     }
 
 </script>

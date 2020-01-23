@@ -33,7 +33,7 @@ function buildForm(formObject) {
             continue;
         }
         formText += '<div class="form-group has-feedback" id="form-has' + i + '">';
-        formText += '<label class="control-label col-sm-3" for=fEId' + i + '>' + object.label + '</label>';
+        formText += '<label class="control-label col-sm-3" for=form-id' + i + '>' + object.label + '</label>';
         formText += '<div class="col-sm-9">';
         let n = strNonNull(object.icon);
         if (n) {
@@ -43,6 +43,12 @@ function buildForm(formObject) {
 
         if (iT === "text" || iT === "password") {
             formText += '<input type="' + iT + '" name="' + object.name + '" class="form-control" id="form-id' + i + '"';
+        }
+
+        //验证码特殊处理
+        if (iT === "captcha") {
+            formText += '<input type="hidden" id="captchaId" name="captchaId">'
+            formText += '<input type="text" name="captchaCode" class="form-control" id="form-id' + i + '"';
         }
 
         //单选框处理
@@ -59,6 +65,9 @@ function buildForm(formObject) {
 
         if (object.check !== undefined && object.check != null) {
             formText += 'onblur="doCheck(' + i + ')" >';
+        }
+        if (iT === "captcha") {
+            formText += '<img id="captcha" style="position: absolute;top: 2px;right: 2px;z-index: 1000" onclick="renderCaptcha()"></img>'
         }
 
         formText += '<span class="glyphicon form-control-feedback" id="span-ok' + i + '"></span>'
@@ -124,7 +133,6 @@ function doCheck(n) {
             $2.attr("class", "glyphicon form-control-feedback glyphicon-ok");
             $3.text("");
         }
-        j++;
     }
 }
 
@@ -166,7 +174,6 @@ function goFun(formHandler, success, fail) {
         return;
     }
     let serializeJson = $("#yimi-form-v1").serializeJson();
-
     $.ajax({
         //请求方式
         type: gFormObject["method"],
@@ -177,15 +184,18 @@ function goFun(formHandler, success, fail) {
         //数据，json字符串
         data: JSON.stringify(serializeJson),
         //请求成功
+        headers: {
+            'captchaId': $("#captchaId").val(),
+            'captchaCode': serializeJson["captchaCode"],
+        },
         success: function (result) {
-            let resultObj = JSON.parse(result);
-            if (resultObj.code === 0) {
+            if (result.code >= 0) {
                 if (success !== undefined && success !== null) {
-                    success(resultObj)
+                    success(result)
                 }
             } else {
                 if (fail !== undefined && fail !== null) {
-                    fail(resultObj)
+                    fail(result)
                 }
             }
         },
@@ -217,3 +227,14 @@ $.fn.serializeJson = function (otherString) {
     return serializeObj;
 };
 
+function renderCaptcha() {
+    $.ajax({
+        type: "GET",
+        contentType: "application/json;charset=UTF-8",
+        url: "/captcha/arithm",
+        success: function (result) {
+            $("#captcha").attr("src", result.pic);
+            $("#captchaId").val(result.captchaId);
+        }
+    });
+}

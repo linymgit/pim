@@ -1,9 +1,13 @@
 package com.lym.controller;
 
+import com.lym.entity.Captcha;
 import com.lym.utils.CaptchaUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,17 +16,20 @@ import javax.servlet.http.HttpServletResponse;
  * @QQ: 1317113287
  * @desc: 验证码controller
  **/
-@Controller
+@RestController
 @RequestMapping("/captcha")
 public class CaptchaController {
 
+    @Autowired
+    private CaptchaUtil captchaUtil;
+
     @GetMapping("/arithm")
-    public void getArithmCaptcha(HttpServletResponse response) {
-        CaptchaUtil.getArithmeticCode(response);
+    public Captcha getArithmCaptcha() {
+        return captchaUtil.getArithmeticCaptcha();
     }
 
     @GetMapping("/char")
-    public void getCharCaptcha(HttpServletResponse response) {
-        CaptchaUtil.getCharCode(response);
+    public Captcha getCharCaptcha(HttpServletResponse response) {
+        return captchaUtil.getCharCaptcha();
     }
 }

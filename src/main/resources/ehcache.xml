@@ -16,11 +16,11 @@
         <persistence strategy="localTempSwap"/>
     </defaultCache>
 
-    <!-- helloworld缓存 -->
-    <cache name="HelloWorldCache"
+    <!-- 手机邮箱验证码缓存ToCaptchaCache -->
+    <cache name="ToCaptchaCache"
            maxElementsInMemory="1000"
-           timeToIdleSeconds="5"
-           timeToLiveSeconds="5"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="300"
            overflowToDisk="false"
            diskPersistent="false"
            memoryStoreEvictionPolicy="LRU"/>

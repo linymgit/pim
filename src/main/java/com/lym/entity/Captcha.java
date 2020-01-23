@@ -7,22 +7,31 @@ package com.lym.entity;
  **/
 public class Captcha {
 
-    private int captchaId;
-    private int captchaCode;
+    private Long captchaId;
+    private String captchaCode;
+    private String pic;
 
-    public int getCaptchaId() {
+    public Long getCaptchaId() {
         return captchaId;
     }
 
-    public void setCaptchaId(int captchaId) {
+    public void setCaptchaId(Long captchaId) {
         this.captchaId = captchaId;
     }
 
-    public int getCaptchaCode() {
+    public String getCaptchaCode() {
         return captchaCode;
     }
 
-    public void setCaptchaCode(int captchaCode) {
+    public void setCaptchaCode(String captchaCode) {
         this.captchaCode = captchaCode;
+    }
+
+    public String getPic() {
+        return pic;
+    }
+
+    public void setPic(String pic) {
+        this.pic = pic;
     }
 }

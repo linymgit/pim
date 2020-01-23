@@ -15,8 +15,8 @@
             <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
                 <property name="supportedMediaTypes">
                     <list>
-                        <value>text/html;charset=UTF-8</value>
-                        <value>application/x-www-form-urlencoded; charset=UTF-8</value>
+<!--                        <value>text/html;charset=UTF-8</value>-->
+<!--                        <value>application/x-www-form-urlencoded; charset=UTF-8</value>-->
                         <value>application/json</value>
                     </list>
                 </property>
@@ -41,7 +41,8 @@
             <bean class="com.lym.interceptor.AuthInterceptor"/>
         </mvc:interceptor>
         <mvc:interceptor>
-            <mvc:mapping path="/user/register"/>
+            <mvc:mapping path="/user/do/register"/>
+            <mvc:mapping path="/user/pw/login"/>
             <bean class="com.lym.interceptor.CaptchaInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

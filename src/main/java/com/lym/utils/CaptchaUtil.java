@@ -1,12 +1,24 @@
 package com.lym.utils;
 
+import com.lym.entity.Captcha;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import sun.misc.BASE64Encoder;
+
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -14,7 +26,15 @@ import java.util.Random;
  * @QQ: 1317113287
  * @desc: 验证码
  **/
+@Component
 public class CaptchaUtil {
+
+    @Autowired
+    private CacheManager cacheManager;
+
+    @Value("${toCaptchaCache}")
+    private String toCaptchaCache;
+
 
     public static String str = "abcdefghijklmnopqrstuvwxyz";
 
@@ -146,7 +166,6 @@ public class CaptchaUtil {
         return String.valueOf(result);
     }
 
-
     /**
      * 随机颜色生成
      *
@@ -168,5 +187,153 @@ public class CaptchaUtil {
         return new Color(r, g, b);
     }
 
+    public Captcha getCharCaptcha() {
+        //1、使用stringbuilder类，对字符串进行处理。不用String，因为其赋值后不能改变。
+        StringBuilder builder = new StringBuilder();
+        //2、产生随机数，长度为4
+        Random random = new Random(System.currentTimeMillis());
+        for (int i = 0; i < 4; i++) {
+            builder.append(str.charAt(random.nextInt(str.length())));
+        }
 
+        String code = builder.toString();
+        //3、定义图片的宽度和高度，使用BufferedImage对象。
+        int width = 120;
+        int height = 25;
+
+        BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+        //4、获取Graphics2D 绘制对象，开始绘制验证码
+        Graphics2D g = bi.createGraphics();
+        //5、定义文字的字体和大小
+        Font font = new Font("微软雅黑", Font.PLAIN, 20);
+        //6、定义字体的颜色
+        Color color = new Color(0, 0, 0);
+        //设置字体
+        g.setFont(font);
+        //设置颜色
+        g.setColor(color);
+        //设置背景
+        g.setBackground(new Color(226, 226, 240));
+        //开始绘制对象
+        g.clearRect(0, 0, width, height);
+        //绘制形状，获取矩形对象
+        FontRenderContext context = g.getFontRenderContext();
+        Rectangle2D bounds = font.getStringBounds(code, context);
+        //计算文件的坐标和间距
+        double x = (width - bounds.getWidth()) / 2;
+        double y = (height - bounds.getHeight()) / 2;
+        double ascent = bounds.getY();
+        double baseY = y - ascent;
+        g.drawString(code, (int) x, (int) baseY);
+        //结束绘制
+        g.dispose();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(bi, "jpg", byteArrayOutputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BASE64Encoder base64Encoder = new BASE64Encoder();
+        String encode = base64Encoder.encode(byteArrayOutputStream.toByteArray());
+
+        Captcha captcha = new Captcha();
+        captcha.setPic("data:image/jpg;base64," + encode);
+        captcha.setCaptchaId(SnowFlakeUtil.nextId());
+
+        Cache cache = cacheManager.getCache(toCaptchaCache);
+        cache.put(captcha.getCaptchaId(), code);
+        return captcha;
+    }
+
+    public Captcha getArithmeticCaptcha() {
+        //定义验证码的宽度和高度
+        int width = 100, height = 30;
+        //在内存中创建图片
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        //创建图片上下文
+        Graphics2D g = image.createGraphics();
+        //产生随机对象，用于算术表达式的数字
+        Random random = new Random(System.currentTimeMillis());
+        //设置背景
+        g.setColor(getRandomColor(random, 240, 250));
+        //设置字体
+        g.setFont(new Font("微软雅黑", Font.PLAIN, 22));
+        //开始绘制
+        g.fillRect(0, 0, width, height);
+
+        //干扰线的绘制，绘制线条到图片中
+        g.setColor(getRandomColor(random, 180, 230));
+        for (int i = 0; i < 100; i++) {
+            int x = random.nextInt(width);
+            int y = random.nextInt(height);
+            int x1 = random.nextInt(60);
+            int y1 = random.nextInt(60);
+            g.drawLine(x, y, x1, y1);
+        }
+
+        //对算术验证码表达式的拼接
+        int num1 = (int) (Math.random() * 10 + 1);
+        int num2 = (int) (Math.random() * 10 + 1);
+        int operator = random.nextInt(3);
+        String operatorStr = null;
+        Integer result = 0;
+        switch (operator) {
+            case 0:
+                operatorStr = "+";
+                result = num1 + num2;
+                break;
+            case 1:
+                operatorStr = "-";
+                result = num1 - num2;
+                break;
+            case 2:
+                operatorStr = "*";
+                result = num1 * num2;
+                break;
+
+        }
+
+        //图片显示的算术文字
+        String calc = num1 + " " + operatorStr + " " + num2 + " = ?";
+        //设置随机颜色
+        g.setColor(new Color(20 + random.nextInt(110), 20 + random.nextInt(110), 20 + random.nextInt(110)));
+        //绘制表达式
+        g.drawString(calc, 5, 25);
+        //结束绘制
+        g.dispose();
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(image, "jpeg", byteArrayOutputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BASE64Encoder base64Encoder = new BASE64Encoder();
+        String encode = base64Encoder.encode(byteArrayOutputStream.toByteArray());
+
+        Captcha captcha = new Captcha();
+        captcha.setPic("data:image/jpeg;base64," + encode);
+        captcha.setCaptchaId(SnowFlakeUtil.nextId());
+
+        Cache cache = cacheManager.getCache(toCaptchaCache);
+        cache.put(captcha.getCaptchaId(), result.toString());
+        return captcha;
+    }
+
+    public boolean isOk(Captcha captcha){
+        if (Objects.isNull(captcha)) {
+            return false;
+        }
+        Long captchaId = captcha.getCaptchaId();
+        Cache cache = cacheManager.getCache(toCaptchaCache);
+        Cache.ValueWrapper valueWrapper = cache.get(captchaId);
+        if (Objects.isNull(valueWrapper)) {
+            return false;
+        }
+        cache.evict(captchaId);
+        if (valueWrapper.get().equals(captcha.getCaptchaCode())) {
+            return true;
+        }
+        return false;
+    }
 }
