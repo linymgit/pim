@@ -75,10 +75,10 @@ public class JwtUtil {
         return verify(jwsObject, jwsVerifier);
     }
 
-    public String genToken(Long userId){
+    public String genToken(Long userId) {
         HashMap<String, Object> tokenMap = new HashMap<>();
         tokenMap.put(JwtUtil.ID_KEY, userId);
-        tokenMap.put(JwtUtil.EXPIRE_TIME, LocalDateTime.now().plusDays(1));
+        tokenMap.put(JwtUtil.EXPIRE_TIME, LocalDateTime.now().plusDays(1).toString());
         return createTokenHS256(tokenMap);
     }
 
@@ -109,8 +109,8 @@ public class JwtUtil {
             JSONObject jsonObject = payload.toJSONObject();
             resultMap.put(DATA, jsonObject);
             if (jsonObject.containsKey(EXPIRE_TIME)) {
-                LocalDateTime o = (LocalDateTime) jsonObject.get(EXPIRE_TIME);
-                if (o.isAfter(LocalDateTime.now())) {
+                LocalDateTime o = LocalDateTime.parse((CharSequence) jsonObject.get(EXPIRE_TIME));
+                if (LocalDateTime.now().isAfter(o)) {
                     resultMap.put(RESULT, JWT_EXPIRED);
                 }
             }

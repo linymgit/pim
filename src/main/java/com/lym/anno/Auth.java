@@ -10,4 +10,6 @@ import java.lang.annotation.Target;
 public @interface Auth {
     // 用户类型（int）做与位运算大于零就具有访问权限
     int flag() default 0;
+    // 重定向到登录页,如果是false会返回json格式
+    boolean isRedirect() default false;
 }

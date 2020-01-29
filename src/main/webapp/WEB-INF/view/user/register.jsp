@@ -78,7 +78,7 @@
         {
             "label": "用户名",
             "name": "name",
-            "icon": "glyphicon-user",
+            // "icon": "glyphicon-user",
             "check": [
                 {
                     "type": "nonnull",
@@ -89,7 +89,7 @@
         {
             "label": "密码",
             "name": "password",
-            "icon": "glyphicon-eye-close",
+            // "icon": "glyphicon-eye-close",
             "check": [
                 {
                     "type": "nonnull",
@@ -100,7 +100,7 @@
         },
         {
             "label": "真实姓名",
-            "icon": "glyphicon-credit-card",
+            // "icon": "glyphicon-credit-card",
             "name": "relname",
             "check": [
                 {
@@ -126,7 +126,7 @@
         },
         {
             "label": "手机号码",
-            "icon": "glyphicon-earphone",
+            // "icon": "glyphicon-earphone",
             "name": "phone",
             "check": [
                 {
@@ -137,7 +137,7 @@
         },
         {
             "label": "邮箱",
-            "icon": "glyphicon-share-alt",
+            // "icon": "glyphicon-share-alt",
             "name": "email",
             "check": [
                 {
@@ -149,7 +149,7 @@
         {
             "label": "地址",
             "name": "address",
-            "icon": "glyphicon-home",
+            // "icon": "glyphicon-home",
             // "check": [
             //     {
             //         "type": "nonnull",
@@ -160,7 +160,7 @@
         {
             "label": "工作",
             "name": "job",
-            "icon": "glyphicon-tasks",
+            // "icon": "glyphicon-tasks",
             // "check": [
             //     {
             //         "type": "nonnull",
@@ -197,6 +197,15 @@
             "class": "col-md-3 col-sm-12 col-xs-12 btn",
             "style": "float:right;margin:0.2rem;",
             "formHandler": "reset"
+        },
+        {
+            "name": "去登录",
+            "inputType": "button",
+            "class": "col-md-3 col-sm-12 col-xs-12 btn",
+            "style": "float:right;margin:0.2rem;",
+            "formHandler": function () {
+                window.location.href="/user/login"
+            }
         }
     ]
 

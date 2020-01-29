@@ -1,7 +1,6 @@
 package com.lym;
 
 import com.alibaba.fastjson.JSONObject;
-import com.lym.anno.Auth;
 import com.lym.entity.Captcha;
 import com.lym.entity.User;
 import com.lym.mapper.UserMapper;
@@ -20,9 +19,6 @@ import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.DigestUtils;
-
-import javax.mail.MessagingException;
-import java.util.Objects;
 
 /**
  * @Date 2020/1/19

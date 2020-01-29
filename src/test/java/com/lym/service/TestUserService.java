@@ -6,7 +6,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.util.DigestUtils;
 
 /**
  * @Date 2020/1/23
@@ -25,5 +24,15 @@ public class TestUserService {
         User hh = userService.getUserByPEN("193", "", "hh");
         System.out.println(hh);
     }
+
+    @Test
+    public void test1(){
+        User user = new User();
+        user.setId((long) 45);
+        user.setEmailVertify((byte) 0);
+        int i = userService.updateUserById(user);
+        System.out.println(i);
+    }
+
 
 }

@@ -238,3 +238,21 @@ function renderCaptcha() {
         }
     });
 }
+
+function withTokenGet(uri) {
+    $.ajax({
+        //请求方式
+        type: "GET",
+        //请求地址
+        url: uri,
+        //请求成功
+        headers: {
+            'x-token': localStorage.getItem("x-token"),
+        },
+        //请求失败，包含具体的错误信息
+        error: function (e) {
+            console.log(e.status);
+            console.log(e.responseText);
+        }
+    });
+}

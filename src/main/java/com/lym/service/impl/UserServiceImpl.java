@@ -69,4 +69,40 @@ public class UserServiceImpl implements UserService {
         }
         return users.get(0);
     }
+
+    @Override
+    public User getUserByName(String name) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andNameEqualTo(name);
+        List<User> users = userMapper.selectByExample(userExample);
+        if (Objects.isNull(users) || users.size() <= 0) {
+            return null;
+        }
+        return users.get(0);
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        return userMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public int updateUserById(User record) {
+        return userMapper.updateByExampleSelective(record, new UserExample());
+    }
+
+    @Override
+    public List<User> selectUsersByExample(UserExample userExample) {
+        return userMapper.selectByExample(userExample);
+    }
+
+    @Override
+    public User selectUserByExample(UserExample userExample) {
+        List<User> users = userMapper.selectByExample(userExample);
+        if (Objects.isNull(users) || users.size() <= 0) {
+            return null;
+        }
+        return users.get(0);
+    }
 }

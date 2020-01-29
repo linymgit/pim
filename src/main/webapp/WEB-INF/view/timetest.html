@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>日期时间datetime</title>
+
+        <link rel="stylesheet" href="../static/css/dateTime.css">
+
+</head>
+<body>
+
+<div class="mycontainer">
+    <input type="text" placeholder="日程开始时间" id="datetime">
+</div>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.17sucai.com/preview/1750622/2019-08-02/dateTime/js/dateTime.min.js"></script>
+<script type="text/javascript">
+
+    $("#datetime").datetime({
+        type:"datetime",
+        value:[2020,1,1,12,30]
+    })
+</script>
+
+</body>
+</html>

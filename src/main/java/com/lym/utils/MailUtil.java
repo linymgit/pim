@@ -18,6 +18,9 @@ import java.util.Properties;
 @Component
 public class MailUtil {
 
+    public static final byte NO_VERIFY = 0;
+    public static final byte VERIFING = 1;
+    public static final byte VERIFED = 2;
 
     static Logger log = LoggerFactory.getLogger(MailUtil.class);
 

@@ -374,6 +374,66 @@ public class UserExample {
             return (Criteria) this;
         }
 
+        public Criteria andEmailVertifyIsNull() {
+            addCriterion("email_vertify is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailVertifyIsNotNull() {
+            addCriterion("email_vertify is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailVertifyEqualTo(Byte value) {
+            addCriterion("email_vertify =", value, "emailVertify");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailVertifyNotEqualTo(Byte value) {
+            addCriterion("email_vertify <>", value, "emailVertify");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailVertifyGreaterThan(Byte value) {
+            addCriterion("email_vertify >", value, "emailVertify");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailVertifyGreaterThanOrEqualTo(Byte value) {
+            addCriterion("email_vertify >=", value, "emailVertify");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailVertifyLessThan(Byte value) {
+            addCriterion("email_vertify <", value, "emailVertify");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailVertifyLessThanOrEqualTo(Byte value) {
+            addCriterion("email_vertify <=", value, "emailVertify");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailVertifyIn(List<Byte> values) {
+            addCriterion("email_vertify in", values, "emailVertify");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailVertifyNotIn(List<Byte> values) {
+            addCriterion("email_vertify not in", values, "emailVertify");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailVertifyBetween(Byte value1, Byte value2) {
+            addCriterion("email_vertify between", value1, value2, "emailVertify");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailVertifyNotBetween(Byte value1, Byte value2) {
+            addCriterion("email_vertify not between", value1, value2, "emailVertify");
+            return (Criteria) this;
+        }
+
         public Criteria andPhoneIsNull() {
             addCriterion("phone is null");
             return (Criteria) this;

@@ -2,7 +2,6 @@ package com.lym.controller;
 
 import com.lym.entity.Result;
 import com.lym.service.CodeService;
-import com.lym.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;

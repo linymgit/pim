@@ -67,7 +67,7 @@
                     </div>
                     <div class="form-group has-warning has-feedback">
                         <label class="control-label">密码</label>
-                        <input type="text" class="form-control" id="password">
+                        <input type="password" class="form-control" id="password">
                     </div>
                     <div class="form-group has-warning has-feedback">
                         <label class="control-label">验证码</label>
@@ -115,7 +115,8 @@
                         </button>
                     </div>
                     <p>
-                        <button type="button" class="btn btn-primary" style="width: 100%" onclick="emailLogin()">登录</button>
+                        <button type="button" class="btn btn-primary" style="width: 100%" onclick="emailLogin()">登录
+                        </button>
                     </p>
                 </div>
                 <p>
@@ -123,7 +124,11 @@
                     <span class="poi" id="tab2" onclick="changeTab(2)">手机登录</span>
                     <span class="poi" id="tab3" onclick="changeTab(3)">邮箱登录</span>
                 </p>
-                <a href="${pageContext.request.contextPath}/user/register" style="float:right;">免费注册</a>
+                <div>
+                    <span><a href="${pageContext.request.contextPath}/user/register" style="float:right;">免费注册</a></span>
+                    <span><a id="forget-pw" href="${pageContext.request.contextPath}/user/pw/reset" style="float:right;margin-right: 0.5rem;">忘记密码?</a></span>
+                </div>
+
             </div>
         </div>
     </div>
@@ -148,6 +153,11 @@
 
     function changeTab(id) {
         for (let i in tabIds) {
+            if (id === 1) {
+                $("#forget-pw").css("display", "inline-block")
+            }else{
+                $("#forget-pw").css("display", "none")
+            }
             if (tabIds[i] === id) {
                 $("#tab" + tabIds[i]).css("display", "none")
                 $("#dia" + tabIds[i]).css("display", "block")
@@ -204,6 +214,7 @@
         let $1 = $("#email").val()
         if ($1 === "") {
             alert("邮箱地址不能为空")
+            return;
         }
         $.ajax({
             type: "POST",
@@ -230,7 +241,7 @@
                         }
                     }, 1000);
                 } else {
-                    alert("失败，因为" + result.msg)
+                    alert(result.msg)
                 }
             },
             //请求失败，包含具体的错误信息
@@ -277,11 +288,10 @@
             success: function (result) {
                 if (result.code >= 0) {
                     //登录成功
-                    alert("ok")
                     localStorage.setItem('x-token', result.data);
-                    window.location.href = "/index"
+                    window.location.href = "/user/index";
                 } else {
-                    alert("no")
+                    alert(result.msg)
                 }
             },
             //请求失败，包含具体的错误信息
@@ -290,6 +300,7 @@
                 console.log(e.responseText);
             }
         });
+
     }
 
     function emailLogin() {
@@ -303,6 +314,7 @@
             alert("邮箱验证码不能为空！");
             return;
         }
+
         $.ajax({
             //请求方式
             type: "POST",
@@ -332,6 +344,8 @@
             }
         });
     }
+
+
 </script>
 </body>
 </html>

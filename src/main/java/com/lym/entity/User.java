@@ -1,7 +1,6 @@
 package com.lym.entity;
 
 public class User {
-
     private Long id;
 
     private String name;
@@ -9,6 +8,8 @@ public class User {
     private String relname;
 
     private String email;
+
+    private Byte emailVertify;
 
     private String phone;
 
@@ -52,6 +53,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email == null ? null : email.trim();
+    }
+
+    public Byte getEmailVertify() {
+        return emailVertify;
+    }
+
+    public void setEmailVertify(Byte emailVertify) {
+        this.emailVertify = emailVertify;
     }
 
     public String getPhone() {

@@ -22,18 +22,32 @@ public class ResultUtil {
     public static int TOKEN_EXPIRED = -1008;
     public static int INVALIDE_NAME_PW = -1009;
     public static int USER_WAS_NOT_EXIST = -1010;
+    public static int USER_EMAIL_NOT_VERITFY = -1011;
 
     public static Result getSuccess() {
-        return new Result(SUCCESS);
+        return new Result(SUCCESS,"操作成功");
     }
 
     public static Result getSuccess(Object o) {
-        return new Result(SUCCESS, o);
+        return new Result(SUCCESS,"操作成功", o);
     }
 
     public static Result getError() {
-        return new Result(ERROR);
+        return new Result(ERROR, "操作失败");
     }
+
+    public static Result getError(String msg) {
+        return new Result(ERROR, msg);
+    }
+
+    public static Result getUserNotExistError(){
+        return new Result(ResultUtil.USER_WAS_NOT_EXIST, "用户不存在");
+    }
+
+   public static Result getUserEmailNotVeritfy(){
+        return new Result(ResultUtil.USER_EMAIL_NOT_VERITFY, "邮箱未认证");
+    }
+
 
     public static Result getCodeStillEffectiveError() {
         return new Result(CODE_STILL_EFFECTIVE, "验证码已经发送，请勿重新获取");
@@ -49,6 +63,10 @@ public class ResultUtil {
 
     public static Result getInvalideCaptchaError() {
         return new Result(INVALIDE_CAPTCHA, "验证码不正确或者失效了");
+    }
+
+    public static Result getNoAccess() {
+        return new Result(NO_ACCESS, "没有权限");
     }
 
     public static boolean isError(Result result){

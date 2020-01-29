@@ -6,6 +6,7 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="relname" jdbcType="VARCHAR" property="relname" />
     <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="email_vertify" jdbcType="TINYINT" property="emailVertify" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="address" jdbcType="VARCHAR" property="address" />
@@ -72,7 +73,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, relname, email, phone, password, address, avatar, sex, job
+    id, name, relname, email, email_vertify, phone, password, address, avatar, sex, job
   </sql>
   <select id="selectByExample" parameterType="com.lym.entity.UserExample" resultMap="BaseResultMap">
     select
@@ -106,13 +107,13 @@
   </delete>
   <insert id="insert" parameterType="com.lym.entity.User">
     insert into tb_pim_user (id, name, relname, 
-      email, phone, password, 
-      address, avatar, sex, 
-      job)
+      email, email_vertify, phone, 
+      password, address, avatar, 
+      sex, job)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{relname,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{address,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, 
-      #{job,jdbcType=VARCHAR})
+      #{email,jdbcType=VARCHAR}, #{emailVertify,jdbcType=TINYINT}, #{phone,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=TINYINT}, #{job,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.lym.entity.User">
     insert into tb_pim_user
@@ -128,6 +129,9 @@
       </if>
       <if test="email != null">
         email,
+      </if>
+      <if test="emailVertify != null">
+        email_vertify,
       </if>
       <if test="phone != null">
         phone,
@@ -160,6 +164,9 @@
       </if>
       <if test="email != null">
         #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="emailVertify != null">
+        #{emailVertify,jdbcType=TINYINT},
       </if>
       <if test="phone != null">
         #{phone,jdbcType=VARCHAR},
@@ -202,6 +209,9 @@
       <if test="record.email != null">
         email = #{record.email,jdbcType=VARCHAR},
       </if>
+      <if test="record.emailVertify != null">
+        email_vertify = #{record.emailVertify,jdbcType=TINYINT},
+      </if>
       <if test="record.phone != null">
         phone = #{record.phone,jdbcType=VARCHAR},
       </if>
@@ -231,6 +241,7 @@
       name = #{record.name,jdbcType=VARCHAR},
       relname = #{record.relname,jdbcType=VARCHAR},
       email = #{record.email,jdbcType=VARCHAR},
+      email_vertify = #{record.emailVertify,jdbcType=TINYINT},
       phone = #{record.phone,jdbcType=VARCHAR},
       password = #{record.password,jdbcType=VARCHAR},
       address = #{record.address,jdbcType=VARCHAR},
@@ -252,6 +263,9 @@
       </if>
       <if test="email != null">
         email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="emailVertify != null">
+        email_vertify = #{emailVertify,jdbcType=TINYINT},
       </if>
       <if test="phone != null">
         phone = #{phone,jdbcType=VARCHAR},
@@ -279,6 +293,7 @@
     set name = #{name,jdbcType=VARCHAR},
       relname = #{relname,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
+      email_vertify = #{emailVertify,jdbcType=TINYINT},
       phone = #{phone,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
