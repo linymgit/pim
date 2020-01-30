@@ -135,14 +135,31 @@
                     <div><a onclick="to('/user/schedule/list')">日程管理</a></div>
                 </div>
             </div>
-            <div class="lym-nav" id="n3" onclick="exportMenu(3)">个人财产/收支数据统计</div>
-            <div class="lym-nav" id="n4" onclick="exportMenu(4)">个人通讯录</div>
-            <div class="lym-nav" id="n5" onclick="exportMenu(5)">文件中心</div>
+            <div class="lym-nav" id="n3" onclick="exportMenu(3)">个人财产/收支数据统计
+                <div class="lym-sub-nav" id="sn3">
+                    <div><a onclick="to('/user/assets/income')">个人财产管理</a></div>
+                    <div><a onclick="to('/user/assets/output')">个人收支管理</a></div>
+                    <div><a onclick="to('/user/info')">数据分析</a></div>
+                </div>
+            </div>
+            <div class="lym-nav" id="n4" onclick="exportMenu(4)">个人通讯录
+                <div class="lym-sub-nav" id="sn4">
+                    <div><a onclick="to('/user/mail/verify')">联系人信息</a></div>
+                    <div><a onclick="to('/user/info')">发信息</a></div>
+                    <div><a onclick="to('/user/info')">发邮件</a></div>
+                </div>
+            </div>
+            <div class="lym-nav" id="n5" onclick="exportMenu(5)">文件中心
+                <div class="lym-sub-nav" id="sn5">
+                    <div><a onclick="to('/user/file/upload')">文件上传</a></div>
+                    <div><a onclick="to('/user/file/list')">上传记录</a></div>
+                </div>
+            </div>
             <div class="lym-nav" id="n6" onclick="exportMenu(6)">系统设置
                 <div class="lym-sub-nav" id="sn6">
-                    <div><a>修改密码</a></div>
-                    <div><a>日程提醒设置</a></div>
-                    <div><a>样式主题切换</a></div>
+                    <div><a onclick="to('/user/file/upload')">修改密码</a></div>
+                    <div><a onclick="to('/user/schedule/list')">日程提醒设置</a></div>
+                    <div><a onclick="to('/user/file/list')">样式主题切换</a></div>
                 </div>
             </div>
         </div>

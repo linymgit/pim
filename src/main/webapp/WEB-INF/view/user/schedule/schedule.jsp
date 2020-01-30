@@ -36,7 +36,7 @@
                     onclick="delSchedule()">删除
             </button>
             <button type="button" class="btn btn-default glyphicon glyphicon-edit" id="editScheduleBtn" data-toggle="modal" data-target="#myModa2"
-                    onclick="editSchedule()">编辑
+                    onclick="updateSchedule()">编辑
             </button>
         </div>
         <div class="col-md-2 col-xs-6" style="padding: 5px">
@@ -226,7 +226,7 @@
         reload(param);
     }
 
-    function editSchedule() {
+    function updateSchedule() {
         $("#frame2").attr("src","/user/schedule/edit/"+gId);
     }
 

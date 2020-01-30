@@ -38,20 +38,20 @@ public class UserScheduleController {
     @Auth
     @GetMapping("/list")
     public ModelAndView list(ModelAndView mv, HttpServletRequest request) {
-        mv.setViewName("user/schedule");
+        mv.setViewName("user/schedule/schedule");
         return mv;
     }
 
     @GetMapping("/add")
     public ModelAndView add(ModelAndView mv) {
-        mv.setViewName("user/addSchedule");
+        mv.setViewName("user/schedule/addSchedule");
         return mv;
     }
 
     @GetMapping("/edit/{id}")
     public ModelAndView edit(ModelAndView mv, @PathVariable Long id) {
         mv.addObject("id", id);
-        mv.setViewName("user/editSchedule");
+        mv.setViewName("user/schedule/editSchedule");
         return mv;
     }
 

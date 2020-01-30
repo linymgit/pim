@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <title>添加日程</title>
-    <link rel="stylesheet" href="../../static/css/dateTime.css" charset="UTF-8">
+    <link rel="stylesheet" href="../../../static/css/dateTime.css" charset="UTF-8">
     <style>
         .wrap{
             margin: 1rem;
