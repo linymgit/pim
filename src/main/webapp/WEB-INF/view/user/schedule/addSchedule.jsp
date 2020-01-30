@@ -84,7 +84,7 @@
 </div>
 </body>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
-<script type="text/javascript" src="https://www.17sucai.com/preview/1750622/2019-08-02/dateTime/js/dateTime.min.js"></script>
+<script type="text/javascript" src="../../../static/js/dateTime.min.js"></script>
 <script type="text/javascript">
     let dtOk = false;
     let planOk = false;

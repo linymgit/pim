@@ -495,6 +495,66 @@ public class RelationExample {
             return (Criteria) this;
         }
 
+        public Criteria andRelationStatusIsNull() {
+            addCriterion("relation_status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationStatusIsNotNull() {
+            addCriterion("relation_status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationStatusEqualTo(Byte value) {
+            addCriterion("relation_status =", value, "relationStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationStatusNotEqualTo(Byte value) {
+            addCriterion("relation_status <>", value, "relationStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationStatusGreaterThan(Byte value) {
+            addCriterion("relation_status >", value, "relationStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationStatusGreaterThanOrEqualTo(Byte value) {
+            addCriterion("relation_status >=", value, "relationStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationStatusLessThan(Byte value) {
+            addCriterion("relation_status <", value, "relationStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationStatusLessThanOrEqualTo(Byte value) {
+            addCriterion("relation_status <=", value, "relationStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationStatusIn(List<Byte> values) {
+            addCriterion("relation_status in", values, "relationStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationStatusNotIn(List<Byte> values) {
+            addCriterion("relation_status not in", values, "relationStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationStatusBetween(Byte value1, Byte value2) {
+            addCriterion("relation_status between", value1, value2, "relationStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelationStatusNotBetween(Byte value1, Byte value2) {
+            addCriterion("relation_status not between", value1, value2, "relationStatus");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateTimeIsNull() {
             addCriterion("create_time is null");
             return (Criteria) this;

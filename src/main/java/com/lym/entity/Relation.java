@@ -1,5 +1,7 @@
 package com.lym.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 public class Relation {
@@ -15,6 +17,9 @@ public class Relation {
 
     private String email;
 
+    private Byte relationStatus;
+
+    @JSONField(format="yyyy-MM-dd HH:mm")
     private Date createTime;
 
     private Date updateTime;
@@ -65,6 +70,14 @@ public class Relation {
 
     public void setEmail(String email) {
         this.email = email == null ? null : email.trim();
+    }
+
+    public Byte getRelationStatus() {
+        return relationStatus;
+    }
+
+    public void setRelationStatus(Byte relationStatus) {
+        this.relationStatus = relationStatus;
     }
 
     public Date getCreateTime() {

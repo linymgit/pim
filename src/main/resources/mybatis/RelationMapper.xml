@@ -8,6 +8,7 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="pone" jdbcType="VARCHAR" property="pone" />
     <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="relation_status" jdbcType="TINYINT" property="relationStatus" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
@@ -70,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, userId, friendId, name, pone, email, create_time, update_time
+    id, userId, friendId, name, pone, email, relation_status, create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="com.lym.entity.RelationExample" resultMap="BaseResultMap">
     select
@@ -105,10 +106,12 @@
   <insert id="insert" parameterType="com.lym.entity.Relation">
     insert into tb_pim_relation (id, userId, friendId, 
       name, pone, email, 
-      create_time, update_time)
+      relation_status, create_time, update_time
+      )
     values (#{id,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, #{friendid,jdbcType=BIGINT}, 
       #{name,jdbcType=VARCHAR}, #{pone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+      #{relationStatus,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.lym.entity.Relation">
     insert into tb_pim_relation
@@ -130,6 +133,9 @@
       </if>
       <if test="email != null">
         email,
+      </if>
+      <if test="relationStatus != null">
+        relation_status,
       </if>
       <if test="createTime != null">
         create_time,
@@ -156,6 +162,9 @@
       </if>
       <if test="email != null">
         #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="relationStatus != null">
+        #{relationStatus,jdbcType=TINYINT},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -192,6 +201,9 @@
       <if test="record.email != null">
         email = #{record.email,jdbcType=VARCHAR},
       </if>
+      <if test="record.relationStatus != null">
+        relation_status = #{record.relationStatus,jdbcType=TINYINT},
+      </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
@@ -211,6 +223,7 @@
       name = #{record.name,jdbcType=VARCHAR},
       pone = #{record.pone,jdbcType=VARCHAR},
       email = #{record.email,jdbcType=VARCHAR},
+      relation_status = #{record.relationStatus,jdbcType=TINYINT},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
@@ -235,6 +248,9 @@
       <if test="email != null">
         email = #{email,jdbcType=VARCHAR},
       </if>
+      <if test="relationStatus != null">
+        relation_status = #{relationStatus,jdbcType=TINYINT},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -251,6 +267,7 @@
       name = #{name,jdbcType=VARCHAR},
       pone = #{pone,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
+      relation_status = #{relationStatus,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}

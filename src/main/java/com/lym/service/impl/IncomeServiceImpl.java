@@ -65,4 +65,12 @@ public class IncomeServiceImpl implements IncomeService {
         List<Income> incomes = incomeMapper.selectByExample(incomeExample);
         return new PageInfo(incomes);
     }
+
+    @Override
+    public List<Income> incomes(Long userId) {
+        IncomeExample incomeExample = new IncomeExample();
+        IncomeExample.Criteria criteria = incomeExample.createCriteria();
+        criteria.andUseridEqualTo(userId);
+        return incomeMapper.selectByExample(incomeExample);
+    }
 }

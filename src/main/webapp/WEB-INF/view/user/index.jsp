@@ -139,12 +139,12 @@
                 <div class="lym-sub-nav" id="sn3">
                     <div><a onclick="to('/user/assets/income')">个人财产管理</a></div>
                     <div><a onclick="to('/user/assets/output')">个人收支管理</a></div>
-                    <div><a onclick="to('/user/info')">数据分析</a></div>
+                    <div><a onclick="to('/')">数据分析</a></div>
                 </div>
             </div>
             <div class="lym-nav" id="n4" onclick="exportMenu(4)">个人通讯录
                 <div class="lym-sub-nav" id="sn4">
-                    <div><a onclick="to('/user/mail/verify')">联系人信息</a></div>
+                    <div><a onclick="to('/user/relation/list')">联系人信息</a></div>
                     <div><a onclick="to('/user/info')">发信息</a></div>
                     <div><a onclick="to('/user/info')">发邮件</a></div>
                 </div>

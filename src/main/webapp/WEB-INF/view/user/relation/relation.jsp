@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>资产管理</title>
+    <title>联系人</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
@@ -17,26 +17,20 @@
 </head>
 <body>
 <div class="container-fluid">
-    <h4>资产管理</h4>
+    <h4>联系人</h4>
     <div class="row">
-        <div class="col-md-6 col-xs-12" style="padding: 5px;">
+        <div class="col-md-3 col-xs-12" style="padding: 5px;">
             <button type="button" class="btn btn-default glyphicon glyphicon-plus" data-toggle="modal" data-target="#myModal" onclick="addIncome()">添加
             </button>
             <button type="button" class="btn btn-default glyphicon glyphicon-minus" id="delScheduleBtn"
                     onclick="removeIncome()">删除
             </button>
             <button type="button" class="btn btn-default glyphicon glyphicon-edit" id="editScheduleBtn" data-toggle="modal" data-target="#myModal" onclick="updateIncome()">编辑</button>
-            <button type="button" class="btn btn-default glyphicon glyphicon-stats" id="bar-chart"
-                    onclick="genBarChart()">生成条形图
-            </button>
-            <button type="button" class="btn btn-default glyphicon glyphicon-adjust" id="pie-chart"
-                    onclick="genPieChart()">生成饼状图
-            </button>
         </div>
         <div class="col-md-2 col-xs-6" style="padding: 5px">
-            <input type="date" class="form-control" id="date" placeholder="日期">
+            <input type="text" class="form-control" id="keyWord" placeholder="联系人姓名">
         </div>
-        <div class="col-md-2 col-xs-6" style="padding: 5px">
+        <div class="col-md-2 col-xs-12" style="padding: 5px">
             <button type="button" class="btn btn-default glyphicon glyphicon-search" onclick="search()">查找</button>
         </div>
     </div>
@@ -45,10 +39,11 @@
         <table class="table table-bordered" style="margin:0.5rem;" id="yimi-table">
             <tr class="success">
                 <td>ID</td>
-                <td>资产类型</td>
-                <td>资产价值</td>
-                <td>时间</td>
-                <td>备注</td>
+                <td>联系人姓名</td>
+                <td>联系人电话号码</td>
+                <td>联系人邮箱地址</td>
+                <td>添加时间</td>
+                <td>好友</td>
             </tr>
         </table>
     </div>
@@ -74,23 +69,16 @@
                     <div class="row">
                         <div class="col-xs-12 col-md-3 col-md-offset-2">
                             <div class="form-group has-success has-feedback" id="typeWrap">
-                                <label class="control-label">资产类型</label>
-                                <input type="text" class="form-control" id="type">
-                                <p style='color: #BF5E6F;display: none' id="typeErr">类型不可为空</p>
+                                <label class="control-label">联系人姓名</label>
+                                <input type="text" class="form-control" id="name">
                             </div>
                             <div class="form-group has-success has-feedback" id="valueWrap">
-                                <label class="control-label">资产价值</label>
-                                <input type="text" class="form-control" id="value">
-                                <p style='color: #BF5E6F;display: none' id="valueErr">价值不可为空</p>
+                                <label class="control-label">联系人电话号码</label>
+                                <input type="text" class="form-control" id="phone">
                             </div>
                             <div class="form-group has-success has-feedback" id="incomeTimeWrap">
-                                <label class="control-label">获得时间</label>
-                                <input type="date" class="form-control" id="incomeTime">
-                                <p style='color: #BF5E6F;display: none' id="incomeTimeErr">时间不可为空</p>
-                            </div>
-                            <div class="form-group has-success has-feedback">
-                                <label class="control-label">备注</label>
-                                <input type="text" class="form-control" id="desc">
+                                <label class="control-label">联系人邮箱地址</label>
+                                <input type="text" class="form-control" id="email">
                             </div>
                         </div>
                     </div>
@@ -135,7 +123,7 @@
         $("#page-bar").html(pStr);
         $.ajax({
             type: 'post',
-            url: '/user/assets/income',
+            url: '/user/relation/list',
             contentType: "application/json;charset=UTF-8",
             data: JSON.stringify(p), //数据
             headers: {
@@ -147,11 +135,19 @@
                 let l = data.data.list;
                 for (let i in l) {
                     h += '<tr onclick="chooseId(\'' + l[i].id + '\',' + i + ')" id="item' + l[i].id + '" class="yimi-cp">';
-                    h += '<td style="width: 20%">' + l[i].id + '</td>';
-                    h += '<td style="width: 20%">' + l[i].type + '</td>';
-                    h += '<td style="width: 20%">' + l[i].value + '</td>';
-                    h += '<td style="width: 20%">' + l[i].incomeTime + '</td>';
-                    h += '<td style="width: 20%">' + l[i].memo + '</td>';
+                    h += '<td style="width: 16.6%">' + l[i].id + '</td>';
+                    h += '<td style="width: 16.6%">' + l[i].name + '</td>';
+                    h += '<td style="width: 16.6%">' + l[i].pone + '</td>';
+                    h += '<td style="width: 16.6%">' + l[i].email + '</td>';
+                    h += '<td style="width: 16.6%">' + l[i].createTime + '</td>';
+                    if (l[i].relationStatus === 1){
+                        h += '<td style="width: 16.6%"><a onclick="alert(123)" style="cursor: pointer ">添加</a></td>';
+                    }else if(l[i].relationStatus === 2){
+                        h += '<td style="width: 16.6%">已添加</td>';
+                    }else{
+                        h += '<td style="width: 16.6%"></td>';
+                    }
+
                     h += '</tr>'
                 }
                 $("#yimi-table").append(h);
@@ -189,7 +185,7 @@
     function removeIncome() {
         $.ajax({
             type: 'post',
-            url: '/user/assets/income/remove?id=' + gId,
+            url: '/user/relation/remove?id=' + gId,
             headers: {
                 'x-token': localStorage.getItem("x-token"),
             },
@@ -204,7 +200,7 @@
     }
 
     function search() {
-        param["date"] = $("#date").val();
+        param["keyWord"] = $("#keyWord").val();
         reload(param);
     }
 
@@ -214,31 +210,12 @@
     }
 
     function submit() {
-        let $type = $("#type");
-        let $value = $("#value");
-        let $incomeTime = $("#incomeTime");
-        let $desc = $("#desc");
+        let $name = $("#name");
+        let $phone = $("#phone");
+        let $email = $("#email");
 
-        $("#typeErr").css("display","none");
-        $("#valueErr").css("display","none");
-        $("#incomeTimeErr").css("display","none");
-        $("#typeWrap").attr("class", "form-group has-success has-feedback");
-        $("#valueWrap").attr("class", "form-group has-success has-feedback");
-        $("#incomeTimeWrap").attr("class", "form-group has-success has-feedback");
-
-        if ($type.val() === "") {
-            $("#typeWrap").attr("class", "form-group has-error has-feedback");
-            $("#typeErr").css("display","block");
-            return;
-        }
-        if ($value.val() === "") {
-            $("#valueWrap").attr("class", "form-group has-error has-feedback");
-            $("#valueErr").css("display","block");
-            return;
-        }
-        if ($incomeTime.val() === "") {
-            $("#incomeTimeWrap").attr("class", "form-group has-error has-feedback");
-            $("#incomeTimeErr").css("display","block");
+        if ($name.val()==="" && $phone.val()==="" && $email.val()==="") {
+            alert("没有录入联系人的信息！！！")
             return;
         }
 
@@ -248,17 +225,16 @@
             contentType: "application/json;charset=UTF-8",
             data:JSON.stringify({
                 id: gId,
-                type:$type.val(),
-                value:$value.val(),
-                incomeTime:$incomeTime.val(),
-                memo:$desc.val(),
+                name:$name.val(),
+                pone:$phone.val(),
+                email:$email.val(),
             }),
             headers: {
                 'x-token': localStorage.getItem("x-token"),
             },
             success: function (data, textStatus, jqXHR) {
                 if (data.code>=0) {
-                    window.location.href = "/user/assets/income";
+                    window.location.href = "/user/relation/list";
                 }else{
                     return;
                 }
@@ -272,50 +248,34 @@
 
     function addIncome() {
         // $("#incomeTime").removeAttr("disabled");
-        let $type = $("#type");
-        let $value = $("#value");
-        let $incomeTime = $("#incomeTime");
-        let $desc = $("#desc");
+        let $name = $("#name");
+        let $phone = $("#phone");
+        let $email = $("#email");
 
-        $type.val("");
-        $value.val("");
-        $incomeTime.val("");
-        $desc.val("");
+        $name.val("");
+        $phone.val("");
+        $email.val("");
 
-        addOrUpdateUrl = "/user/assets/income/add";
+        addOrUpdateUrl = "/user/relation/add";
     }
 
     function updateIncome() {
-        let $type = $("#type");
-        let $value = $("#value");
-        let $incomeTime = $("#incomeTime");
-        let $desc = $("#desc");
+        let $name = $("#name");
+        let $phone = $("#phone");
+        let $email = $("#email");
 
         // $incomeTime.attr("disabled", "true");
 
-        addOrUpdateUrl = "/user/assets/income/update";
+        addOrUpdateUrl = "/user/relation/update";
 
         for (let x in gList) {
             if (gList[x].id == gId) {
-                $type.val(gList[x].type);
-                $value.val(gList[x].value);
-                $incomeTime.val(gList[x].incomeTime);
-                $desc.val(gList[x].memo);
+                $name.val(gList[x].name);
+                $phone.val(gList[x].pone);
+                $email.val(gList[x].email);
                 return;
             }
         }
-    }
-
-    let height = window.screen.height;
-    let width = window.screen.width;
-
-    function genBarChart() {
-        window.open ("/user/assets/income/barchart", "条形图", "height="+height*0.8+", width="+width*0.8+",top="+height*0.05+",left="+width*0.1+",toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no")
-
-    }
-
-    function genPieChart() {
-        window.open ("/user/assets/income/pieChart", "饼状图", "height="+height*0.8+", width="+width*0.8+",top="+height*0.05+",left="+width*0.1+",toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no")
     }
 </script>
 </html>

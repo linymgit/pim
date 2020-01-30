@@ -28,6 +28,7 @@
 <body>
 
 <div class="container-fluid">
+    <h4>日程管理</h4>
     <div class="row">
         <div class="col-md-3 col-xs-12" style="padding: 5px;">
             <button type="button" class="btn btn-default glyphicon glyphicon-plus" data-toggle="modal" data-target="#myModal" onclick="addSchedule()">添加
