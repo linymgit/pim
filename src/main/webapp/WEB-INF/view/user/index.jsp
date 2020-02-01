@@ -146,8 +146,9 @@
             <div class="lym-nav" id="n4" onclick="exportMenu(4)">个人通讯录
                 <div class="lym-sub-nav" id="sn4">
                     <div><a onclick="to('/user/relation/list')">联系人信息</a></div>
-                    <div><a onclick="to('/user/info')">发信息</a></div>
-                    <div><a onclick="to('/user/info')">发邮件</a></div>
+                    <div><a onclick="to('/user/relation/listAdmin')">管理员信息</a></div>
+                    <div><a onclick="to('/user/relation/msg')">发信息</a></div>
+                    <%--<div><a onclick="to('/user/info')">发邮件</a></div>--%>
                 </div>
             </div>
             <div class="lym-nav" id="n5" onclick="exportMenu(5)">文件中心
@@ -219,7 +220,7 @@
                     } else {
                         let msg = "你有" + result.data.schedules.length + "条日程信息！\r\n"
                         for (let i in result.data.schedules) {
-                            msg += i + "、时间：" + result.data.schedules[i].startTime + "，\r\n日程内容：" + result.data.schedules[i].plan + "\r\n"
+                            msg += i + "、时间：" + result.data.schedules[i].startTime + "，\r\n日程内容：" + result.data.schedules[i].plan + "。\r\n"
                         }
                         alert(msg);
                     }
@@ -233,6 +234,8 @@
                 console.log(e.responseText);
             }
         });
+
+        to("/user/info");
     });
 
     ws.onopen = function (evt) {
@@ -241,7 +244,7 @@
 
     ws.onmessage = function (evt) {
         let o = JSON.parse(evt.data);
-        sel = confirm("你有一个日程提醒!\r\n时间：" + o.startTime + "，\r\n日程内容：" + o.plan + "。\r\n  是否取消提醒？"); //在页面上弹出对话框
+        sel = confirm("你有一个日程提醒!\r\n时间：" + o.startTime + "，\r\n日程内容：" + o.plan + "。\r\n\r\n是否取消提醒？"); //在页面上弹出对话框
         if (sel === true) {
             $.ajax({
                 //请求方式

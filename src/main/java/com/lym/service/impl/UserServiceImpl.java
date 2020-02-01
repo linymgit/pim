@@ -60,6 +60,37 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserOrByPEN(String phoneNum, String email, String name) {
+        UserExample userExample = new UserExample();
+
+        UserExample.Criteria criteria = userExample.createCriteria();
+
+        if (StringUtil.nonBlank(phoneNum)) {
+            criteria.andPhoneEqualTo(phoneNum);
+            userExample.or(criteria);
+        }
+
+        if (StringUtil.nonBlank(email)) {
+            criteria = userExample.createCriteria();
+            criteria.andEmailEqualTo(email);
+            userExample.or(criteria);
+        }
+
+        if (StringUtil.nonBlank(name)) {
+            criteria = userExample.createCriteria();
+            criteria.andNameEqualTo(name);
+            userExample.or(criteria);
+        }
+
+
+        List<User> users = userMapper.selectByExample(userExample);
+        if (Objects.isNull(users) || users.size() <= 0) {
+            return null;
+        }
+        return users.get(0);
+    }
+
+    @Override
     public User getUserByNP(String name, String password) {
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();

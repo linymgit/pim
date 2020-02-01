@@ -177,7 +177,7 @@
                 $("#page-bar").append(pageBarButtonStr);
 
                 $("#page-row").text(data.data.startRow);
-                $("#page-rows").text(data.data.size);
+                $("#page-rows").text(data.data.total);
 
                 sr = data.data.startRow;
             },

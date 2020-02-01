@@ -141,9 +141,9 @@
                     h += '<td style="width: 16.6%">' + l[i].email + '</td>';
                     h += '<td style="width: 16.6%">' + l[i].createTime + '</td>';
                     if (l[i].relationStatus === 1){
-                        h += '<td style="width: 16.6%"><a onclick="alert(123)" style="cursor: pointer ">添加</a></td>';
+                        h += '<td style="width: 16.6%"><a onclick="addFriend(\''+l[i].friendid+'\')" style="cursor: pointer ">添加</a></td>';
                     }else if(l[i].relationStatus === 2){
-                        h += '<td style="width: 16.6%">已添加</td>';
+                        h += '<td style="width: 16.6%">已添加,<a style="cursor: pointer" onclick="toMsg()">发信息</a></td>';
                     }else{
                         h += '<td style="width: 16.6%"></td>';
                     }
@@ -159,7 +159,7 @@
                 $("#page-bar").append(pageBarButtonStr);
 
                 $("#page-row").text(data.data.startRow);
-                $("#page-rows").text(data.data.size);
+                $("#page-rows").text(data.data.total);
 
                 sr = data.data.startRow;
             },
@@ -276,6 +276,41 @@
                 return;
             }
         }
+    }
+
+    function addFriend(id) {
+        $.ajax({
+            //请求方式
+            type: "POST",
+            //请求的媒体类型
+            contentType: "application/json;charset=UTF-8",
+            //请求地址
+            url: "/user/relation/friend/add",
+            //数据，json字符串
+            data: JSON.stringify({
+                friendid: id,
+            }),
+            //请求成功
+            headers: {
+                'x-token': localStorage.getItem("x-token"),
+            },
+            success: function (result) {
+                if (result.code >= 0) {
+                    window.location.reload();
+                } else {
+                    alert(result.msg);
+                }
+            },
+            //请求失败，包含具体的错误信息
+            error: function (e) {
+                console.log(e.status);
+                console.log(e.responseText);
+            }
+        });
+    }
+
+    function toMsg() {
+        window.location.href = "/user/relation/msg"
     }
 </script>
 </html>

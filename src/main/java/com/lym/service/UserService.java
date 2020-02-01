@@ -14,6 +14,7 @@ public interface UserService {
     List<User> list();
     int addUser(User user);
     User getUserByPEN(String phoneNum, String email, String name);
+    User getUserOrByPEN(String phoneNum, String email, String name);
     User getUserByNP(String name, String password);
     User getUserByName(String name);
     User getUserById(Long id);

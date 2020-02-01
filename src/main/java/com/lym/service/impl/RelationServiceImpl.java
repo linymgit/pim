@@ -50,4 +50,16 @@ public class RelationServiceImpl implements RelationService {
         List<Relation> Relations = relationMapper.selectByExample(relationExample);
         return new PageInfo(Relations);
     }
+
+    @Override
+    public int updateRelationStateByUserIdAndFriendId(Byte relationStatus, Long userId, Long friendId) {
+        Relation relation = new Relation();
+        relation.setUserid(userId);
+        relation.setFriendid(friendId);
+        relation.setRelationStatus(relationStatus);
+        RelationExample relationExample = new RelationExample();
+        relationExample.createCriteria().andUseridEqualTo(userId).andFriendidEqualTo(friendId);
+        return relationMapper.updateByExampleSelective(relation, relationExample);
+    }
+
 }

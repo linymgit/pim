@@ -32,4 +32,6 @@ public interface RelationService {
      * 获取联系人信息
      */
     PageInfo<Relation> relations(RelationListParam relationListParam);
+
+    int updateRelationStateByUserIdAndFriendId(Byte relationStatus, Long userId, Long friendId);
 }
