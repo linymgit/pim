@@ -7,9 +7,9 @@ import java.util.List;
  * @auth linyimin
  * @Desc 资产饼状图
  **/
-public class IncomePieData {
+public class AssertsPieData {
     private List<String> types;
-    private List<IncomeVN> values;
+    private List<AssertsVN> values;
 
     public List<String> getTypes() {
         return types;
@@ -19,11 +19,11 @@ public class IncomePieData {
         this.types = types;
     }
 
-    public List<IncomeVN> getValues() {
+    public List<AssertsVN> getValues() {
         return values;
     }
 
-    public void setValues(List<IncomeVN> values) {
+    public void setValues(List<AssertsVN> values) {
         this.values = values;
     }
 }

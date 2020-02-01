@@ -26,9 +26,9 @@ public abstract class CodeService {
     public abstract Result doSentCode(String to, String code);
 
     public Result sendCode(String to) {
-        if (hasCode(to)) {
-            return ResultUtil.getCodeStillEffectiveError();
-        }
+//        if (hasCode(to)) {
+//            return ResultUtil.getCodeStillEffectiveError();
+//        }
         Result result = doSentCode(to, genCode());
         if (ResultUtil.isError(result)) {
             return result;

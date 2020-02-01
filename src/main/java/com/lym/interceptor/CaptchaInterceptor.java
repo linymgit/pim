@@ -34,6 +34,14 @@ public class CaptchaInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         String captchaId = request.getHeader("captchaId");
         String captchaCode = request.getHeader("captchaCode");
+        if (Objects.isNull(captchaId) || Objects.isNull(captchaCode) || captchaId.equals("") || captchaCode.equals("")) {
+            response.setStatus(HttpStatus.OK.value());
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            Result r = ResultUtil.getInvalideCaptchaError();
+            String s = JSONObject.toJSONString(r);
+            response.getOutputStream().write(s.getBytes());
+            return false;
+        }
         Captcha captcha = new Captcha();
         captcha.setCaptchaId(Long.parseLong(captchaId));
         captcha.setCaptchaCode(captchaCode);

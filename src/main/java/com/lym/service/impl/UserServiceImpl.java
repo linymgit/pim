@@ -4,6 +4,7 @@ import com.lym.entity.User;
 import com.lym.entity.UserExample;
 import com.lym.mapper.UserMapper;
 import com.lym.service.UserService;
+import com.lym.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
@@ -31,8 +32,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int register(User user) {
-        return userMapper.insert(user);
+    public int addUser(User user) {
+        return userMapper.insertSelective(user);
     }
 
     @Override
@@ -41,15 +42,15 @@ public class UserServiceImpl implements UserService {
 
         UserExample.Criteria criteria = userExample.createCriteria();
 
-        criteria.andPhoneEqualTo(phoneNum);
-
-        criteria = userExample.createCriteria();
-        criteria.andEmailEqualTo(email);
-        userExample.or(criteria);
-
-        criteria = userExample.createCriteria();
-        criteria.andNameEqualTo(name);
-        userExample.or(criteria);
+        if (StringUtil.nonBlank(phoneNum)) {
+            criteria.andPhoneEqualTo(phoneNum);
+        }
+        if (StringUtil.nonBlank(email)) {
+            criteria.andEmailEqualTo(email);
+        }
+        if (StringUtil.nonBlank(name)) {
+            criteria.andNameEqualTo(name);
+        }
 
         List<User> users = userMapper.selectByExample(userExample);
         if (Objects.isNull(users) || users.size() <= 0) {
@@ -89,7 +90,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int updateUserById(User record) {
-        return userMapper.updateByExampleSelective(record, new UserExample());
+        return userMapper.updateByPrimaryKeySelective(record);
     }
 
     @Override

@@ -26,7 +26,11 @@
                     <span class="form-control-static">${user.id}</span>
                 </div>
                 <div class="form-group">
-                    <label for="relname">姓名:</label>
+                    <label for="relname">用户名:</label>
+                    <input type="text" class="form-control" id="name" name="name" value="${user.name}">
+                </div>
+                <div class="form-group">
+                    <label for="relname">真实姓名:</label>
                     <input type="text" class="form-control" id="relname" name="relname" value="${user.relname}">
                 </div>
                 <div class="form-group">

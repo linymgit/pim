@@ -18,43 +18,45 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-4 col-md-offset-4 col-xs-12">
-            <h4>邮箱认证</h4>
-            <div class="form-horizontal">
+            <h4>手机号码验证</h4>
+            <div class="form-horizontal" style="margin-top: 2rem">
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">Email</label>
-                    <div class="col-sm-10">
+                    <label class="col-sm-3 control-label" style="text-align: center">手机号码</label>
+                    <div class="col-sm-9">
                         <c:choose>
-                            <c:when test='${user.email==null || user.email == ""}'>
-                                <p class="form-control-static">请输入邮箱地址：</p>
-                                <input type="text" name="email" id="email" class="form-control">
+                            <c:when test="${user.phone!=null}">
+                                <input type="text" name="phone" id="phone" class="form-control" placeholder="请输入手机号码">
                             </c:when>
                             <c:otherwise>
-                                <p class="form-control-static">${user.email}</p>
-                                <input type="hidden" name="email" value="${user.email}">
+                                <p class="form-control-static">${user.phone}</p>
+                                <input type="hidden" name="email" value="${user.phone}">
                             </c:otherwise>
                         </c:choose>
                     </div>
                 </div>
                 <c:choose>
-                    <c:when test="${user.emailVertify==1}">
-                        <button type="button" class="btn btn-primary" style="width: 100%" disabled>已发送验证邮件，请登录邮箱，完成激活。
-                        </button>
-                        <button type="button" class="btn btn-primary" style="width: 100%;margin-top: 0.5rem" onclick="retry()">重新验证
-                        </button>
-                    </c:when>
-                    <c:when test="${user.emailVertify==2}">
-                        <button type="button" class="btn btn-primary" style="width: 100%" disabled>已验证</button>
-                    </c:when>
-                    <c:otherwise>
+                    <c:when test="${user.phoneVertify!=2}">
                         <div class="form-group">
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-10">
-                                <button type="button" class="btn btn-primary " style="width: 100%" onclick="submit()"
-                                        id="btn">点击验证
-                                </button>
+                            <label class="col-sm-3 control-label" style="text-align: center">验证码</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="smscode" id="smsCode" class="form-control"
+                                       placeholder="输入手机验证码">
                             </div>
                         </div>
 
+                    </c:when>
+                </c:choose>
+                <c:choose>
+                    <c:when test="${user.phoneVertify==1}">
+                        <button type="button" class="btn btn-primary" style="width: 100%" onclick="submit()">点击验证
+                        </button>
+                    </c:when>
+                    <c:when test="${user.phoneVertify==2}">
+                        <button type="button" class="btn btn-primary" style="width: 100%" disabled>已验证</button>
+                    </c:when>
+                    <c:otherwise>
+                        <button type="button" class="btn btn-primary " style="width: 100%" onclick="sendCode()">发送手机验证码
+                        </button>
                     </c:otherwise>
                 </c:choose>
             </div>
@@ -63,29 +65,33 @@
 </div>
 </body>
 <script type="text/javascript">
-    let emailReg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
     $(function () {
+
     });
 
     function submit() {
-        let val = $("#email").val();
-        if (val === "") {
-            alert("请输入邮箱地址");
+        let $phone = $("#phone").val();
+        let $smsCode = $("#smsCode").val();
+
+        if ($phone === "") {
+            alert("手机号不可以为空");
             return;
         }
-        if (!emailReg.test(val)) {
-            alert("请输入合法的邮箱地址");
+
+        if ($smsCode === "") {
+            alert("短信验证码不可以为空");
             return;
         }
-        $("#btn").attr("disabled", true);
+
         $.ajax({
             //请求方式
             type: "POST",
             //请求地址
-            url: "/user/email/verify",
+            url: "/user/phone/verify",
             contentType: "application/json;charset=UTF-8",
             data: JSON.stringify({
-                email: val,
+                to: $phone,
+                code: $smsCode
             }),
             //请求成功
             headers: {
@@ -101,16 +107,18 @@
                 console.log(e.responseText);
             }
         });
-
-
     }
 
-    function retry() {
+    function sendCode() {
         $.ajax({
             //请求方式
             type: "POST",
             //请求地址
-            url: "/user/email/reverify",
+            url: "/user/phone/code2verify",
+            contentType: "application/json;charset=UTF-8",
+            data: JSON.stringify({
+                to: $("#phone").val()
+            }),
             //请求成功
             headers: {
                 'x-token': localStorage.getItem("x-token"),

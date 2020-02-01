@@ -7,7 +7,6 @@ import com.lym.entity.User;
 import com.lym.entity.param.RelationListParam;
 import com.lym.service.RelationService;
 import com.lym.service.UserService;
-import com.lym.service.impl.RelationServiceImpl;
 import com.lym.utils.JwtUtil;
 import com.lym.utils.ResultUtil;
 import com.lym.utils.SnowFlakeUtil;

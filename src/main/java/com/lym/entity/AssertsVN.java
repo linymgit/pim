@@ -7,7 +7,7 @@ import java.math.BigDecimal;
  * @auth linyimin
  * @Desc
  **/
-public class IncomeVN {
+public class AssertsVN {
     private BigDecimal value;
     private String name;
 

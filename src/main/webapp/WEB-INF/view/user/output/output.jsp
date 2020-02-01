@@ -19,18 +19,24 @@
 <div class="container-fluid">
     <h4>支出管理</h4>
     <div class="row">
-        <div class="col-md-3 col-xs-12" style="padding: 5px;">
+        <div class="col-md-6 col-xs-12" style="padding: 5px;">
             <button type="button" class="btn btn-default glyphicon glyphicon-plus" data-toggle="modal" data-target="#myModal" onclick="addoutput()">添加
             </button>
             <button type="button" class="btn btn-default glyphicon glyphicon-minus" id="delScheduleBtn"
                     onclick="removeoutput()">删除
             </button>
             <button type="button" class="btn btn-default glyphicon glyphicon-edit" id="editScheduleBtn" data-toggle="modal" data-target="#myModal" onclick="updateoutput()">编辑</button>
+            <button type="button" class="btn btn-default glyphicon glyphicon-stats" id="bar-chart"
+                    onclick="genBarChart()">生成条形图
+            </button>
+            <button type="button" class="btn btn-default glyphicon glyphicon-adjust" id="pie-chart"
+                    onclick="genPieChart()">生成饼状图
+            </button>
         </div>
         <div class="col-md-2 col-xs-6" style="padding: 5px">
             <input type="date" class="form-control" id="date" placeholder="日期">
         </div>
-        <div class="col-md-2 col-xs-12" style="padding: 5px">
+        <div class="col-md-2 col-xs-6" style="padding: 5px">
             <button type="button" class="btn btn-default glyphicon glyphicon-search" onclick="search()">查找</button>
         </div>
     </div>
@@ -298,6 +304,18 @@
                 return;
             }
         }
+    }
+
+    let height = window.screen.height;
+    let width = window.screen.width;
+
+    function genBarChart() {
+        window.open ("/user/assets/output/barchart", "条形图", "height="+height*0.8+", width="+width*0.8+",top="+height*0.05+",left="+width*0.1+",toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no")
+
+    }
+
+    function genPieChart() {
+        window.open ("/user/assets/output/pieChart", "饼状图", "height="+height*0.8+", width="+width*0.8+",top="+height*0.05+",left="+width*0.1+",toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no")
     }
 </script>
 </html>

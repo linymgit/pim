@@ -62,7 +62,7 @@ public class ResultUtil {
     }
 
     public static Result getInvalideCaptchaError() {
-        return new Result(INVALIDE_CAPTCHA, "验证码不正确或者失效了");
+        return new Result(INVALIDE_CAPTCHA, "图片验证码不正确或者失效了");
     }
 
     public static Result getNoAccess() {

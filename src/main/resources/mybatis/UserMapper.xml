@@ -8,11 +8,14 @@
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="email_vertify" jdbcType="TINYINT" property="emailVertify" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="phone_vertify" jdbcType="TINYINT" property="phoneVertify" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
     <result column="sex" jdbcType="TINYINT" property="sex" />
     <result column="job" jdbcType="VARCHAR" property="job" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -73,7 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, relname, email, email_vertify, phone, password, address, avatar, sex, job
+    id, name, relname, email, email_vertify, phone, phone_vertify, password, address, 
+    avatar, sex, job, create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="com.lym.entity.UserExample" resultMap="BaseResultMap">
     select
@@ -108,12 +112,14 @@
   <insert id="insert" parameterType="com.lym.entity.User">
     insert into tb_pim_user (id, name, relname, 
       email, email_vertify, phone, 
-      password, address, avatar, 
-      sex, job)
+      phone_vertify, password, address, 
+      avatar, sex, job, create_time, 
+      update_time)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{relname,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{emailVertify,jdbcType=TINYINT}, #{phone,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, 
-      #{sex,jdbcType=TINYINT}, #{job,jdbcType=VARCHAR})
+      #{phoneVertify,jdbcType=TINYINT}, #{password,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{avatar,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, #{job,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.lym.entity.User">
     insert into tb_pim_user
@@ -136,6 +142,9 @@
       <if test="phone != null">
         phone,
       </if>
+      <if test="phoneVertify != null">
+        phone_vertify,
+      </if>
       <if test="password != null">
         password,
       </if>
@@ -150,6 +159,12 @@
       </if>
       <if test="job != null">
         job,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -171,6 +186,9 @@
       <if test="phone != null">
         #{phone,jdbcType=VARCHAR},
       </if>
+      <if test="phoneVertify != null">
+        #{phoneVertify,jdbcType=TINYINT},
+      </if>
       <if test="password != null">
         #{password,jdbcType=VARCHAR},
       </if>
@@ -185,6 +203,12 @@
       </if>
       <if test="job != null">
         #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -215,6 +239,9 @@
       <if test="record.phone != null">
         phone = #{record.phone,jdbcType=VARCHAR},
       </if>
+      <if test="record.phoneVertify != null">
+        phone_vertify = #{record.phoneVertify,jdbcType=TINYINT},
+      </if>
       <if test="record.password != null">
         password = #{record.password,jdbcType=VARCHAR},
       </if>
@@ -230,6 +257,12 @@
       <if test="record.job != null">
         job = #{record.job,jdbcType=VARCHAR},
       </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -243,11 +276,14 @@
       email = #{record.email,jdbcType=VARCHAR},
       email_vertify = #{record.emailVertify,jdbcType=TINYINT},
       phone = #{record.phone,jdbcType=VARCHAR},
+      phone_vertify = #{record.phoneVertify,jdbcType=TINYINT},
       password = #{record.password,jdbcType=VARCHAR},
       address = #{record.address,jdbcType=VARCHAR},
       avatar = #{record.avatar,jdbcType=VARCHAR},
       sex = #{record.sex,jdbcType=TINYINT},
-      job = #{record.job,jdbcType=VARCHAR}
+      job = #{record.job,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -270,6 +306,9 @@
       <if test="phone != null">
         phone = #{phone,jdbcType=VARCHAR},
       </if>
+      <if test="phoneVertify != null">
+        phone_vertify = #{phoneVertify,jdbcType=TINYINT},
+      </if>
       <if test="password != null">
         password = #{password,jdbcType=VARCHAR},
       </if>
@@ -285,6 +324,12 @@
       <if test="job != null">
         job = #{job,jdbcType=VARCHAR},
       </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -295,11 +340,14 @@
       email = #{email,jdbcType=VARCHAR},
       email_vertify = #{emailVertify,jdbcType=TINYINT},
       phone = #{phone,jdbcType=VARCHAR},
+      phone_vertify = #{phoneVertify,jdbcType=TINYINT},
       password = #{password,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       avatar = #{avatar,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=TINYINT},
-      job = #{job,jdbcType=VARCHAR}
+      job = #{job,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

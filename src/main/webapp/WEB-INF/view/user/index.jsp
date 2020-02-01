@@ -114,7 +114,6 @@
         <div class="col-md-8 col-xs-6" id="logo-hide">
             <span class="glyphicon glyphicon-menu-hamburger hide-icon" style="color: #00710F"
                   onclick="hideNav()"></span>
-            <%--            <img src="http://forrily.com/linym.jpg" style="width: 6vh;height:6vh;float: right;margin-top: 1vh;border-radius: 50%" class="img-responsive" alt="Responsive image">--%>
             <img id="avatar" class="avatar img-responsive" alt="avatar">
         </div>
         <div class="col-md-2" style="color: #00710F;float: right">
@@ -127,7 +126,9 @@
             <div class="lym-nav" id="n1" onclick="exportMenu(1)">个人信息管理
                 <div class="lym-sub-nav" id="sn1">
                     <div><a onclick="to('/user/mail/verify')">验证邮箱</a></div>
+                    <div><a onclick="to('/user/phone/verify')">验证手机号</a></div>
                     <div><a onclick="to('/user/info')">修改个人信息</a></div>
+                    <div><a onclick="to('/user/pw/reset')">重置密码</a></div>
                 </div>
             </div>
             <div class="lym-nav" id="n2" onclick="exportMenu(2)">日程管理
@@ -157,7 +158,7 @@
             </div>
             <div class="lym-nav" id="n6" onclick="exportMenu(6)">系统设置
                 <div class="lym-sub-nav" id="sn6">
-                    <div><a onclick="to('/user/file/upload')">修改密码</a></div>
+                    <div><a onclick="to('/user/pw/reset')">修改密码</a></div>
                     <div><a onclick="to('/user/schedule/list')">日程提醒设置</a></div>
                     <div><a onclick="to('/user/file/list')">样式主题切换</a></div>
                 </div>
@@ -189,7 +190,7 @@
 </div>
 </body>
 <script type="text/javascript">
-    let ws = new WebSocket("ws://localhost:8080/ws?x-token="+localStorage.getItem("x-token"));
+    let ws = new WebSocket("ws://localhost:8080/ws?x-token=" + localStorage.getItem("x-token"));
     $(function () {
         $.ajax({
             //请求方式
@@ -204,13 +205,21 @@
                 if (result.code >= 0) {
                     //登录成功
                     $("#avatar").attr("src", result.data.user.avatar);
-                    $("#name").text(result.data.user.name);
-                    if (result.data.schedules.length <=0) {
-                        alert("暂无日程信息");
-                    }else{
-                        let msg = "你有"+result.data.schedules.length+"条日程信息！\r\n"
+
+                    let name = "无设置用户名";
+                    if (result.data.user.name !== undefined) {
+                        name = result.data.user.name;
+                    }
+                    $("#name").text(name);
+
+                    if (result.data.schedules.length <= 0) {
+                        setTimeout(function(){
+                            alert("暂无日程信息");
+                        },800);
+                    } else {
+                        let msg = "你有" + result.data.schedules.length + "条日程信息！\r\n"
                         for (let i in result.data.schedules) {
-                            msg += i + "、时间："+result.data.schedules[i].startTime+"，\r\n日程内容：" + result.data.schedules[i].plan + "\r\n"
+                            msg += i + "、时间：" + result.data.schedules[i].startTime + "，\r\n日程内容：" + result.data.schedules[i].plan + "\r\n"
                         }
                         alert(msg);
                     }
@@ -226,19 +235,19 @@
         });
     });
 
-    ws.onopen = function(evt){
+    ws.onopen = function (evt) {
         console.log("已连接websocket")
     };
 
     ws.onmessage = function (evt) {
         let o = JSON.parse(evt.data);
-        sel=confirm("你有一个日程提醒!\r\n时间："+o.startTime+"，\r\n日程内容："+o.plan+"。\r\n  是否取消提醒？"); //在页面上弹出对话框
-        if(sel===true){
+        sel = confirm("你有一个日程提醒!\r\n时间：" + o.startTime + "，\r\n日程内容：" + o.plan + "。\r\n  是否取消提醒？"); //在页面上弹出对话框
+        if (sel === true) {
             $.ajax({
                 //请求方式
                 type: "POST",
                 //请求地址
-                url: "/user/schedule/remind/cancel?id="+o.id,
+                url: "/user/schedule/remind/cancel?id=" + o.id,
                 //请求成功
                 headers: {
                     'x-token': localStorage.getItem("x-token"),
@@ -296,6 +305,7 @@
             return;
         }
 
+        // $("#frame").attr("src", url + "?x-token=" + token);
         $("#frame").attr("src", url + "?x-token=" + token);
         if (document.body.clientWidth < 600) {
             $("#nav").css("display", "none");

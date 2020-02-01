@@ -17,7 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -42,14 +44,26 @@ public class UserAssetsController {
     }
 
     @GetMapping("/income/barchart")
-    public ModelAndView barchart(HttpServletRequest request, ModelAndView mv) {
+    public ModelAndView incomeBarchart(HttpServletRequest request, ModelAndView mv) {
         mv.setViewName("user/income/bar-chart");
         return mv;
     }
 
     @GetMapping("/income/pieChart")
-    public ModelAndView pieChart(ModelAndView mv) {
+    public ModelAndView incomePieChart(ModelAndView mv) {
         mv.setViewName("user/income/pie-chart");
+        return mv;
+    }
+
+    @GetMapping("/output/barchart")
+    public ModelAndView outputBarchart(HttpServletRequest request, ModelAndView mv) {
+        mv.setViewName("user/output/bar-chart");
+        return mv;
+    }
+
+    @GetMapping("/output/pieChart")
+    public ModelAndView outputPieChart(ModelAndView mv) {
+        mv.setViewName("user/output/pie-chart");
         return mv;
     }
 
@@ -74,7 +88,7 @@ public class UserAssetsController {
     public Result barData(HttpServletRequest request) {
         Long userId = (Long) request.getAttribute(JwtUtil.ID_KEY);
         List<Income> incomes = incomeService.incomes(userId);
-        IncomeBarData incomeBarData = new IncomeBarData();
+        AssetsBarData incomeBarData = new AssetsBarData();
         List<String> dataAxis = new ArrayList<>();
         List<BigDecimal> data = new ArrayList<>();
         SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
@@ -96,10 +110,10 @@ public class UserAssetsController {
     public Result pieData(HttpServletRequest request) {
         Long userId = (Long) request.getAttribute(JwtUtil.ID_KEY);
         List<Income> incomes = incomeService.incomes(userId);
-        IncomePieData incomePieData = new IncomePieData();
-        List<String> types = incomes.stream().map(Income::getType).collect(Collectors.toList());
-        List<IncomeVN> values = incomes.stream().map(income -> {
-            IncomeVN incomeVN = new IncomeVN();
+        AssertsPieData incomePieData = new AssertsPieData();
+        List<String> types = incomes.stream().map(Income::getType).distinct().collect(Collectors.toList());
+        List<AssertsVN> values = incomes.stream().map(income -> {
+            AssertsVN incomeVN = new AssertsVN();
             incomeVN.setName(income.getType());
             incomeVN.setValue(income.getValue());
             return incomeVN;
@@ -110,6 +124,53 @@ public class UserAssetsController {
     }
 
     @Auth
+    @PostMapping("/output/barData")
+    @ResponseBody
+    public Result outputBarData(HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute(JwtUtil.ID_KEY);
+        List<Output> outputs = outputService.outputs(userId);
+        AssetsBarData outputBarData = new AssetsBarData();
+        List<String> dataAxis = new ArrayList<>();
+        List<BigDecimal> data = new ArrayList<>();
+        BigDecimal yMax = BigDecimal.valueOf(0L);
+        outputs.stream().collect(Collectors.groupingBy(Output::getType)).forEach((s, goutputs) -> {
+             dataAxis.add(s);
+            double sum = goutputs.stream().map(Output::getCost).mapToDouble(BigDecimal::doubleValue).sum();
+            data.add(BigDecimal.valueOf(sum));
+        });
+        Optional<BigDecimal> max = data.stream().max(BigDecimal::compareTo);
+        if (max.isPresent()) {
+            yMax = max.get();
+        }
+        outputBarData.setDataAxis(dataAxis);
+        outputBarData.setData(data);
+        outputBarData.setyMax(yMax);
+        return ResultUtil.getSuccess(outputBarData);
+    }
+
+    @Auth
+    @PostMapping("/output/pieData")
+    @ResponseBody
+    public Result outputPieData(HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute(JwtUtil.ID_KEY);
+        List<Output> outputs = outputService.outputs(userId);
+        AssertsPieData outputPieData = new AssertsPieData();
+        List<String> types = new ArrayList<>();
+        List<AssertsVN> values = new ArrayList<>();
+        outputs.stream().collect(Collectors.groupingBy(Output::getType)).forEach((s, goutputs) -> {
+            types.add(s);
+            double sum = goutputs.stream().map(Output::getCost).mapToDouble(BigDecimal::doubleValue).sum();
+            AssertsVN assertsVN = new AssertsVN();
+            assertsVN.setName(s);
+            assertsVN.setValue(BigDecimal.valueOf(sum));
+            values.add(assertsVN);
+        });
+        outputPieData.setTypes(types);
+        outputPieData.setValues(values);
+        return ResultUtil.getSuccess(outputPieData);
+    }
+
+    @Auth
     @PostMapping("/output")
     @ResponseBody
     public Result postOutput(HttpServletRequest request, @RequestBody OutputListParam param) {
@@ -117,7 +178,6 @@ public class UserAssetsController {
         param.setUserId(userId);
         return ResultUtil.getSuccess(outputService.outputs(param));
     }
-
 
     @Auth
     @PostMapping("/income/remove")

@@ -40,7 +40,7 @@ public class FileManageServiceImpl implements FileManageService {
         FileLogExample fileLogExample = new FileLogExample();
         FileLogExample.Criteria criteria = fileLogExample.createCriteria();
         criteria.andUseridEqualTo(fileLogListParam.getUserId());
-        if (Objects. nonNull(fileLogListParam.getKeyWord()) && !fileLogListParam.getKeyWord().equals("")) {
+        if (Objects.nonNull(fileLogListParam.getKeyWord()) && !fileLogListParam.getKeyWord().equals("")) {
             criteria.andResourceNameLike(fileLogListParam.getKeyWord());
         }
         List<FileLog> fileLogs = fileLogMapper.selectByExample(fileLogExample);
@@ -92,15 +92,15 @@ public class FileManageServiceImpl implements FileManageService {
             return ResultUtil.getSuccess();
         }
         String filePath = System.getProperty("java.io.tmpdir");
-        filePath += "/upload/"+ exist.getResourceName();
+        filePath += "/upload/" + exist.getResourceName();
         File file = new File(filePath);
-        if(file.isFile()){
+        if (file.isFile()) {
             boolean ok = file.delete();
-            if (ok) {
-               fileLogMapper.deleteByPrimaryKey(exist.getId());
-            }else if (logger.isInfoEnabled()){
-                logger.warn("file.delete() return false and file path is "+filePath);
-            }
+//            if (ok) {
+            fileLogMapper.deleteByPrimaryKey(exist.getId());
+//            }else if (logger.isInfoEnabled()){
+//                logger.warn("file.delete() return false and file path is "+filePath);
+//            }
         }
         return ResultUtil.getSuccess();
     }

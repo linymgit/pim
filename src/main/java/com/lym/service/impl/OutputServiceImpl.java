@@ -65,4 +65,11 @@ public class OutputServiceImpl implements OutputService {
         List<Output> Outputs = outputMapper.selectByExample(outputExample);
         return new PageInfo(Outputs);
     }
+
+    @Override
+    public List<Output> outputs(Long userId) {
+        OutputExample outputExample = new OutputExample();
+        outputExample.createCriteria().andUseridEqualTo(userId);
+        return outputMapper.selectByExample(outputExample);
+    }
 }

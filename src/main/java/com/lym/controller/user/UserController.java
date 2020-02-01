@@ -9,9 +9,7 @@ import com.lym.entity.param.IndexResult;
 import com.lym.service.CodeService;
 import com.lym.service.ScheduleService;
 import com.lym.service.UserService;
-import com.lym.utils.JwtUtil;
-import com.lym.utils.MailUtil;
-import com.lym.utils.ResultUtil;
+import com.lym.utils.*;
 import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -70,6 +69,114 @@ public class UserController {
         return mv;
     }
 
+    @Auth
+    @GetMapping("/pw/reset")
+    public ModelAndView passWordReset(HttpServletRequest request, ModelAndView mv) {
+        Long id = (Long) request.getAttribute(JwtUtil.ID_KEY);
+        User userById = userService.getUserById(id);
+        mv.addObject("user", userById);
+        mv.setViewName("user/password-reset");
+        return mv;
+    }
+
+    @Auth
+    @GetMapping("/phone/verify")
+    public ModelAndView phoneVerify(HttpServletRequest request, ModelAndView mv) {
+        Long id = (Long) request.getAttribute(JwtUtil.ID_KEY);
+        User userById = userService.getUserById(id);
+        if (Objects.nonNull(userById.getPhoneVertify()) && userById.getPhoneVertify() == TencentSendSmsUtil.VERIFING) {
+            Date updateTime = userById.getUpdateTime();
+            Date now = new Date();
+            if (now.getTime() > (updateTime.getTime() + 5 * 60 * 1000)) {
+                userById.setPhoneVertify(TencentSendSmsUtil.NO_VERIFY);
+            }
+        }
+        mv.addObject("user", userById);
+        mv.setViewName("user/phone-verify");
+        return mv;
+    }
+
+    @Auth
+    @PostMapping("/email/reverify")
+    @ResponseBody
+    public Result reverifyEmail(HttpServletRequest request) {
+        Long id = (Long) request.getAttribute(JwtUtil.ID_KEY);
+        User userById = userService.getUserById(id);
+        if (Objects.isNull(userById)) {
+            return ResultUtil.getUserNotExistError();
+        }
+        User user = new User();
+        user.setId(userById.getId());
+        user.setEmail("");
+        user.setEmailVertify(MailUtil.NO_VERIFY);
+        return ResultUtil.getSuccess(userService.updateUserById(user));
+    }
+
+
+    @Auth
+    @PostMapping("/phone/code2verify")
+    @ResponseBody
+    public Result phoneCode2Verify(HttpServletRequest request, @RequestBody Code code) {
+        Long id = (Long) request.getAttribute(JwtUtil.ID_KEY);
+        User userById = userService.getUserById(id);
+        if (Objects.isNull(userById)) {
+            return ResultUtil.getUserNotExistError();
+        }
+        User userByPEN = userService.getUserByPEN(code.getTo(), null, null);
+        if (Objects.nonNull(userByPEN)) {
+            return ResultUtil.getError("该手机号已被注册");
+        }
+        if (Objects.nonNull(userById.getPhoneVertify()) && userById.getPhoneVertify() == TencentSendSmsUtil.VERIFED) {
+            return ResultUtil.getError("已认证");
+        }
+        if (StringUtil.isBlank(userById.getPhone())) {
+            userById.setPhone(code.getTo());
+            userById.setPhoneVertify(TencentSendSmsUtil.VERIFED);
+
+            Result result = smsCodeService.sendCode(code.getTo());
+            if (ResultUtil.isError(result)) {
+                return result;
+            }
+            User u = new User();
+            u.setId(userById.getId());
+            u.setPhone(userById.getPhone());
+            u.setPhoneVertify(TencentSendSmsUtil.VERIFING);
+            return ResultUtil.getSuccess(userService.updateUserById(u));
+        }
+        if (StringUtil.nonBlank(userById.getPhone()) && Objects.nonNull(userById.getPhoneVertify()) && userById.getPhoneVertify() == TencentSendSmsUtil.VERIFING) {
+            Date updateTime = userById.getUpdateTime();
+            Date now = new Date();
+            if (now.getTime() > (updateTime.getTime() + 5 * 60 * 1000)) {
+                return smsCodeService.sendCode(code.getTo());
+            } else {
+                return ResultUtil.getError("操作太频繁,稍后重试");
+            }
+        }
+        return ResultUtil.getSuccess();
+    }
+
+    @Auth
+    @PostMapping("/phone/verify")
+    @ResponseBody
+    public Result phoneVerify(HttpServletRequest request, @RequestBody Code code) {
+        Long id = (Long) request.getAttribute(JwtUtil.ID_KEY);
+        User userById = userService.getUserById(id);
+        if (Objects.isNull(userById)) {
+            return ResultUtil.getUserNotExistError();
+        }
+        if (userById.getPhoneVertify() == TencentSendSmsUtil.VERIFED) {
+            return ResultUtil.getSuccess();
+        }
+        boolean ok = smsCodeService.isOk(code.getTo(), code.getCode());
+        if (!ok) {
+            return new Result(ResultUtil.INVALIDE_CAPTCHA, "无效的短信验证码");
+        }
+        User user = new User();
+        user.setId(userById.getId());
+        user.setPhone(code.getTo());
+        user.setPhoneVertify(TencentSendSmsUtil.VERIFED);
+        return ResultUtil.getSuccess(userService.updateUserById(user));
+    }
 
     @PostMapping("/pw/login")
     @ResponseBody
@@ -85,18 +192,21 @@ public class UserController {
 
     /**
      * 重置密码
-     *
      * @param user
      * @return
      */
+    @Auth
     @PostMapping("/pw/reset")
     @ResponseBody
-    public Result reset(@RequestBody User user) {
-        User userById = userService.getUserById(user.getId());
+    public Result reset(HttpServletRequest request, @RequestBody User user) {
+        Long id = (Long) request.getAttribute(JwtUtil.ID_KEY);
+        User userById = userService.getUserById(id);
         if (userById.getEmailVertify() <= 0) {
             return ResultUtil.getUserEmailNotVeritfy();
         }
-        return userService.updateUserById(userById) > 0 ? ResultUtil.getSuccess() : ResultUtil.getError();
+        user.setId(id);
+        user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
+        return ResultUtil.getSuccess(userService.updateUserById(user));
     }
 
     @PostMapping("/phone/login")
@@ -105,13 +215,19 @@ public class UserController {
         if (Objects.isNull(code)) {
             return ResultUtil.getError();
         }
-        User userByPEN = userService.getUserByPEN(code.getTo(), "", "");
-        if (Objects.isNull(userByPEN)) {
-            return ResultUtil.getUserNotExistError();
-        }
         boolean ok = smsCodeService.isOk(code.getTo(), code.getCode());
         if (!ok) {
             return new Result(ResultUtil.INVALIDE_CAPTCHA, "无效的短信验证码");
+        }
+        User userByPEN = userService.getUserByPEN(code.getTo(), null, null);
+        //首次手机验证码登录系统创建用户
+        if (Objects.isNull(userByPEN)) {
+            userByPEN = new User();
+            userByPEN.setId(SnowFlakeUtil.nextId());
+            userByPEN.setPhone(code.getTo());
+            userByPEN.setPhoneVertify(TencentSendSmsUtil.VERIFED);
+            userByPEN.setAvatar("http://forrily.com/linym.jpg");
+            userService.addUser(userByPEN);
         }
         return ResultUtil.getSuccess(jwtUtil.genToken(userByPEN.getId()));
     }
@@ -122,13 +238,18 @@ public class UserController {
         if (Objects.isNull(code) || Objects.isNull(code.getTo())) {
             return ResultUtil.getError();
         }
-        User userByPEN = userService.getUserByPEN("", code.getTo(), "");
-        if (Objects.isNull(userByPEN)) {
-            return ResultUtil.getUserNotExistError();
-        }
         boolean ok = mailCodeService.isOk(code.getTo(), code.getCode());
         if (!ok) {
             return new Result(ResultUtil.INVALIDE_CAPTCHA, "无效的邮箱验证码");
+        }
+        User userByPEN = userService.getUserByPEN(null, code.getTo(), null);
+        if (Objects.isNull(userByPEN)) {
+            userByPEN = new User();
+            userByPEN.setId(SnowFlakeUtil.nextId());
+            userByPEN.setEmail(code.getTo());
+            userByPEN.setEmailVertify(MailUtil.VERIFED);
+            userByPEN.setAvatar("http://forrily.com/linym.jpg");
+            userService.addUser(userByPEN);
         }
         return ResultUtil.getSuccess(jwtUtil.genToken(userByPEN.getId()));
     }
@@ -136,14 +257,21 @@ public class UserController {
     @Auth
     @PostMapping("/email/verify")
     @ResponseBody
-    public Result sendEmailVerify(HttpServletRequest request) {
+    public Result sendEmailVerify(HttpServletRequest request, @RequestBody User user) {
         Long id = (Long) request.getAttribute(JwtUtil.ID_KEY);
         User userById = userService.getUserById(id);
         if (Objects.isNull(userById)) {
             return ResultUtil.getUserNotExistError();
         }
-        if (userById.getEmailVertify()>0) {
+        if (Objects.nonNull(userById.getEmailVertify()) && userById.getEmailVertify() > 0) {
             return ResultUtil.getSuccess();
+        }
+        if (Objects.nonNull(user.getEmail())) {
+            User userByPEN = userService.getUserByPEN(null, user.getEmail(), null);
+            if (Objects.nonNull(userByPEN)) {
+                return ResultUtil.getError("该邮箱已被注册");
+            }
+            userById.setEmail(user.getEmail());
         }
         String s = "<a href='http://localhost:8080/user/email/verify?token=%s'>点击激活邮箱</a>";
         HashMap<String, Object> map = new HashMap<>();
@@ -192,7 +320,17 @@ public class UserController {
 
     @PostMapping("/do/register")
     @ResponseBody
-    public Result registerHandler(@RequestBody User user) {
+    public Result registerHandler(@RequestParam(value = "avatar", required = false) MultipartFile file, MultipartHttpServletRequest request) {
+        User user = new User();
+        user.setId(SnowFlakeUtil.nextId());
+        user.setName(request.getParameter("name"));
+        user.setRelname(request.getParameter("relname"));
+        user.setPassword(request.getParameter("password"));
+        user.setEmail(request.getParameter("email"));
+        user.setPhone(request.getParameter("phone"));
+        user.setJob(request.getParameter("job"));
+        user.setAddress(request.getParameter("address"));
+
         User userByPEN = userService.getUserByPEN(user.getPhone(), user.getEmail(), user.getName());
         if (Objects.nonNull(userByPEN)) {
             String msg = "";
@@ -209,7 +347,36 @@ public class UserController {
         }
         String md5Password = DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
         user.setPassword(md5Password);
-        int result = userService.register(user);
+        if (Objects.nonNull(file)) {
+            String path;// 文件路径
+            String type;//文件类型
+            String fileName = file.getOriginalFilename();// 文件原名
+            logger.info("上传的源文件名称:" + fileName);
+            type = fileName.contains(".") ? fileName.substring(fileName.lastIndexOf(".") + 1) : null;
+            if (type != null) {
+                if ("GIF".equals(type.toUpperCase()) || "PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase())) {
+                    // 项目在容器中实际发布运行的根路径
+                    String realPath = System.getProperty("java.io.tmpdir");
+                    // 自定义的文件名称
+                    String trueFileName = System.currentTimeMillis() + fileName;
+                    // 设置存放图片文件的路径
+                    path = realPath + "/upload/" + trueFileName;
+                    logger.info("图片存储的路径是:" + path);
+                    // 转存文件到指定的路径
+                    try {
+                        file.transferTo(new File(path));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    user.setAvatar("/resources/" + trueFileName);
+                } else {
+                    return ResultUtil.getError("文件类型错误");
+                }
+            } else {
+                return ResultUtil.getError("文件类型为空");
+            }
+        }
+        int result = userService.addUser(user);
         if (result > 0) {
             return ResultUtil.getSuccess();
         }
@@ -260,35 +427,40 @@ public class UserController {
 
     @Auth
     @ResponseBody
-    @RequestMapping(value = "/info/modify",method = RequestMethod.POST)
+    @RequestMapping(value = "/info/modify", method = RequestMethod.POST)
     public Result ModifyUser(@RequestParam(value = "avatar", required = false) MultipartFile file, MultipartHttpServletRequest request) throws IOException {
         Long id = (Long) request.getAttribute(JwtUtil.ID_KEY);
         User userById = userService.getUserById(id);
-        boolean need=false;
-        if(Objects.nonNull(file)){
+        boolean need = false;
+        if (Objects.nonNull(file)) {
             String path;// 文件路径
             String type;//文件类型
-            String fileName=file.getOriginalFilename();// 文件原名
-            logger.info("上传的源文件名称:"+fileName);
-            type= fileName.contains(".") ?fileName.substring(fileName.lastIndexOf(".")+1):null;
-            if(type != null){
-                if("GIF".equals(type.toUpperCase())||"PNG".equals(type.toUpperCase())||"JPG".equals(type.toUpperCase())){
+            String fileName = file.getOriginalFilename();// 文件原名
+            logger.info("上传的源文件名称:" + fileName);
+            type = fileName.contains(".") ? fileName.substring(fileName.lastIndexOf(".") + 1) : null;
+            if (type != null) {
+                if ("GIF".equals(type.toUpperCase()) || "PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase())) {
                     // 项目在容器中实际发布运行的根路径
-                    String realPath= System.getProperty("java.io.tmpdir");
+                    String realPath = System.getProperty("java.io.tmpdir");
                     // 自定义的文件名称
-                    String trueFileName= System.currentTimeMillis() +fileName;
+                    String trueFileName = System.currentTimeMillis() + fileName;
                     // 设置存放图片文件的路径
-                    path=realPath+"/upload/"+trueFileName;
-                    logger.info("图片存储的路径是:"+path);
+                    path = realPath + "/upload/" + trueFileName;
+                    logger.info("图片存储的路径是:" + path);
                     // 转存文件到指定的路径
                     file.transferTo(new File(path));
-                    userById.setAvatar("/resources/"+trueFileName);
-                }else {
+                    userById.setAvatar("/resources/" + trueFileName);
+                } else {
                     return ResultUtil.getError("文件类型错误");
                 }
-            }else{
+            } else {
                 return ResultUtil.getError("文件类型为空");
             }
+        }
+
+        if (!request.getParameter("name").equals(userById.getRelname())) {
+            userById.setName(request.getParameter("name"));
+            need = true;
         }
 
         if (!request.getParameter("relname").equals(userById.getRelname())) {
@@ -311,16 +483,6 @@ public class UserController {
             userService.updateUserById(userById);
         }
         return ResultUtil.getSuccess();
-    }
-
-    @Auth
-    @GetMapping("/ws")
-    public ModelAndView ws(ModelAndView mv, HttpServletRequest request) {
-        Long id = (Long) request.getAttribute(JwtUtil.ID_KEY);
-        User userById = userService.getUserById(id);
-        mv.addObject("user", userById);
-        mv.setViewName("user/websocket-test");
-        return mv;
     }
 
 }

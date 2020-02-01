@@ -28,4 +28,9 @@ public class Mail163CodeServiceImpl extends CodeService {
         boolean ok = mailUtil.sendEmail(to, "xxx个人信息管理系统", String.format("验证码为%s,你正在登录,若非本人操作，请勿泄露", code));
         return ok ? ResultUtil.getSuccess(code) : ResultUtil.getInvalideEmailError();
     }
+
+    @Override
+    public boolean hasCode(String to) {
+        return false;
+    }
 }

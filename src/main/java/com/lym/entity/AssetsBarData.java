@@ -8,7 +8,7 @@ import java.util.List;
  * @auth linyimin
  * @Desc
  **/
-public class IncomeBarData {
+public class AssetsBarData {
     private List<String> dataAxis;
     private List<BigDecimal> data;
     private BigDecimal yMax;

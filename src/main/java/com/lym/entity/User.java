@@ -1,5 +1,7 @@
 package com.lym.entity;
 
+import java.util.Date;
+
 public class User {
     private Long id;
 
@@ -13,6 +15,8 @@ public class User {
 
     private String phone;
 
+    private Byte phoneVertify;
+
     private String password;
 
     private String address;
@@ -22,6 +26,10 @@ public class User {
     private Byte sex;
 
     private String job;
+
+    private Date createTime;
+
+    private Date updateTime;
 
     public Long getId() {
         return id;
@@ -71,6 +79,14 @@ public class User {
         this.phone = phone == null ? null : phone.trim();
     }
 
+    public Byte getPhoneVertify() {
+        return phoneVertify;
+    }
+
+    public void setPhoneVertify(Byte phoneVertify) {
+        this.phoneVertify = phoneVertify;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -109,5 +125,21 @@ public class User {
 
     public void setJob(String job) {
         this.job = job == null ? null : job.trim();
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

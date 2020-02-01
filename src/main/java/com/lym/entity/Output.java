@@ -1,5 +1,7 @@
 package com.lym.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -14,6 +16,7 @@ public class Output {
 
     private String memo;
 
+    @JSONField(format="yyyy-MM-dd")
     private Date outputTime;
 
     private Date createTime;

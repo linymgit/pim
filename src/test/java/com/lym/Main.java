@@ -4,9 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.lym.entity.Captcha;
 import com.lym.entity.User;
 import com.lym.mapper.UserMapper;
-import com.lym.utils.EnhanceUtil;
 import com.lym.utils.MailUtil;
-import com.lym.utils.TargetInterceptor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -15,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
-import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.DigestUtils;
@@ -77,11 +74,11 @@ public class Main {
 
     @Test
     public void testCglib() {
-        Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(EnhanceUtil.class);
-        enhancer.setCallback(new TargetInterceptor());
-        EnhanceUtil enhanceUtil = (EnhanceUtil) enhancer.create();
-        enhanceUtil.test("hello world");
+//        Enhancer enhancer = new Enhancer();
+//        enhancer.setSuperclass(EnhanceUtil.class);
+//        enhancer.setCallback(new TargetInterceptor());
+//        EnhanceUtil enhanceUtil = (EnhanceUtil) enhancer.create();
+//        enhanceUtil.test("hello world");
     }
 
     @Test

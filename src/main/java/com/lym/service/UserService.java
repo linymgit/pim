@@ -12,7 +12,7 @@ import java.util.List;
  **/
 public interface UserService {
     List<User> list();
-    int register(User user);
+    int addUser(User user);
     User getUserByPEN(String phoneNum, String email, String name);
     User getUserByNP(String name, String password);
     User getUserByName(String name);

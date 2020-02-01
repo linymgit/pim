@@ -87,16 +87,20 @@
                         <label class="control-label">手机号</label>
                         <input type="text" class="form-control" id="phone" aria-describedby="inputSuccess2Status">
                     </div>
+
                     <div class="form-group has-warning has-feedback">
-                        <label class="control-label">短信验证码</label>
+                        <label class="control-label" id="phoneLabel">图片验证码</label>
                         <input type="text" class="form-control" id="smsCode">
+                        <input type="hidden" id="captchaId2Phone">
+                        <img id="captcha2Phone" style="position: absolute;top: 2.6rem;right: 2px;z-index: 1000"
+                             onclick="renderCaptcha2Phone()">
                     </div>
                     <div class="form-group has-warning has-feedback">
                         <button type="button" class="btn" style="width: 100%" id="smsBtn" onclick="sendPhoneCode()">
-                            发送手机验证码<span id="smsS" style="display: none">(<span id="smsSS"></span>s)</span></button>
+                            <span id="smsSSS">点击发送手机验证码</span><span id="smsS" style="display: none">已发送(<span id="smsSS"></span>s)</span></button>
                     </div>
                     <p>
-                        <button type="button" class="btn btn-primary" style="width: 100%">登录</button>
+                        <button type="button" class="btn btn-primary" style="width: 100%" onclick="phoneLogin()">登录</button>
                     </p>
                 </div>
                 <div id="dia3" style="display: none">
@@ -106,12 +110,15 @@
                         <input type="text" class="form-control" id="email" aria-describedby="inputSuccess2Status">
                     </div>
                     <div class="form-group has-warning has-feedback">
-                        <label class="control-label">邮箱验证码</label>
+                        <label class="control-label" id="emailLabel">图片验证码</label>
                         <input type="text" class="form-control" id="emailCode">
+                        <input type="hidden" id="captchaId2Email">
+                        <img id="captcha2Email" style="position: absolute;top: 2.6rem;right: 2px;z-index: 1000"
+                             onclick="renderCaptcha2Email()">
                     </div>
                     <div class="form-group has-warning has-feedback">
                         <button type="button" class="btn" style="width: 100%" id="emailBtn" onclick="sendEmailCode()">
-                            点击发送邮箱验证码<span id="emailS" style="display: none">(<span id="emailSS"></span>s)</span>
+                            <span id="emailSSS">点击发送邮箱验证码</span><span id="emailS" style="display: none">已发送邮箱验证码(<span id="emailSS"></span>s)</span>
                         </button>
                     </div>
                     <p>
@@ -152,6 +159,13 @@
     tabIds = [1, 2, 3]
 
     function changeTab(id) {
+        // 1.刷新图片验证码
+        if (id === 2){
+            renderCaptcha2Phone();
+        }
+        if (id === 3){
+            renderCaptcha2Email();
+        }
         for (let i in tabIds) {
             if (id === 1) {
                 $("#forget-pw").css("display", "inline-block")
@@ -170,36 +184,54 @@
 
     //发送手机短信验证码
     function sendPhoneCode() {
-        let $3 = $("#smsBtn");
-        let $1 = $("#phone").val()
+        let $1 = $("#phone").val();
         if ($1 === "") {
-            alert("手机号码不能为空")
+            alert("手机号码不能为空");
             return;
         }
-        $3.attr("disabled", true);
+        let $smsCode = $("#smsCode").val();
+        if ($smsCode === "") {
+            alert("图片验证码不能为空");
+            return;
+        }
+        let $smsBtn = $("#smsBtn");
+        $smsBtn.attr("disabled", true);
+        let $smsSSS = $("#smsSSS");
+        $smsSSS.text("发送中...");
+        $smsSSS.css("display", "inline-block");
         $.ajax({
             type: "POST",
             contentType: "application/json;charset=UTF-8",
+            headers: {
+                'captchaId': $("#captchaId2Phone").val(),
+                'captchaCode': $smsCode,
+            },
             url: "/code/phone?phone=" + $1,
             success: function (result) {
                 if (result.code >= 0) {
-                    let $1 = $("#smsS")
-                    let $2 = $("#smsSS");
-                    $2.text(120);
-                    $1.css("display", "inline-block");
+                    let $smsS = $("#smsS");
+                    let $smsSS = $("#smsSS");
+                    $smsSSS.css("display", "none");
+                    $smsSS.text(120);
+                    $smsS.css("display", "inline-block");
                     let t1 = window.setInterval(function () {
-                        if ($2.text() <= 0) {
+                        if ($smsSS.text() <= 0) {
                             window.clearInterval(t1);
-                            $1.css("display", "none");
-                            $3.removeAttr("disabled")
+                            $smsS.css("display", "none");
+                            $smsBtn.removeAttr("disabled")
                             return;
                         }
-                        $2.text($2.text() - 1)
+                        $smsSS.text($smsSS.text() - 1)
                     }, 1000);
+                    $("#phoneLabel").text("手机验证码");
+                    $("#captchaId2Phone").css("display", "none");
                 } else {
                     alert("发送失败，因为" + result.msg);
-                    $3.removeAttr("disabled");
+                    renderCaptcha2Phone();
+                    $smsBtn.removeAttr("disabled");
+                    $smsSSS.text("点击发送手机验证码");
                 }
+                $("#smsCode").val("");
             },
             //请求失败，包含具体的错误信息
             error: function (e) {
@@ -216,33 +248,57 @@
             alert("邮箱地址不能为空")
             return;
         }
+        let $2 = $("#emailCode").val();
+        if ($2 === "") {
+            alert("图片验证码不能为空")
+            return;
+        }
+        let $emailS = $("#emailS")
+        let $emailSS = $("#emailSS");
+        let $emailSSS = $("#emailSSS");
+        let $emailBtn = $("#emailBtn");
+        $emailSSS.text("正在发送邮件验证码...");
+        $emailSSS.css("display", "inline-block");
+        $emailBtn.attr("disabled", true);
         $.ajax({
             type: "POST",
             contentType: "application/json;charset=UTF-8",
+            headers: {
+                'captchaId': $("#captchaId2Email").val(),
+                'captchaCode': $2,
+            },
             url: "/code/email?email=" + $1,
             success: function (result) {
                 if (result.code >= 0) {
-                    let $1 = $("#emailS")
-                    let $2 = $("#emailSS");
-                    $2.text(120);
-                    let $3 = $("#emailBtn");
-                    $1.css("display", "inline-block");
-                    let first = true;
+                    $emailSS.text(120);
+                    $emailSSS.css("display", "none");
+                    $emailS.css("display", "inline-block");
                     let t1 = window.setInterval(function () {
-                        if ($2.text() <= 0) {
+                        if ($emailSS.text() <= 0) {
                             window.clearInterval(t1);
-                            $1.css("display", "none");
-                            $3.removeAttr("disabled")
+                            $emailS.css("display", "none");
+                            $emailBtn.removeAttr("disabled");
+                            $("#emailLabel").text("图片验证码");
+                            $("#captcha2Email").css("display", "block");
+                            $emailSSS.text("点击发送邮箱验证码");
+                            $emailSSS.css("display", "inline-block");
                             return;
                         }
-                        $2.text($2.text() - 1)
-                        if (first) {
-                            $3.attr("disabled", true);
-                        }
+                        $emailSS.text($emailSS.text() - 1);
                     }, 1000);
+                    $("#emailLabel").text("邮箱验证码");
+                    $("#captcha2Email").css("display", "none");
                 } else {
                     alert(result.msg)
+                    renderCaptcha2Email();
+                    $emailS.css("display", "none");
+                    $emailBtn.removeAttr("disabled");
+                    $("#emailLabel").text("图片验证码");
+                    $("#captcha2Email").css("display", "block");
+                    $emailSSS.text("点击发送邮箱验证码");
+                    $emailSSS.css("display", "inline-block");
                 }
+                $("#emailCode").val("");
             },
             //请求失败，包含具体的错误信息
             error: function (e) {
@@ -291,7 +347,8 @@
                     localStorage.setItem('x-token', result.data);
                     window.location.href = "/user/index";
                 } else {
-                    alert(result.msg)
+                    alert(result.msg);
+                    renderCaptcha();
                 }
             },
             //请求失败，包含具体的错误信息
@@ -314,7 +371,7 @@
             alert("邮箱验证码不能为空！");
             return;
         }
-
+        $("#emailBtn").css("disabled", true);
         $.ajax({
             //请求方式
             type: "POST",
@@ -322,6 +379,47 @@
             contentType: "application/json;charset=UTF-8",
             //请求地址
             url: "/user/email/login",
+            //数据，json字符串
+            data: JSON.stringify({
+                to: $1,
+                code: $2,
+            }),
+            success: function (result) {
+                if (result.code >= 0) {
+                    //登录成功
+                    localStorage.setItem('x-token', result.data);
+                    window.location.href = "/user/index"
+                } else {
+                    alert(result.msg)
+                }
+            },
+            //请求失败，包含具体的错误信息
+            error: function (e) {
+                console.log(e.status);
+                console.log(e.responseText);
+            }
+        });
+    }
+
+    function phoneLogin() {
+        let $1 = $("#phone").val();
+        let $2 = $("#smsCode").val();
+        if ($1 === "") {
+            alert("手机号不能为空！");
+            return;
+        }
+        if ($2 === "") {
+            alert("手机验证码不能为空！");
+            return;
+        }
+
+        $.ajax({
+            //请求方式
+            type: "POST",
+            //请求的媒体类型
+            contentType: "application/json;charset=UTF-8",
+            //请求地址
+            url: "/user/phone/login",
             //数据，json字符串
             data: JSON.stringify({
                 to: $1,
@@ -346,6 +444,29 @@
     }
 
 
+    function renderCaptcha2Phone() {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json;charset=UTF-8",
+            url: "/captcha/arithm",
+            success: function (result) {
+                $("#captcha2Phone").attr("src", result.pic);
+                $("#captchaId2Phone").val(result.captchaId);
+            }
+        });
+    }
+
+    function renderCaptcha2Email(){
+        $.ajax({
+            type: "GET",
+            contentType: "application/json;charset=UTF-8",
+            url: "/captcha/arithm",
+            success: function (result) {
+                $("#captcha2Email").attr("src", result.pic);
+                $("#captchaId2Email").val(result.captchaId);
+            }
+        });
+    }
 </script>
 </body>
 </html>

@@ -1,8 +1,11 @@
 package com.lym.service;
 
 import com.github.pagehelper.PageInfo;
+import com.lym.entity.Income;
 import com.lym.entity.Output;
 import com.lym.entity.param.OutputListParam;
+
+import java.util.List;
 
 /**
  * @Date 2020/1/30
@@ -29,4 +32,10 @@ public interface OutputService {
      * 获取资产信息
      */
     PageInfo<Output> outputs(OutputListParam outputListParam);
+
+    /**
+     * 获取所有资产信息
+     */
+    List<Output> outputs(Long userId);
+
 }

@@ -1,5 +1,6 @@
 package com.lym.utils;
 
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -18,5 +19,13 @@ public class StringUtil {
             stringBuilder.append(NUM_STR.charAt(random.nextInt(NUM_STR.length())));
         }
         return stringBuilder.toString();
+    }
+
+    public static boolean isBlank(String s){
+        return Objects.isNull(s) || s.equals("");
+    }
+
+    public static boolean nonBlank(String s){
+        return !isBlank(s);
     }
 }

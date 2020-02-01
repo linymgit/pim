@@ -9,11 +9,22 @@ function buildForm(formObject) {
     gFormObject = formObject;
     let formText = '<form class="form-horizontal" id="yimi-form-v1">';
     let i = 1;
+    let j = 1;
 
     for (let object of formObject.fields) {
         let iT = "text";
         if (strNonNull(object.inputType)) {
             iT = object.inputType;
+        }
+        if (iT === "uploadPic"){
+            formText += '    <div class="form-group">' +
+                '                    <label class="control-label col-sm-3" for="avatar">'+object.label+':</label>' +
+                '                    <img id="fImg'+j+'" style="width: 4rem;height: 4rem;border-radius: 50%;margin-bottom: 0.5rem;">' +
+                '                    <div class="col-sm-4"><input type="file" id="file'+j+'" name="'+object.name+'" onchange="changeFile(\''+j+'\')" accept=".png,.jpg,.jpeg,image/png,image/jpg,image/jpeg">' +
+                '                    <p class="help-block">'+object.tips+'</p></div>' +
+                '                </div>';
+            j++;
+            continue;
         }
         //按钮的处理
         if (iT === "button") {
@@ -173,38 +184,76 @@ function goFun(formHandler, success, fail) {
     if (!doCheck(0)) {
         return;
     }
-    let serializeJson = $("#yimi-form-v1").serializeJson();
-    $.ajax({
-        //请求方式
-        type: gFormObject["method"],
-        //请求的媒体类型
-        contentType: "application/json;charset=UTF-8",
-        //请求地址
-        url: gFormObject["url"],
-        //数据，json字符串
-        data: JSON.stringify(serializeJson),
-        //请求成功
-        headers: {
-            'captchaId': $("#captchaId").val(),
-            'captchaCode': serializeJson["captchaCode"],
-        },
-        success: function (result) {
-            if (result.code >= 0) {
-                if (success !== undefined && success !== null) {
-                    success(result)
+
+    if (gFormObject["isMP"]) {
+        let fs = $("#yimi-form-v1").serializeArray();
+        let formData = new FormData();
+        $.each(fs, function (key, value) {
+            formData.append(value.name, value.value);
+        });
+        formData.append("avatar", $("#file"+1)[0].files[0]);
+        $.ajax({
+            type: 'post',
+            url: gFormObject["url"],
+            cache: false,
+            contentType: false,
+            processData: false, //默认为true，默认情况下，发送的数据将被转换为对象，设为false不希望进行转换
+            data: formData, //数据
+            headers: {
+                'captchaId': $("#captchaId").val(),
+                'captchaCode': "1234",
+            },
+            success: function (result) {
+                if (result.code >= 0) {
+                    if (success !== undefined && success !== null) {
+                        success(result)
+                    }
+                } else {
+                    if (fail !== undefined && fail !== null) {
+                        fail(result)
+                    }
                 }
-            } else {
-                if (fail !== undefined && fail !== null) {
-                    fail(result)
-                }
+            },
+            //请求失败，包含具体的错误信息
+            error: function (e) {
+                console.log(e.status);
+                console.log(e.responseText);
             }
-        },
-        //请求失败，包含具体的错误信息
-        error: function (e) {
-            console.log(e.status);
-            console.log(e.responseText);
-        }
-    });
+        });
+    }else{
+        let serializeJson = $("#yimi-form-v1").serializeJson();
+        $.ajax({
+            //请求方式
+            type: gFormObject["method"],
+            //请求的媒体类型
+            contentType: "application/json;charset=UTF-8",
+            //请求地址
+            url: gFormObject["url"],
+            //数据，json字符串
+            data: JSON.stringify(serializeJson),
+            //请求成功
+            headers: {
+                'captchaId': $("#captchaId").val(),
+                'captchaCode': serializeJson["captchaCode"],
+            },
+            success: function (result) {
+                if (result.code >= 0) {
+                    if (success !== undefined && success !== null) {
+                        success(result)
+                    }
+                } else {
+                    if (fail !== undefined && fail !== null) {
+                        fail(result)
+                    }
+                }
+            },
+            //请求失败，包含具体的错误信息
+            error: function (e) {
+                console.log(e.status);
+                console.log(e.responseText);
+            }
+        });
+    }
 }
 
 $.fn.serializeJson = function (otherString) {
@@ -255,4 +304,10 @@ function withTokenGet(uri) {
             console.log(e.responseText);
         }
     });
+}
+
+function changeFile(i) {
+    let file = $("#file"+i)[0].files[0];
+    let src = window.URL.createObjectURL(file);
+    $("#fImg"+i).attr("src", src);
 }
