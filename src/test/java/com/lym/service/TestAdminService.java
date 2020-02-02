@@ -47,7 +47,7 @@ public class TestAdminService {
         admin.setId(SnowFlakeUtil.nextId());
         admin.setEmail("18316471919@139.com");
         admin.setPhone("18316471919");
-        admin.setName("amdin");
+        admin.setName("admin");
         admin.setRole(0);
 //        admin.setResource("*");
         String md5Password = DigestUtils.md5DigestAsHex("admin".getBytes());

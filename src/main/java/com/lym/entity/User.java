@@ -1,5 +1,7 @@
 package com.lym.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 public class User {
@@ -26,6 +28,9 @@ public class User {
     private Byte sex;
 
     private String job;
+
+    @JSONField(format="yyyy-MM-dd")
+    private Date banTime;
 
     private Date createTime;
 
@@ -125,6 +130,14 @@ public class User {
 
     public void setJob(String job) {
         this.job = job == null ? null : job.trim();
+    }
+
+    public Date getBanTime() {
+        return banTime;
+    }
+
+    public void setBanTime(Date banTime) {
+        this.banTime = banTime;
     }
 
     public Date getCreateTime() {

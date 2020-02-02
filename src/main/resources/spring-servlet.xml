@@ -47,6 +47,7 @@
         <mvc:interceptor>
             <mvc:mapping path="/user/do/register"/>
             <mvc:mapping path="/user/pw/login"/>
+            <mvc:mapping path="/admin2020/pw/login"/>
             <mvc:mapping path="/code/**"/>
             <bean class="com.lym.interceptor.CaptchaInterceptor"/>
         </mvc:interceptor>

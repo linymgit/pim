@@ -33,6 +33,33 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public Admin getAdminByPhone(String phone) {
+        AdminExample adminExample = new AdminExample();
+        adminExample.createCriteria().andPhoneEqualTo(phone);
+        List<Admin> admins = adminMapper.selectByExample(adminExample);
+        if (Objects.isNull(admins) || admins.size()<=0) {
+            return null;
+        }
+        return admins.get(0);
+    }
+
+    @Override
+    public Admin getAdminByEmail(String email) {
+        AdminExample adminExample = new AdminExample();
+        adminExample.createCriteria().andEmailEqualTo(email);
+        List<Admin> admins = adminMapper.selectByExample(adminExample);
+        if (Objects.isNull(admins) || admins.size()<=0) {
+            return null;
+        }
+        return admins.get(0);
+    }
+
+    @Override
+    public Admin getAdminById(Long id) {
+        return adminMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
     public Admin getAdminByNameAndPassword(String name, String password) {
         if (StringUtil.isBlank(name) || StringUtil.isBlank(password)) {
             return null;

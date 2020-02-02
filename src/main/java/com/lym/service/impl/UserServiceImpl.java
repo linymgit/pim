@@ -1,7 +1,9 @@
 package com.lym.service.impl;
 
-import com.lym.entity.User;
-import com.lym.entity.UserExample;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.lym.entity.*;
+import com.lym.entity.param.UserListParam;
 import com.lym.mapper.UserMapper;
 import com.lym.service.UserService;
 import com.lym.utils.StringUtil;
@@ -136,5 +138,19 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         return users.get(0);
+    }
+
+    @Override
+    public PageInfo<User> users(UserListParam userListParam) {
+        PageHelper.startPage(userListParam.getPageNum(), userListParam.getPageSize());
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        if (StringUtil.nonBlank(userListParam.getKeyWord())) {
+            criteria.andNameLike(userListParam.getKeyWord());
+        }
+        if (Objects.nonNull(userListParam.getId()) && userListParam.getId()>0) {
+            criteria.andIdEqualTo(userListParam.getId());
+        }
+        return new PageInfo(userMapper.selectByExample(userExample));
     }
 }

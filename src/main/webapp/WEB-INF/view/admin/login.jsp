@@ -12,7 +12,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>登录</title>
+    <title>管理后台登录</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -330,7 +330,7 @@
             //请求的媒体类型
             contentType: "application/json;charset=UTF-8",
             //请求地址
-            url: "/user/pw/login",
+            url: "/admin2020/pw/login",
             //数据，json字符串
             data: JSON.stringify({
                 name: $1,
@@ -345,7 +345,7 @@
                 if (result.code >= 0) {
                     //登录成功
                     localStorage.setItem('x-token', result.data);
-                    window.location.href = "/user/index";
+                    window.location.href = "/admin2020/index";
                 } else {
                     alert(result.msg);
                     renderCaptcha();
@@ -378,7 +378,7 @@
             //请求的媒体类型
             contentType: "application/json;charset=UTF-8",
             //请求地址
-            url: "/user/email/login",
+            url: "/admin2020/email/login",
             //数据，json字符串
             data: JSON.stringify({
                 to: $1,
@@ -388,7 +388,7 @@
                 if (result.code >= 0) {
                     //登录成功
                     localStorage.setItem('x-token', result.data);
-                    window.location.href = "/user/index"
+                    window.location.href = "/admin2020/index"
                 } else {
                     alert(result.msg)
                 }
@@ -419,7 +419,7 @@
             //请求的媒体类型
             contentType: "application/json;charset=UTF-8",
             //请求地址
-            url: "/user/phone/login",
+            url: "/admin2020/phone/login",
             //数据，json字符串
             data: JSON.stringify({
                 to: $1,
@@ -429,7 +429,7 @@
                 if (result.code >= 0) {
                     //登录成功
                     localStorage.setItem('x-token', result.data);
-                    window.location.href = "/user/index"
+                    window.location.href = "/admin2020/index"
                 } else {
                     alert(result.msg)
                 }

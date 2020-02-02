@@ -1,7 +1,10 @@
 package com.lym.service;
 
+import com.github.pagehelper.PageInfo;
+import com.lym.entity.Page;
 import com.lym.entity.User;
 import com.lym.entity.UserExample;
+import com.lym.entity.param.UserListParam;
 
 import java.util.List;
 
@@ -21,4 +24,5 @@ public interface UserService {
     int updateUserById(User record);
     List<User> selectUsersByExample(UserExample userExample);
     User selectUserByExample(UserExample userExample);
+    PageInfo<User> users(UserListParam userListParam);
 }

@@ -905,6 +905,66 @@ public class UserExample {
             return (Criteria) this;
         }
 
+        public Criteria andBanTimeIsNull() {
+            addCriterion("ban_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBanTimeIsNotNull() {
+            addCriterion("ban_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBanTimeEqualTo(Date value) {
+            addCriterion("ban_time =", value, "banTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBanTimeNotEqualTo(Date value) {
+            addCriterion("ban_time <>", value, "banTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBanTimeGreaterThan(Date value) {
+            addCriterion("ban_time >", value, "banTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBanTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("ban_time >=", value, "banTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBanTimeLessThan(Date value) {
+            addCriterion("ban_time <", value, "banTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBanTimeLessThanOrEqualTo(Date value) {
+            addCriterion("ban_time <=", value, "banTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBanTimeIn(List<Date> values) {
+            addCriterion("ban_time in", values, "banTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBanTimeNotIn(List<Date> values) {
+            addCriterion("ban_time not in", values, "banTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBanTimeBetween(Date value1, Date value2) {
+            addCriterion("ban_time between", value1, value2, "banTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBanTimeNotBetween(Date value1, Date value2) {
+            addCriterion("ban_time not between", value1, value2, "banTime");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateTimeIsNull() {
             addCriterion("create_time is null");
             return (Criteria) this;

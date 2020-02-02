@@ -16,5 +16,11 @@ public interface AdminService {
      */
     PageInfo<Admin> admins(Page page);
 
+    Admin getAdminByPhone(String phone);
+
+    Admin getAdminByEmail(String email);
+
+    Admin getAdminById(Long id);
+
     Admin getAdminByNameAndPassword(String name, String password);
 }

@@ -3,6 +3,9 @@ package com.lym.utils;
 
 import com.lym.entity.Result;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @Date 2020/1/21
  * @auth linyimin
@@ -23,13 +26,14 @@ public class ResultUtil {
     public static int INVALIDE_NAME_PW = -1009;
     public static int USER_WAS_NOT_EXIST = -1010;
     public static int USER_EMAIL_NOT_VERITFY = -1011;
+    public static int USER_WAS_BAN = -1012;
 
     public static Result getSuccess() {
-        return new Result(SUCCESS,"操作成功");
+        return new Result(SUCCESS, "操作成功");
     }
 
     public static Result getSuccess(Object o) {
-        return new Result(SUCCESS,"操作成功", o);
+        return new Result(SUCCESS, "操作成功", o);
     }
 
     public static Result getError() {
@@ -40,11 +44,11 @@ public class ResultUtil {
         return new Result(ERROR, msg);
     }
 
-    public static Result getUserNotExistError(){
+    public static Result getUserNotExistError() {
         return new Result(ResultUtil.USER_WAS_NOT_EXIST, "用户不存在");
     }
 
-   public static Result getUserEmailNotVeritfy(){
+    public static Result getUserEmailNotVeritfy() {
         return new Result(ResultUtil.USER_EMAIL_NOT_VERITFY, "邮箱未认证");
     }
 
@@ -69,7 +73,12 @@ public class ResultUtil {
         return new Result(NO_ACCESS, "没有权限");
     }
 
-    public static boolean isError(Result result){
-        return result.getCode()<0;
+    public static Result getUserWasBanError(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
+        return new Result(USER_WAS_BAN, "该账号被封号直到" + sdf.format(date));
+    }
+
+    public static boolean isError(Result result) {
+        return result.getCode() < 0;
     }
 }

@@ -186,12 +186,17 @@ public class UserController {
         User userByNP = userService.getUserByNP(user.getName(), user.getPassword());
         if (Objects.isNull(userByNP)) {
             return new Result(ResultUtil.INVALIDE_NAME_PW, "用户名或者密码不正确");
+        }else {
+            if (Objects.nonNull(userByNP.getBanTime()) && userByNP.getBanTime().after(new Date())) {
+                return ResultUtil.getUserWasBanError(userByNP.getBanTime());
+            }
         }
         return ResultUtil.getSuccess(jwtUtil.genToken(userByNP.getId()));
     }
 
     /**
      * 重置密码
+     *
      * @param user
      * @return
      */
@@ -228,7 +233,12 @@ public class UserController {
             userByPEN.setPhoneVertify(TencentSendSmsUtil.VERIFED);
             userByPEN.setAvatar("http://forrily.com/linym.jpg");
             userService.addUser(userByPEN);
+        } else {
+            if (Objects.nonNull(userByPEN.getBanTime()) && userByPEN.getBanTime().after(new Date())) {
+                return ResultUtil.getUserWasBanError(userByPEN.getBanTime());
+            }
         }
+
         return ResultUtil.getSuccess(jwtUtil.genToken(userByPEN.getId()));
     }
 
@@ -250,6 +260,10 @@ public class UserController {
             userByPEN.setEmailVertify(MailUtil.VERIFED);
             userByPEN.setAvatar("http://forrily.com/linym.jpg");
             userService.addUser(userByPEN);
+        }else {
+            if (Objects.nonNull(userByPEN.getBanTime()) && userByPEN.getBanTime().after(new Date())) {
+                return ResultUtil.getUserWasBanError(userByPEN.getBanTime());
+            }
         }
         return ResultUtil.getSuccess(jwtUtil.genToken(userByPEN.getId()));
     }
@@ -330,6 +344,7 @@ public class UserController {
         user.setPhone(request.getParameter("phone"));
         user.setJob(request.getParameter("job"));
         user.setAddress(request.getParameter("address"));
+        user.setSex(Byte.valueOf(request.getParameter("sex")));
 
         User userByPEN = userService.getUserByPEN(user.getPhone(), user.getEmail(), user.getName());
         if (Objects.nonNull(userByPEN)) {

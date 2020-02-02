@@ -30,6 +30,7 @@ public class JwtUtil {
     public static final String DATA = "jwt_data";
 
     public static final String ID_KEY = "jwt_id";
+    public static final String ROLE_KEY = "jwt_role";
 
     public static final int JWT_SUCCESS = 0;
     public static final int JWT_PARSE_FAILED = 1;
@@ -78,6 +79,14 @@ public class JwtUtil {
     public String genToken(Long userId) {
         HashMap<String, Object> tokenMap = new HashMap<>();
         tokenMap.put(JwtUtil.ID_KEY, userId);
+        tokenMap.put(JwtUtil.EXPIRE_TIME, LocalDateTime.now().plusDays(1).toString());
+        return createTokenHS256(tokenMap);
+    }
+
+    public String genTokenWithAdminRole(Long userId) {
+        HashMap<String, Object> tokenMap = new HashMap<>();
+        tokenMap.put(JwtUtil.ID_KEY, userId);
+        tokenMap.put(JwtUtil.ROLE_KEY, 1);
         tokenMap.put(JwtUtil.EXPIRE_TIME, LocalDateTime.now().plusDays(1).toString());
         return createTokenHS256(tokenMap);
     }

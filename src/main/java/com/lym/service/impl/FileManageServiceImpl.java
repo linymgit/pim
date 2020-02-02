@@ -39,7 +39,9 @@ public class FileManageServiceImpl implements FileManageService {
         PageHelper.startPage(fileLogListParam.getPageNum(), fileLogListParam.getPageSize());
         FileLogExample fileLogExample = new FileLogExample();
         FileLogExample.Criteria criteria = fileLogExample.createCriteria();
-        criteria.andUseridEqualTo(fileLogListParam.getUserId());
+        if (Objects.nonNull(fileLogListParam.getUserId()) && fileLogListParam.getUserId()>0) {
+            criteria.andUseridEqualTo(fileLogListParam.getUserId());
+        }
         if (Objects.nonNull(fileLogListParam.getKeyWord()) && !fileLogListParam.getKeyWord().equals("")) {
             criteria.andResourceNameLike(fileLogListParam.getKeyWord());
         }

@@ -71,6 +71,15 @@
                     <label for="relname">真实姓名:</label>
                     <input type="text" class="form-control" id="relname" name="relname">
                 </div>
+                <div class="form-group" style="padding-left: 15px;padding-right:15px">
+                    <label for="relname">性别:</label>
+                    <label>
+                        <input type="radio" name="sex" value="1" checked/>
+                    </label>男
+                    <label>
+                        <input type="radio" name="sex" value="0"/>
+                    </label>女
+                </div>
                 <div class="form-group" id="password-wrap" style="padding-left: 15px;padding-right:15px">
                     <label for="password">密码:</label>
                     <input type="password" class="form-control" id="password" name="password" onblur="vertifyPasswd()">

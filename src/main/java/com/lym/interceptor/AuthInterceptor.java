@@ -2,6 +2,7 @@ package com.lym.interceptor;
 
 import com.alibaba.fastjson.JSON;
 import com.lym.anno.Auth;
+import com.lym.entity.Income;
 import com.lym.entity.Result;
 import com.lym.utils.JwtUtil;
 import com.lym.utils.ResultUtil;
@@ -60,7 +61,11 @@ public class AuthInterceptor implements HandlerInterceptor {
             }
             if (ResultUtil.isError(result)) {
                 if (authAnnotation.isRedirect()) {
-                    response.sendRedirect("/user/login");
+                    if (flag == 1) {
+                        response.sendRedirect("/admin2020/login");
+                    }else{
+                        response.sendRedirect("/user/login");
+                    }
                 } else {
                     response.setStatus(HttpStatus.OK.value());
                     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -70,6 +75,14 @@ public class AuthInterceptor implements HandlerInterceptor {
                 return false;
             }
             JSONObject data = (JSONObject) result.getData();
+            //判断是不是管理员
+            if (flag == 1){
+                Long role = (Long)data.get(JwtUtil.ROLE_KEY);
+                if (Objects.isNull(role) || role<=0) {
+                    response.sendRedirect("/admin2020/login");
+                    return false;
+                }
+            }
             Long id = (Long) data.get(JwtUtil.ID_KEY);
             request.setAttribute(JwtUtil.ID_KEY, id);
         }
