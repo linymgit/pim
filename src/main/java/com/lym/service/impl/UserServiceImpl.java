@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,6 +32,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> list() {
         return userMapper.selectByExample(null);
+    }
+
+    @Override
+    public List<User> listByUserIds(List<Long> ids) {
+        if (Objects.isNull(ids) || ids.size()<=0) {
+            return new ArrayList<>();
+        }
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andIdIn(ids);
+        return userMapper.selectByExample(userExample);
     }
 
     @Override
