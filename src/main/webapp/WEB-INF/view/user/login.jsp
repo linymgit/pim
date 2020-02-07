@@ -585,7 +585,7 @@
                 //返回的结果
                 if (data.code >= 0) {
                     alert("登录成功！");
-                    localStorage.setItem('x-token', result.data);
+                    localStorage.setItem('x-token', data.data);
                     window.location.href = "/user/index"
                 } else {
                     alert(data.msg);

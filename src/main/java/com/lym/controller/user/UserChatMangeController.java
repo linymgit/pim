@@ -5,10 +5,7 @@ import com.lym.anno.Auth;
 import com.lym.entity.*;
 import com.lym.entity.param.RelationListParam;
 import com.lym.entity.param.UserListParam;
-import com.lym.service.AdminService;
-import com.lym.service.ChatService;
-import com.lym.service.RelationService;
-import com.lym.service.UserService;
+import com.lym.service.*;
 import com.lym.utils.JwtUtil;
 import com.lym.utils.ResultUtil;
 import com.lym.utils.StringUtil;
@@ -45,6 +42,9 @@ public class UserChatMangeController {
 
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private SensitiveService sensitiveService;
 
     @GetMapping("/list")
     public ModelAndView list(ModelAndView mv) {
@@ -117,6 +117,9 @@ public class UserChatMangeController {
     public Result add(HttpServletRequest request, @RequestBody Chat chat) {
         if (StringUtil.isBlank(chat.getMsg())) {
             return ResultUtil.getSuccess();
+        }
+        if (!sensitiveService.isOk(chat.getMsg())) {
+            return ResultUtil.getError("发送失败，因为信息包含了敏感信息");
         }
         Long id = (Long) request.getAttribute(JwtUtil.ID_KEY);
         chat.setFromUserId(id);

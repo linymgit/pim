@@ -1162,54 +1162,58 @@
       <Comment>日程表</Comment>
       <Collation>utf8mb4_0900_ai_ci</Collation>
     </table>
-    <table id="296" parent="13" name="tb_pim_user">
+    <table id="296" parent="13" name="tb_pim_sensitive">
+      <Comment>敏感词信息</Comment>
+      <Collation>utf8mb4_0900_ai_ci</Collation>
+    </table>
+    <table id="297" parent="13" name="tb_pim_user">
       <Comment>用户表</Comment>
       <Collation>utf8mb4_0900_ai_ci</Collation>
     </table>
-    <table id="297" parent="13" name="tp_pim_admin">
+    <table id="298" parent="13" name="tp_pim_admin">
       <Comment>系统管理员</Comment>
       <Collation>utf8mb4_0900_ai_ci</Collation>
     </table>
-    <column id="298" parent="290" name="id">
+    <column id="299" parent="290" name="id">
       <Position>1</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="299" parent="290" name="from_user_id">
+    <column id="300" parent="290" name="from_user_id">
       <Position>2</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="300" parent="290" name="to_user_id">
+    <column id="301" parent="290" name="to_user_id">
       <Position>3</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="301" parent="290" name="msg">
+    <column id="302" parent="290" name="msg">
       <Position>4</Position>
       <DataType>varchar(1024)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="302" parent="290" name="read_state">
+    <column id="303" parent="290" name="read_state">
       <Position>5</Position>
       <DataType>tinyint(4)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>0</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="303" parent="290" name="create_time">
+    <column id="304" parent="290" name="create_time">
       <Position>6</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="304" parent="290" name="update_time">
+    <column id="305" parent="290" name="update_time">
       <Position>7</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
@@ -1217,45 +1221,45 @@
       <ColumnKind>normal</ColumnKind>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <key id="305" parent="290" name="PRIMARY">
+    <key id="306" parent="290" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="306" parent="291" name="id">
+    <column id="307" parent="291" name="id">
       <Position>1</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="307" parent="291" name="userId">
+    <column id="308" parent="291" name="userId">
       <Position>2</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="308" parent="291" name="resource_url">
+    <column id="309" parent="291" name="resource_url">
       <Position>3</Position>
       <DataType>varchar(128)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="309" parent="291" name="resource_name">
+    <column id="310" parent="291" name="resource_name">
       <Position>4</Position>
       <DataType>varchar(128)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="310" parent="291" name="create_time">
+    <column id="311" parent="291" name="create_time">
       <Position>5</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="311" parent="291" name="update_time">
+    <column id="312" parent="291" name="update_time">
       <Position>6</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
@@ -1263,58 +1267,58 @@
       <ColumnKind>normal</ColumnKind>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <index id="312" parent="291" name="userId">
+    <index id="313" parent="291" name="userId">
       <ColNames>userId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="313" parent="291" name="PRIMARY">
+    <key id="314" parent="291" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="314" parent="292" name="id">
+    <column id="315" parent="292" name="id">
       <Position>1</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="315" parent="292" name="userId">
+    <column id="316" parent="292" name="userId">
       <Position>2</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="316" parent="292" name="type">
+    <column id="317" parent="292" name="type">
       <Position>3</Position>
       <DataType>varchar(256)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="317" parent="292" name="value">
+    <column id="318" parent="292" name="value">
       <Position>4</Position>
       <DataType>decimal(12,2 digit)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="318" parent="292" name="memo">
+    <column id="319" parent="292" name="memo">
       <Position>5</Position>
       <DataType>varchar(50)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="319" parent="292" name="income_time">
+    <column id="320" parent="292" name="income_time">
       <Position>6</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="320" parent="292" name="create_time">
+    <column id="321" parent="292" name="create_time">
       <Position>7</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="321" parent="292" name="update_time">
+    <column id="322" parent="292" name="update_time">
       <Position>8</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
@@ -1322,62 +1326,62 @@
       <ColumnKind>normal</ColumnKind>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <index id="322" parent="292" name="userId">
+    <index id="323" parent="292" name="userId">
       <ColNames>userId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="323" parent="292" name="PRIMARY">
+    <key id="324" parent="292" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="324" parent="293" name="id">
+    <column id="325" parent="293" name="id">
       <Position>1</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="325" parent="293" name="userId">
+    <column id="326" parent="293" name="userId">
       <Position>2</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="326" parent="293" name="type">
+    <column id="327" parent="293" name="type">
       <Position>3</Position>
       <DataType>varchar(128)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="327" parent="293" name="cost">
+    <column id="328" parent="293" name="cost">
       <Position>4</Position>
       <DataType>decimal(12,2 digit)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>0.00</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="328" parent="293" name="memo">
+    <column id="329" parent="293" name="memo">
       <Position>5</Position>
       <DataType>varchar(512)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;0.00&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="329" parent="293" name="output_time">
+    <column id="330" parent="293" name="output_time">
       <Position>6</Position>
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="330" parent="293" name="create_time">
+    <column id="331" parent="293" name="create_time">
       <Position>7</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="331" parent="293" name="update_time">
+    <column id="332" parent="293" name="update_time">
       <Position>8</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
@@ -1385,66 +1389,66 @@
       <ColumnKind>normal</ColumnKind>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <index id="332" parent="293" name="userId">
+    <index id="333" parent="293" name="userId">
       <ColNames>userId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="333" parent="293" name="PRIMARY">
+    <key id="334" parent="293" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="334" parent="294" name="id">
+    <column id="335" parent="294" name="id">
       <Position>1</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="335" parent="294" name="userId">
+    <column id="336" parent="294" name="userId">
       <Position>2</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="336" parent="294" name="friendId">
+    <column id="337" parent="294" name="friendId">
       <Position>3</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="337" parent="294" name="name">
+    <column id="338" parent="294" name="name">
       <Position>4</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="338" parent="294" name="pone">
+    <column id="339" parent="294" name="pone">
       <Position>5</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="339" parent="294" name="email">
+    <column id="340" parent="294" name="email">
       <Position>6</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="340" parent="294" name="relation_status">
+    <column id="341" parent="294" name="relation_status">
       <Position>7</Position>
       <Comment>0表示不是系统用户1表示是系统用户未添加2表示已添加为好友</Comment>
       <DataType>tinyint(4)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="341" parent="294" name="create_time">
+    <column id="342" parent="294" name="create_time">
       <Position>8</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="342" parent="294" name="update_time">
+    <column id="343" parent="294" name="update_time">
       <Position>9</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
@@ -1452,71 +1456,75 @@
       <ColumnKind>normal</ColumnKind>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <index id="343" parent="294" name="userId">
+    <index id="344" parent="294" name="userId">
       <ColNames>userId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="344" parent="294" name="PRIMARY">
+    <index id="345" parent="294" name="friendId">
+      <ColNames>friendId</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="346" parent="294" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="345" parent="295" name="id">
+    <column id="347" parent="295" name="id">
       <Position>1</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="346" parent="295" name="user_id">
+    <column id="348" parent="295" name="user_id">
       <Position>2</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="347" parent="295" name="remind_sum">
+    <column id="349" parent="295" name="remind_sum">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="348" parent="295" name="remind_count">
+    <column id="350" parent="295" name="remind_count">
       <Position>4</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="349" parent="295" name="remind_period">
+    <column id="351" parent="295" name="remind_period">
       <Position>5</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="350" parent="295" name="plan">
+    <column id="352" parent="295" name="plan">
       <Position>6</Position>
       <DataType>varchar(1024)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="351" parent="295" name="start_time">
+    <column id="353" parent="295" name="start_time">
       <Position>7</Position>
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="352" parent="295" name="end_time">
+    <column id="354" parent="295" name="end_time">
       <Position>8</Position>
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="353" parent="295" name="create_time">
+    <column id="355" parent="295" name="create_time">
       <Position>9</Position>
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="354" parent="295" name="update_time">
+    <column id="356" parent="295" name="update_time">
       <Position>10</Position>
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
@@ -1524,157 +1532,208 @@
       <ColumnKind>normal</ColumnKind>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <index id="355" parent="295" name="user_id">
+    <index id="357" parent="295" name="user_id">
       <ColNames>user_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="356" parent="295" name="start_time_end_time">
+    <index id="358" parent="295" name="start_time_end_time">
       <ColNames>start_time
 end_time</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="357" parent="295" name="PRIMARY">
+    <key id="359" parent="295" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="358" parent="296" name="id">
+    <column id="360" parent="296" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="361" parent="296" name="type">
+      <Position>2</Position>
+      <DataType>tinyint(4)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="362" parent="296" name="words">
+      <Position>3</Position>
+      <DataType>text|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="363" parent="296" name="create_time">
+      <Position>4</Position>
+      <DataType>datetime|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="364" parent="296" name="update_time">
+      <Position>5</Position>
+      <DataType>datetime|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+      <ColumnKind>normal</ColumnKind>
+      <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
+    </column>
+    <key id="365" parent="296" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="366" parent="297" name="id">
       <Position>1</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="359" parent="296" name="name">
+    <column id="367" parent="297" name="name">
       <Position>2</Position>
       <DataType>varchar(64)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="360" parent="296" name="relname">
+    <column id="368" parent="297" name="relname">
       <Position>3</Position>
       <DataType>varchar(16)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="361" parent="296" name="email">
+    <column id="369" parent="297" name="email">
       <Position>4</Position>
       <DataType>varchar(128)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="362" parent="296" name="email_vertify">
+    <column id="370" parent="297" name="email_vertify">
       <Position>5</Position>
       <DataType>tinyint(4)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="363" parent="296" name="phone">
+    <column id="371" parent="297" name="phone">
       <Position>6</Position>
       <DataType>varchar(16)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="364" parent="296" name="phone_vertify">
+    <column id="372" parent="297" name="phone_vertify">
       <Position>7</Position>
       <DataType>tinyint(4)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="365" parent="296" name="password">
+    <column id="373" parent="297" name="password">
       <Position>8</Position>
       <DataType>varchar(64)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="366" parent="296" name="address">
+    <column id="374" parent="297" name="address">
       <Position>9</Position>
       <DataType>varchar(128)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="367" parent="296" name="avatar">
+    <column id="375" parent="297" name="avatar">
       <Position>10</Position>
       <DataType>varchar(128)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="368" parent="296" name="sex">
+    <column id="376" parent="297" name="sex">
       <Position>11</Position>
       <DataType>tinyint(4)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="369" parent="296" name="job">
+    <column id="377" parent="297" name="job">
       <Position>12</Position>
       <DataType>varchar(64)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="370" parent="296" name="ban_time">
+    <column id="378" parent="297" name="face_token">
       <Position>13</Position>
-      <DataType>timestamp|0s</DataType>
+      <DataType>varchar(64)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="371" parent="296" name="create_time">
+    <column id="379" parent="297" name="ban_time">
       <Position>14</Position>
       <DataType>timestamp|0s</DataType>
-      <NotNull>1</NotNull>
-      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="372" parent="296" name="update_time">
+    <column id="380" parent="297" name="create_time">
       <Position>15</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="381" parent="297" name="update_time">
+      <Position>16</Position>
+      <DataType>timestamp|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+      <ColumnKind>normal</ColumnKind>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <key id="373" parent="296" name="PRIMARY">
+    <index id="382" parent="297" name="name">
+      <ColNames>name</ColNames>
+      <Type>btree</Type>
+    </index>
+    <index id="383" parent="297" name="face_token">
+      <ColNames>face_token</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="384" parent="297" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="374" parent="297" name="id">
+    <column id="385" parent="298" name="id">
       <Position>1</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="375" parent="297" name="name">
+    <column id="386" parent="298" name="name">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="376" parent="297" name="password">
+    <column id="387" parent="298" name="password">
       <Position>3</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="377" parent="297" name="phone">
+    <column id="388" parent="298" name="phone">
       <Position>4</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="378" parent="297" name="email">
+    <column id="389" parent="298" name="email">
       <Position>5</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="379" parent="297" name="role">
+    <column id="390" parent="298" name="role">
       <Position>6</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="380" parent="297" name="resource">
+    <column id="391" parent="298" name="resource">
       <Position>7</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;*&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="381" parent="297" name="create_time">
+    <column id="392" parent="298" name="create_time">
       <Position>8</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="382" parent="297" name="update_time">
+    <column id="393" parent="298" name="update_time">
       <Position>9</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
@@ -1682,7 +1741,7 @@ end_time</ColNames>
       <ColumnKind>normal</ColumnKind>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <key id="383" parent="297" name="PRIMARY">
+    <key id="394" parent="298" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>

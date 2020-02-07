@@ -137,6 +137,11 @@
                     <div><a onclick="to('/admin2020/chat/list')">发信息</a></div>
                 </div>
             </div>
+            <div class="lym-nav" id="n4" onclick="exportMenu(4)">敏感信息
+                <div class="lym-sub-nav" id="sn4">
+                    <div><a onclick="to('/admin2020/sensitive/list')">敏感信息管理</a></div>
+                </div>
+            </div>
         </div>
         <div class="col-md-10" id="center" style="background-color: #252626;">
             <div style="min-height: 85vh;max-height: 85vh;overflow-y: scroll;scrollbar-width: none;">
