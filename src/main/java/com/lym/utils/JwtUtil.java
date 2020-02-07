@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @Date 2020/1/15
@@ -92,20 +93,22 @@ public class JwtUtil {
     }
 
     public Result getResult(String token) {
-        try {
-            JWSObject jwsObject = JWSObject.parse(token);
-            JWSVerifier jwsVerifier = new MACVerifier(jwtSecret);
-            Map<String, Object> verify = verify(jwsObject, jwsVerifier);
-            int i = (int) verify.get(RESULT);
-            if (i == JWT_EXPIRED) {
-                return new Result(ResultUtil.TOKEN_EXPIRED, "token过期");
+        if (Objects.nonNull(token) && !token.equals("null")) {
+            try {
+                JWSObject jwsObject = JWSObject.parse(token);
+                JWSVerifier jwsVerifier = new MACVerifier(jwtSecret);
+                Map<String, Object> verify = verify(jwsObject, jwsVerifier);
+                int i = (int) verify.get(RESULT);
+                if (i == JWT_EXPIRED) {
+                    return new Result(ResultUtil.TOKEN_EXPIRED, "token过期");
+                }
+                if (i == JWT_PARSE_FAILED) {
+                    return new Result(ResultUtil.INVALIDE_TOKEN, "无效的token");
+                }
+                return ResultUtil.getSuccess(verify.get(DATA));
+            } catch (ParseException | JOSEException e) {
+                e.printStackTrace();
             }
-            if (i == JWT_PARSE_FAILED) {
-                return new Result(ResultUtil.INVALIDE_TOKEN, "无效的token");
-            }
-            return ResultUtil.getSuccess(verify.get(DATA));
-        } catch (ParseException | JOSEException e) {
-            e.printStackTrace();
         }
         return ResultUtil.getError();
     }

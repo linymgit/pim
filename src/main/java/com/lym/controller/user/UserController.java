@@ -11,6 +11,7 @@ import com.lym.service.ScheduleService;
 import com.lym.service.UserService;
 import com.lym.utils.*;
 import net.minidev.json.JSONObject;
+import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,8 @@ import java.util.Objects;
 @RequestMapping("/user")
 public class UserController {
 
+    private static final String DEFAULT_AVATAR = "http://forrily.com/defaul-avater.jpg";
+
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Resource
@@ -63,10 +66,59 @@ public class UserController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private BaiduApiUtil baiduApiUtil;
+
     @GetMapping("/login")
     public ModelAndView login(ModelAndView mv) {
         mv.setViewName("user/login");
         return mv;
+    }
+
+    @PostMapping("/face/register")
+    @ResponseBody
+    public Result faceRegister(@RequestParam String img) {
+        org.json.JSONObject search = baiduApiUtil.searchBase64(img);
+        if (search.get("error_code").equals(0)) {
+            return ResultUtil.getError("已注册");
+        }
+        long id = SnowFlakeUtil.nextId();
+        org.json.JSONObject register = baiduApiUtil.register(String.valueOf(id), img, BaiduApiUtil.IMG_TYPE_BASE64, String.valueOf(id), "user");
+        if (register.get("error_code").equals(0)) {
+            org.json.JSONObject registerResult = (org.json.JSONObject) register.get("result");
+            User user = new User();
+            user.setId(id);
+            user.setAvatar(DEFAULT_AVATAR);
+            user.setName(String.valueOf(id));
+            user.setFaceToken(registerResult.getString("face_token"));
+            userService.addUser(user);
+            return ResultUtil.getSuccess();
+        } else {
+            return ResultUtil.getError(register.get("error_msg").toString());
+        }
+    }
+
+    @PostMapping("/face/login")
+    @ResponseBody
+    public Result faceLogin(@RequestParam String img) {
+        org.json.JSONObject search = baiduApiUtil.searchBase64(img);
+        if (search.get("error_code").equals(0)) {
+            org.json.JSONObject searchResult = (org.json.JSONObject) search.get("result");
+            JSONArray userList = (JSONArray) searchResult.get("user_list");
+            org.json.JSONObject o = (org.json.JSONObject)userList.get(0);
+//            String faceToken = searchResult.get("face_token").toString();
+            User userByFt = userService.getUserById(Long.parseLong(o.get("user_id").toString()));
+            if (Objects.isNull(userByFt)) {
+                return ResultUtil.getUserNotExistError();
+            } else {
+                if (Objects.nonNull(userByFt.getBanTime()) && userByFt.getBanTime().after(new Date())) {
+                    return ResultUtil.getUserWasBanError(userByFt.getBanTime());
+                }
+            }
+            return ResultUtil.getSuccess(jwtUtil.genToken(userByFt.getId()));
+        } else {
+            return ResultUtil.getError(search.get("error_msg").toString());
+        }
     }
 
     @Auth
@@ -186,7 +238,7 @@ public class UserController {
         User userByNP = userService.getUserByNP(user.getName(), user.getPassword());
         if (Objects.isNull(userByNP)) {
             return new Result(ResultUtil.INVALIDE_NAME_PW, "用户名或者密码不正确");
-        }else {
+        } else {
             if (Objects.nonNull(userByNP.getBanTime()) && userByNP.getBanTime().after(new Date())) {
                 return ResultUtil.getUserWasBanError(userByNP.getBanTime());
             }
@@ -230,8 +282,9 @@ public class UserController {
             userByPEN = new User();
             userByPEN.setId(SnowFlakeUtil.nextId());
             userByPEN.setPhone(code.getTo());
+            userByPEN.setName(code.getTo());
             userByPEN.setPhoneVertify(TencentSendSmsUtil.VERIFED);
-            userByPEN.setAvatar("http://forrily.com/linym.jpg");
+            userByPEN.setAvatar(DEFAULT_AVATAR);
             userService.addUser(userByPEN);
         } else {
             if (Objects.nonNull(userByPEN.getBanTime()) && userByPEN.getBanTime().after(new Date())) {
@@ -257,10 +310,11 @@ public class UserController {
             userByPEN = new User();
             userByPEN.setId(SnowFlakeUtil.nextId());
             userByPEN.setEmail(code.getTo());
+            userByPEN.setName(code.getTo());
             userByPEN.setEmailVertify(MailUtil.VERIFED);
-            userByPEN.setAvatar("http://forrily.com/linym.jpg");
+            userByPEN.setAvatar(DEFAULT_AVATAR);
             userService.addUser(userByPEN);
-        }else {
+        } else {
             if (Objects.nonNull(userByPEN.getBanTime()) && userByPEN.getBanTime().after(new Date())) {
                 return ResultUtil.getUserWasBanError(userByPEN.getBanTime());
             }

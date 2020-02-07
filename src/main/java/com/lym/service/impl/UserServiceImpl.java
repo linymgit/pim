@@ -117,6 +117,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByFt(String faceToken) {
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andFaceTokenEqualTo(faceToken);
+        List<User> users = userMapper.selectByExample(userExample);
+        if (Objects.isNull(users) || users.size() <= 0) {
+            return null;
+        }
+        return users.get(0);
+    }
+
+    @Override
     public User getUserByName(String name) {
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();

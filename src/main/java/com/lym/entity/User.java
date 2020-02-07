@@ -29,6 +29,8 @@ public class User {
 
     private String job;
 
+    private String faceToken;
+
     @JSONField(format="yyyy-MM-dd")
     private Date banTime;
 
@@ -130,6 +132,14 @@ public class User {
 
     public void setJob(String job) {
         this.job = job == null ? null : job.trim();
+    }
+
+    public String getFaceToken() {
+        return faceToken;
+    }
+
+    public void setFaceToken(String faceToken) {
+        this.faceToken = faceToken == null ? null : faceToken.trim();
     }
 
     public Date getBanTime() {

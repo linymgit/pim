@@ -19,6 +19,7 @@ public interface UserService {
     User getUserByPEN(String phoneNum, String email, String name);
     User getUserOrByPEN(String phoneNum, String email, String name);
     User getUserByNP(String name, String password);
+    User getUserByFt(String faceToken);
     User getUserByName(String name);
     User getUserById(Long id);
     int updateUserById(User record);

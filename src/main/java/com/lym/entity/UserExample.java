@@ -905,6 +905,76 @@ public class UserExample {
             return (Criteria) this;
         }
 
+        public Criteria andFaceTokenIsNull() {
+            addCriterion("face_token is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFaceTokenIsNotNull() {
+            addCriterion("face_token is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFaceTokenEqualTo(String value) {
+            addCriterion("face_token =", value, "faceToken");
+            return (Criteria) this;
+        }
+
+        public Criteria andFaceTokenNotEqualTo(String value) {
+            addCriterion("face_token <>", value, "faceToken");
+            return (Criteria) this;
+        }
+
+        public Criteria andFaceTokenGreaterThan(String value) {
+            addCriterion("face_token >", value, "faceToken");
+            return (Criteria) this;
+        }
+
+        public Criteria andFaceTokenGreaterThanOrEqualTo(String value) {
+            addCriterion("face_token >=", value, "faceToken");
+            return (Criteria) this;
+        }
+
+        public Criteria andFaceTokenLessThan(String value) {
+            addCriterion("face_token <", value, "faceToken");
+            return (Criteria) this;
+        }
+
+        public Criteria andFaceTokenLessThanOrEqualTo(String value) {
+            addCriterion("face_token <=", value, "faceToken");
+            return (Criteria) this;
+        }
+
+        public Criteria andFaceTokenLike(String value) {
+            addCriterion("face_token like", value, "faceToken");
+            return (Criteria) this;
+        }
+
+        public Criteria andFaceTokenNotLike(String value) {
+            addCriterion("face_token not like", value, "faceToken");
+            return (Criteria) this;
+        }
+
+        public Criteria andFaceTokenIn(List<String> values) {
+            addCriterion("face_token in", values, "faceToken");
+            return (Criteria) this;
+        }
+
+        public Criteria andFaceTokenNotIn(List<String> values) {
+            addCriterion("face_token not in", values, "faceToken");
+            return (Criteria) this;
+        }
+
+        public Criteria andFaceTokenBetween(String value1, String value2) {
+            addCriterion("face_token between", value1, value2, "faceToken");
+            return (Criteria) this;
+        }
+
+        public Criteria andFaceTokenNotBetween(String value1, String value2) {
+            addCriterion("face_token not between", value1, value2, "faceToken");
+            return (Criteria) this;
+        }
+
         public Criteria andBanTimeIsNull() {
             addCriterion("ban_time is null");
             return (Criteria) this;

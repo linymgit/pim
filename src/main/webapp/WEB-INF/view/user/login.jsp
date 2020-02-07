@@ -126,10 +126,22 @@
                         </button>
                     </p>
                 </div>
+                <div id="dia4" style="display: none">
+                    <h4>人脸登录</h4>
+                    <div style="width:100%;height:50vh;border-radius: 0.2rem;overflow-x: hidden" id="video-wrap">
+                        <video id="video" width="270" height="300" autoplay></video>
+                        <canvas hidden="hidden" id="canvas" width="800" height="600"></canvas>
+                    </div>
+                    <p>
+                        <button type="button" class="btn btn-primary" style="width: 100%" onclick="faceLogin()">登录</button>
+                    </p>
+                </div>
                 <p>
                     <span class="poi" id="tab1" onclick="changeTab(1)" style="display: none">密码登录</span>
                     <span class="poi" id="tab2" onclick="changeTab(2)">手机登录</span>
                     <span class="poi" id="tab3" onclick="changeTab(3)">邮箱登录</span>
+                    <span class="poi" id="tab4" onclick="changeTab(4)">人脸登录</span>
+<%--                    <span class="poi" id="tab4" onclick="openFaceJsp()">人脸登录</span>--%>
                 </p>
                 <div>
                     <span><a href="${pageContext.request.contextPath}/user/register" style="float:right;">免费注册</a></span>
@@ -148,23 +160,41 @@
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
 <script src="../../static/js/yimi-form.js"></script>
-<script>
+<script type="text/javascript">
+    let video;//视频流对象
+    let context;//绘制对象
+    let canvas;//画布对象
+
+
     $(function () {
         renderCaptcha();
 
         changeTab(1);
     });
 
-    //视图
-    tabIds = [1, 2, 3]
+    function openFaceJsp(){
+        let height = window.screen.height;
+        let width = window.screen.width;
 
-    function changeTab(id) {
+        window.open ("/user/face", "人脸登录", "height="+height/2+", width="+width/2+", top="+height/6+", left="+width/4+"toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no") //写成一行
+
+    }
+
+    //视图
+    tabIds = [1, 2, 3, 4]
+
+    function  changeTab(id) {
         // 1.刷新图片验证码
         if (id === 2){
             renderCaptcha2Phone();
         }
         if (id === 3){
             renderCaptcha2Email();
+        }
+        if (id === 4) {
+            openCamera();
+        }else{
+            closeCamera();
         }
         for (let i in tabIds) {
             if (id === 1) {
@@ -463,6 +493,103 @@
             success: function (result) {
                 $("#captcha2Email").attr("src", result.pic);
                 $("#captchaId2Email").val(result.captchaId);
+            }
+        });
+    }
+
+    //开启摄像头
+    function openCamera() {
+        //获取摄像头对象
+        canvas = document.getElementById("canvas");
+        context = canvas.getContext("2d");
+        //获取视频流
+        video = document.getElementById("video");
+        let videoObj = {
+            "video": true
+        }, errBack = function (error) {
+            console.log("Video capture error: ", error.code);
+        };
+        context.drawImage(video, 0, 0);
+        //初始化摄像头参数
+        if (navigator.getUserMedia || navigator.webkitGetUserMedia
+            || navigator.mozGetUserMedia) {
+            navigator.getUserMedia = navigator.getUserMedia
+                || navigator.webkitGetUserMedia
+                || navigator.mozGetUserMedia;
+            navigator.getUserMedia(videoObj, function (stream) {
+                video.srcObject = stream;
+                video.play();
+            }, errBack);
+        }
+    }
+
+    function closeCamera() {
+        if (video === undefined) {
+            return;
+        }
+        let srcObject = video.srcObject;
+        if (srcObject === undefined) {
+            return
+        }
+        srcObject.getTracks()[0].stop();
+    }
+
+    //将当前图像传输到后台
+    function faceRegister() {
+        context.drawImage(video, 0, 0);
+        //获取图像
+        let img = getBase64();
+        //Ajax将Base64字符串传输到后台处理
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: "/user/face/register",
+            data: {
+                img: img
+            },
+            dataType: "JSON",
+            success: function (data) {
+                //返回的结果
+                if (data.code >= 0) {
+                    alert("注册成功！");
+                    window.location.href = "/user/login"
+                } else {
+                    alert(data.msg);
+                }
+            }
+        });
+    }
+
+    //将摄像头拍取的图片转换为Base64格式字符串
+    function getBase64() {
+        //获取当前图像并转换为Base64的字符串
+        let imgSrc = canvas.toDataURL("image/png");
+        //截取字符串
+        return imgSrc.substring(22);
+    }
+
+    function faceLogin() {
+        context.drawImage(video, 0, 0);
+        //获取图像
+        let img = getBase64();
+        //Ajax将Base64字符串传输到后台处理
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: "/user/face/login",
+            data: {
+                img: img
+            },
+            dataType: "JSON",
+            success: function (data) {
+                //返回的结果
+                if (data.code >= 0) {
+                    alert("登录成功！");
+                    localStorage.setItem('x-token', result.data);
+                    window.location.href = "/user/index"
+                } else {
+                    alert(data.msg);
+                }
             }
         });
     }

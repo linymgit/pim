@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.lym.entity.Captcha;
 import com.lym.entity.Result;
 import com.lym.utils.CaptchaUtil;
-import com.lym.utils.JwtUtil;
 import com.lym.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,12 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Objects;
 
 /**
