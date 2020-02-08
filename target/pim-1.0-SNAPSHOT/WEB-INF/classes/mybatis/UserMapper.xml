@@ -14,6 +14,7 @@
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
     <result column="sex" jdbcType="TINYINT" property="sex" />
     <result column="job" jdbcType="VARCHAR" property="job" />
+    <result column="face_token" jdbcType="VARCHAR" property="faceToken" />
     <result column="ban_time" jdbcType="TIMESTAMP" property="banTime" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -78,7 +79,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, name, relname, email, email_vertify, phone, phone_vertify, password, address, 
-    avatar, sex, job, ban_time, create_time, update_time
+    avatar, sex, job, face_token, ban_time, create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="com.lym.entity.UserExample" resultMap="BaseResultMap">
     select
@@ -114,13 +115,15 @@
     insert into tb_pim_user (id, name, relname, 
       email, email_vertify, phone, 
       phone_vertify, password, address, 
-      avatar, sex, job, ban_time, 
-      create_time, update_time)
+      avatar, sex, job, face_token, 
+      ban_time, create_time, update_time
+      )
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{relname,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{emailVertify,jdbcType=TINYINT}, #{phone,jdbcType=VARCHAR}, 
       #{phoneVertify,jdbcType=TINYINT}, #{password,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{avatar,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, #{job,jdbcType=VARCHAR}, #{banTime,jdbcType=TIMESTAMP}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+      #{avatar,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, #{job,jdbcType=VARCHAR}, #{faceToken,jdbcType=VARCHAR}, 
+      #{banTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.lym.entity.User">
     insert into tb_pim_user
@@ -160,6 +163,9 @@
       </if>
       <if test="job != null">
         job,
+      </if>
+      <if test="faceToken != null">
+        face_token,
       </if>
       <if test="banTime != null">
         ban_time,
@@ -207,6 +213,9 @@
       </if>
       <if test="job != null">
         #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="faceToken != null">
+        #{faceToken,jdbcType=VARCHAR},
       </if>
       <if test="banTime != null">
         #{banTime,jdbcType=TIMESTAMP},
@@ -264,6 +273,9 @@
       <if test="record.job != null">
         job = #{record.job,jdbcType=VARCHAR},
       </if>
+      <if test="record.faceToken != null">
+        face_token = #{record.faceToken,jdbcType=VARCHAR},
+      </if>
       <if test="record.banTime != null">
         ban_time = #{record.banTime,jdbcType=TIMESTAMP},
       </if>
@@ -292,6 +304,7 @@
       avatar = #{record.avatar,jdbcType=VARCHAR},
       sex = #{record.sex,jdbcType=TINYINT},
       job = #{record.job,jdbcType=VARCHAR},
+      face_token = #{record.faceToken,jdbcType=VARCHAR},
       ban_time = #{record.banTime,jdbcType=TIMESTAMP},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP}
@@ -335,6 +348,9 @@
       <if test="job != null">
         job = #{job,jdbcType=VARCHAR},
       </if>
+      <if test="faceToken != null">
+        face_token = #{faceToken,jdbcType=VARCHAR},
+      </if>
       <if test="banTime != null">
         ban_time = #{banTime,jdbcType=TIMESTAMP},
       </if>
@@ -360,6 +376,7 @@
       avatar = #{avatar,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=TINYINT},
       job = #{job,jdbcType=VARCHAR},
+      face_token = #{faceToken,jdbcType=VARCHAR},
       ban_time = #{banTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}

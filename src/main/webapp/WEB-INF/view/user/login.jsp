@@ -54,7 +54,7 @@
         </div>
     </div>
     <div id="web_bg"
-         style="background-image: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1579197132065&di=d77563a2e327982a1bfe06147ca71a52&imgtype=0&src=http%3A%2F%2Fimg.pptjia.com%2Fimage%2F20190223%2F69a70f4ad56095d768033c59d2def273.jpeg');"></div>
+         style="background-image: url('../../static/img/bg.jpg');"></div>
     <div class="row" style="margin-top: 6rem">
         <div class="col-md-4"></div>
         <div class="col-md-3 col-md-offset-3">

@@ -60,69 +60,98 @@
     </div>
     <h4 style="text-align: center;padding-bottom: 2vh">注册会员</h4>
     <div class="row">
-        <form id="register-form" class="form-horizontal">
-            <div class="col-xs-12 col-sm-12 col-md-4 col-md-offset-4">
-                <div class="form-group" id="name-wrap" style="padding-left: 15px;padding-right:15px">
-                    <label for="name">用户名:</label>
-                    <input type="text" class="form-control" id="name" name="name" onblur="vertifyName()">
-                    <span style="color: #a94442; display: none" id="name-tips">用户名不能为空</span>
+        <div class="col-md-4 col-md-offset-4 col-xs-12 col-sm-12">
+            <ul class="nav nav-tabs" style="background-color:#494a4a;cursor: pointer">
+                <li role="presentation"><a onclick="show(1)">普通注册</a></li>
+                <li role="presentation"><a onclick="show(2)">人脸注册</a></li>
+            </ul>
+        </div>
+        <div id="tab1">
+            <form id="register-form" class="form-horizontal">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-md-offset-4">
+                    <div class="form-group" id="name-wrap" style="padding-left: 15px;padding-right:15px">
+                        <label for="name">用户名:</label>
+                        <input type="text" class="form-control" id="name" name="name" onblur="vertifyName()">
+                        <span style="color: #a94442; display: none" id="name-tips">用户名不能为空</span>
+                    </div>
+                    <div class="form-group" style="padding-left: 15px;padding-right:15px">
+                        <label for="relname">真实姓名:</label>
+                        <input type="text" class="form-control" id="relname" name="relname">
+                    </div>
+                    <div class="form-group" style="padding-left: 15px;padding-right:15px">
+                        <label for="relname">性别:</label>
+                        <label>
+                            <input type="radio" name="sex" value="1" checked/>
+                        </label>男
+                        <label>
+                            <input type="radio" name="sex" value="0"/>
+                        </label>女
+                    </div>
+                    <div class="form-group" id="password-wrap" style="padding-left: 15px;padding-right:15px">
+                        <label for="password">密码:</label>
+                        <input type="password" class="form-control" id="password" name="password"
+                               onblur="vertifyPasswd()">
+                        <span style="color: #a94442; display: none" id="password-tips">密码不能为空</span>
+                    </div>
+                    <div class="form-group" style="padding-left: 15px;padding-right:15px">
+                        <label for="avatar">头像:</label>
+                        <img id="avatar-img" src="" alt="avatar"
+                             style="width: 4rem;height: 4rem;border-radius: 50%;margin-bottom: 0.5rem">
+                        <input type="file" id="avatar" name="avatar" onchange="changeAvatar()">
+                        <p class="help-block">上传头像照片</p>
+                    </div>
+                    <div class="form-group" id="phone-wrap" style="padding-left: 15px;padding-right:15px">
+                        <label for="phone">手机号:</label>
+                        <input type="text" class="form-control" id="phone" name="phone" onblur="vertifyPhone()">
+                        <span style="color: #a94442; display: none" id="phone-tips">手机号不合法</span>
+                    </div>
+                    <div class="form-group" id="email-wrap" style="padding-left: 15px;padding-right:15px">
+                        <label for="email">邮箱:</label>
+                        <input type="text" class="form-control" id="email" name="email" onblur="vertifyEmail()">
+                        <span style="color: #a94442; display: none" id="email-tips">邮箱不合法</span>
+                    </div>
+                    <div class="form-group" style="padding-left: 15px;padding-right:15px">
+                        <label for="job">职业:</label>
+                        <input type="text" class="form-control" id="job" name="job">
+                    </div>
+                    <div class="form-group" style="padding-left: 15px;padding-right:15px">
+                        <label for="address">地址:</label>
+                        <input type="text" class="form-control" id="address" name="address">
+                    </div>
+                    <div class="form-group" id="captchaCode-wrap"
+                         style="padding-left: 15px;padding-right:15px;position: relative">
+                        <label class="control-label">验证码</label>
+                        <input type="hidden" id="captchaId" name="captchaId">
+                        <input type="text" class="form-control" id="captchaCode" name="captchaCode"
+                               onblur="vertifyCaptcha()">
+                        <img id="captcha" style="position: absolute;bottom: 2px;right: 17px;z-index: 1000"
+                             onclick="renderCaptcha()">
+                        <span style="color: #a94442; display: none" id="captchaCode-tips">验证码不能为空</span>
+                    </div>
+                    <button type="button" class="btn btn-default" onclick="register()">确定注册</button>
+                    <a style="float: right;margin-top: 1rem;"
+                       href="${pageContext.request.contextPath}/user/login">去登陆</a>
                 </div>
-                <div class="form-group" style="padding-left: 15px;padding-right:15px">
-                    <label for="relname">真实姓名:</label>
-                    <input type="text" class="form-control" id="relname" name="relname">
-                </div>
-                <div class="form-group" style="padding-left: 15px;padding-right:15px">
-                    <label for="relname">性别:</label>
-                    <label>
-                        <input type="radio" name="sex" value="1" checked/>
-                    </label>男
-                    <label>
-                        <input type="radio" name="sex" value="0"/>
-                    </label>女
-                </div>
-                <div class="form-group" id="password-wrap" style="padding-left: 15px;padding-right:15px">
-                    <label for="password">密码:</label>
-                    <input type="password" class="form-control" id="password" name="password" onblur="vertifyPasswd()">
-                    <span style="color: #a94442; display: none" id="password-tips">密码不能为空</span>
-                </div>
-                <div class="form-group" style="padding-left: 15px;padding-right:15px">
-                    <label for="avatar">头像:</label>
-                    <img id="avatar-img" src="" alt="avatar"
-                         style="width: 4rem;height: 4rem;border-radius: 50%;margin-bottom: 0.5rem">
-                    <input type="file" id="avatar" name="avatar" onchange="changeAvatar()">
-                    <p class="help-block">上传头像照片</p>
-                </div>
-                <div class="form-group" id="phone-wrap" style="padding-left: 15px;padding-right:15px">
-                    <label for="phone">手机号:</label>
-                    <input type="text" class="form-control" id="phone" name="phone" onblur="vertifyPhone()">
-                    <span style="color: #a94442; display: none" id="phone-tips">手机号不合法</span>
-                </div>
-                <div class="form-group" id="email-wrap" style="padding-left: 15px;padding-right:15px">
-                    <label for="email">邮箱:</label>
-                    <input type="text" class="form-control" id="email" name="email" onblur="vertifyEmail()">
-                    <span style="color: #a94442; display: none" id="email-tips">邮箱不合法</span>
-                </div>
-                <div class="form-group" style="padding-left: 15px;padding-right:15px">
-                    <label for="job">职业:</label>
-                    <input type="text" class="form-control" id="job" name="job">
-                </div>
-                <div class="form-group" style="padding-left: 15px;padding-right:15px">
-                    <label for="address">地址:</label>
-                    <input type="text" class="form-control" id="address" name="address">
-                </div>
-                <div class="form-group" id="captchaCode-wrap" style="padding-left: 15px;padding-right:15px;position: relative">
-                    <label class="control-label">验证码</label>
-                    <input type="hidden" id="captchaId" name="captchaId">
-                    <input type="text" class="form-control" id="captchaCode" name="captchaCode"
-                           onblur="vertifyCaptcha()">
-                    <img id="captcha" style="position: absolute;bottom: 2px;right: 17px;z-index: 1000"
-                         onclick="renderCaptcha()">
-                    <span style="color: #a94442; display: none" id="captchaCode-tips">验证码不能为空</span>
-                </div>
-                <button type="button" class="btn btn-default" onclick="register()">确定注册</button>
-                <a style="float: right;margin-top: 1rem" href="${pageContext.request.contextPath}/user/login">登陆</a>
+            </form>
+        </div>
+        <div id="tab2" class="col-sm-12 col-xs-12 col-md-4 col-md-offset-4" style="display: none">
+            <button style="width: 100%;margin-top: 2rem;" type="button" class="btn btn-default"
+                    onclick="openCamera()">
+                打开摄像头
+            </button>
+            <button style="width: 100%;margin-top: 0.5rem" type="button" class="btn btn-default"
+                    onclick="closeCamera()">
+                关闭摄像头
+            </button>
+            <button style="width: 100%;margin-top: 0.5rem" type="button" class="btn btn-default"
+                    onclick="faceRegister()">
+                点击人脸注册
+            </button>
+            <div style="width:100%;height:50vh;border-radius: 0.2rem;overflow-x: hidden" id="video-wrap">
+                <video id="video" autoplay></video>
+                <canvas hidden="hidden" id="canvas" width="800" height="600"></canvas>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
@@ -134,9 +163,20 @@
 
     let phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
 
+    let video;//视频流对象
+    let context;//绘制对象
+    let canvas;//画布对象
+
     $(function () {
         renderCaptcha();
+
+        fixCanvasPixel();
     });
+
+    function fixCanvasPixel() {
+        $("#video").attr("width", $("#tab2").width);
+        $("#video").attr("height", $("#video-wrap").height());
+    }
 
     function register() {
         if (!vertifyEmail() || !vertifyPhone() || !vertifyName() || !vertifyPasswd() || !vertifyCaptcha()) {
@@ -273,6 +313,89 @@
         $("#avatar-img").attr("src", src);
     }
 
+    let tabId = [1, 2]
+
+    function show(id) {
+        for (let x of tabId) {
+            if (id == x) {
+                $("#tab" + x).css("display", "block");
+            } else {
+                $("#tab" + x).css("display", "none");
+            }
+        }
+    }
+
+
+    //开启摄像头
+    function openCamera() {
+        //获取摄像头对象
+        canvas = document.getElementById("canvas");
+        context = canvas.getContext("2d");
+        //获取视频流
+        video = document.getElementById("video");
+        let videoObj = {
+            "video": true
+        }, errBack = function (error) {
+            console.log("Video capture error: ", error.code);
+        };
+        context.drawImage(video, 0, 0);
+        //初始化摄像头参数
+        if (navigator.getUserMedia || navigator.webkitGetUserMedia
+            || navigator.mozGetUserMedia) {
+            navigator.getUserMedia = navigator.getUserMedia
+                || navigator.webkitGetUserMedia
+                || navigator.mozGetUserMedia;
+            navigator.getUserMedia(videoObj, function (stream) {
+                video.srcObject = stream;
+                video.play();
+            }, errBack);
+        }
+    }
+
+    function closeCamera() {
+        if (video === undefined) {
+            return;
+        }
+        let srcObject = video.srcObject;
+        if (srcObject === undefined) {
+            return
+        }
+        srcObject.getTracks()[0].stop();
+    }
+
+    //将当前图像传输到后台
+    function faceRegister() {
+        context.drawImage(video, 0, 0);
+        //获取图像
+        let img = getBase64();
+        //Ajax将Base64字符串传输到后台处理
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: "/user/face/register",
+            data: {
+                img: img
+            },
+            dataType: "JSON",
+            success: function (data) {
+                //返回的结果
+                if (data.code >= 0) {
+                    alert("注册成功！");
+                    window.location.href = "/user/login"
+                } else {
+                    alert(data.msg);
+                }
+            }
+        });
+    }
+
+    //将摄像头拍取的图片转换为Base64格式字符串
+    function getBase64() {
+        //获取当前图像并转换为Base64的字符串
+        let imgSrc = canvas.toDataURL("image/png");
+        //截取字符串
+        return imgSrc.substring(22);
+    }
 </script>
 </body>
 </html>
